@@ -40,8 +40,23 @@ e.g. `/map Customs`
 ### TK Commands
 
 #### TK Add
+`/tk add @KILLER @KILLED DESCRIPTION [VIDEO_URL]`
 
-`/tk add KILLER KILLED DESCRIPTION [VIDEO_URL]`
+#### TK Edit
+`/tk edit ID CATEGORY VALUE`
+
+#### TK Remove
+`/tk remove ID`
+
+#### TK Leaderboard
+`/tk leaderboard`
+
+#### TK List
+`/tk list @KILLER`
+
+#### TK Perms
+`/tk perms`
+`/tk perms @USER/ROLE`
 
 ### Help
 
