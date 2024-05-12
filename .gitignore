@@ -1,5 +1,6 @@
 /.env
 /.vscode
+/.gitignore
 __pycache__/
 /configs/data
 /run.sh
