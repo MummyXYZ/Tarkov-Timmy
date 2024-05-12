@@ -1,0 +1,196 @@
+{
+	"updated": "5/12/2024",
+	"thegoons": {
+		"img": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/b/bd/Three_lighthouse_bosses.jpg/revision/latest/scale-to-width-down/800",
+		"wiki": "https://escapefromtarkov.fandom.com/wiki/The_Goons",
+		"bigP": "https://escapefromtarkov.fandom.com/wiki/Big_Pipe",
+		"knight": "https://escapefromtarkov.fandom.com/wiki/Knight",
+		"birdeye": "https://escapefromtarkov.fandom.com/wiki/Birdeye",
+		"maps": {
+			"customs": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/d/da/CustomsGoonsMap.png",
+			"woods": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/c/cf/WoodsGoonsMap.png",
+			"shoreline": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/d/df/ShorelineGoonsMap.png",
+			"lighthouse": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/0/0e/LighthouseGoonsMap.png"
+		}
+	},
+	"cultists": {
+		"img": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/d/d6/CultistPriest.png/revision/latest/scale-to-width-down/800",
+		"wiki": "https://escapefromtarkov.fandom.com/wiki/Cultists",
+		"maps": {
+			"customs": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/8/8b/CustomsCultistMap.png",
+			"shoreline": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/2/28/ShorelineCultistMap.png",
+			"woods": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/2/2a/WoodsCultistMap.png"
+		}
+	},
+	"locations": {
+		"Customs": {
+			"internal": "bigmap",
+			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/9f/Customs_Banner.png",
+			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/4/49/CustomsMapRealNorthBW_Reemr.png",
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Customs",
+			"dorms": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/96/DormRoomsMap.jpg"
+		},
+		"Factory": {
+			"internal": "factory",
+			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/1/1a/Factory-Day_Banner.png",
+			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/94/Factory_loot.png",
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Factory"
+		},
+		"Ground Zero": {
+			"internal": "Sandbox_high",
+			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/4/4d/Ground_Zero_Banner.png",
+			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/9b/GroundZeroByxTycho.png",
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Ground_Zero"
+		},
+		"Interchange": {
+			"internal": "Interchange",
+			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/3/3e/Banner_interchange.png",
+			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/2/27/Interchange2DMapLorathor.jpg",
+			"interactive": "https://mapgenie.io/tarkov/maps/interchange"
+		},
+		"The Lab": {
+			"internal": "laboratory",
+			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/d/d7/TheLabBanner.png",
+			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/9e/LabsMapByMonkimonkimonk.png",
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:The_Lab"
+		},
+		"Lighthouse": {
+			"internal": "Lighthouse",
+			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/d/dc/Banner_lighthouse.png",
+			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/1/13/Jindouz_Lighthouse_Map_V1.png",
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Lighthouse"
+		},
+		"Reserve": {
+			"internal": "RezervBase",
+			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/f/f4/Reserve.png",
+			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/3/38/Re3mrReserveCardinalNorthWikiVer.jpg",
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Reserve"
+		},
+		"Shoreline": {
+			"internal": "Shoreline",
+			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/d/d5/Banner_shoreline.png",
+			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/1/17/Shoreline2DMapByMonkiUpdatedByJindouz.png",
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Shoreline"
+		},
+		"Streets of Tarkov": {
+			"internal": "TarkovStreets",
+			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/4/41/Banner_streets.png",
+			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/7/71/StreetsOfTarkov2DMapByJindouz.png",
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Streets_of_Tarkov"
+		},
+		"Terminal": {
+			"internal": "Terminal",
+			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/4/41/Banner_streets.png",
+			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/7/71/StreetsOfTarkov2DMapByJindouz.png"
+		},
+		"Woods": {
+			"internal": "Woods",
+			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/3/3e/Banner_woods.png",
+			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/0/05/Glory4lyfeWoods_map_v4_marked.png",
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Woods"
+		}
+	},
+	"ammo_ballistics": "https://escapefromtarkov.fandom.com/wiki/Ballistics#Armor_penetration_table",
+	"ammo": {
+		"Caliber12g": {
+			"base": "12x70mm",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/12x70mm"
+		},
+		"Caliber20g": {
+			"base": "20x70mm",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/20x70mm"
+		},
+		"Caliber23x75": {
+			"base": "23x75mm",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/23x75mm"
+		},
+		"Caliber9x18PM": {
+			"base": "9x18mm Makarov",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/9x18mm_Makarov"
+		},
+		"Caliber762x25TT": {
+			"base": "7.62x25 Tokarev",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/7.62x25mm_Tokarev"
+		},
+		"Caliber9x19PARA": {
+			"base": "9x19mm Parabellum",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/9x19mm_Parabellum"
+		},
+		"Caliber9x33R": {
+			"base": ".357 Magnum",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/.357_Magnum"
+		},
+		"Caliber1143x23ACP": {
+			"base": ".45 ACP",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/.45_ACP"
+		},
+		"Caliber9x21": {
+			"base": "9x21mm Gyurza",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/9x21mm_Gyurza"
+		},
+		"Caliber57x28": {
+			"base": "5.7x28mm FN",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/5.7x28mm_FN"
+		},
+		"Caliber68x51": {
+			"base": "6.8x51mm",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/6.8x51mm"
+		},
+		"Caliber46x30": {
+			"base": "4.6x30mm HK",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/4.6x30mm_HK"
+		},
+		"Caliber9x39": {
+			"base": "9x39mm",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/9x39mm"
+		},
+		"Caliber366TKM": {
+			"base": ".366 TKM",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/.366_TKM"
+		},
+		"Caliber545x39": {
+			"base": "5.45x39mm",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/5.45x39mm"
+		},
+		"Caliber556x45NATO": {
+			"base": "5.56x45mm NATO",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/5.56x45mm_NATO"
+		},
+		"Caliber762x35": {
+			"base": ".300 Blackout",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/.300_Blackout"
+		},
+		"Caliber762x39": {
+			"base": "7.62x39mm",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/7.62x39mm"
+		},
+		"Caliber762x51": {
+			"base": "7.62x51mm NATO",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/7.62x51mm_NATO"
+		},
+		"Caliber762x54R": {
+			"base": "7.62x54mmR",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/7.62x54mmR"
+		},
+		"Caliber86x70": {
+			"base": ".338 Lapua Magnum",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/.338_Lapua_Magnum"
+		},
+		"Caliber127x55": {
+			"base": "12.7x55mm STs-130",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/12.7x55mm_STs-130"
+		},
+		"Caliber40x46": {
+			"base": "40x46mm",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/40x46mm"
+		},
+		"Caliber26x75": {
+			"base": "26x75mm",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/26x75mm"
+		},
+		"Caliber40mmRU": {
+			"base": "40x53mm",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/40x53mm"
+		}
+	}
+}
