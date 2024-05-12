@@ -42,26 +42,32 @@ e.g. `/map Customs`
 
 #### TK Add
 * Add a TK.
+
 `/tk add @KILLER @KILLED DESCRIPTION [VIDEO_URL]`
 
 #### TK Edit
 * Edit a TK.
+
 `/tk edit ID CATEGORY VALUE`
 
 #### TK Remove
 * Remove a TK.
+
 `/tk remove ID`
 
 #### TK Leaderboard
 * Display your Guild's TK Leaderboard.
+
 `/tk leaderboard`
 
 #### TK List
 * Display a Users teamkill information.
+
 `/tk list @KILLER`
 
 #### TK Perms
 * Display all permissions // Modify permissions for a User or Roll.
+
 `/tk perms`
 `/tk perms @USER/ROLE`
 
