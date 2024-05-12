@@ -36,7 +36,6 @@
 * Display map information
 
 `/map [MAP]`
-e.g. `/map Customs`
 
 ### TK Commands
 
