@@ -86,7 +86,7 @@ Joshua Scott
 
 ## Error Reporting
 
-Feel free to send me a [MSG](https://discordapp.com/users/170925319518158848/) on discord describing the issue.
+Feel free submit an issue here on github or send me a [MSG](https://discordapp.com/users/170925319518158848/) on discord describing the issue.
 
 ## License
 
