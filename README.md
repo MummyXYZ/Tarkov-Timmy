@@ -5,6 +5,7 @@
 * [Features & Commands](#features--commands)
 * [Contributing](#contributing)
 * [Author](#author)
+* [Error Reporting](#error-reporting)
 * [License](#license)
 
 ## Features & Commands
@@ -70,10 +71,6 @@ e.g. `/map Customs`
 
 `/help`
 
-## Error Reporting
-
-Feel free to send me a [MSG](https://discordapp.com/users/170925319518158848/) on discord describing the issue.
-
 ## Contributing
 
 You are welcome to contribute by submitting a Pull Request to the repository.
@@ -81,6 +78,10 @@ You are welcome to contribute by submitting a Pull Request to the repository.
 ## Author
 
 Joshua Scott
+
+## Error Reporting
+
+Feel free to send me a [MSG](https://discordapp.com/users/170925319518158848/) on discord describing the issue.
 
 ## License
 
