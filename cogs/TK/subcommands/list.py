@@ -7,12 +7,18 @@ from utils.ButtonMenu import ButtonMenu
 from utils.checkperms import checkperms as CP
 from utils.embedbuilder import embedbuilder as EB
 
-class listSC():
-    async def list(interaction: discord.Interaction,
-    killer: discord.Member) -> None:
-#     # Permission Check
-        if not await CP(interaction, "list"): return
-            
+import logging
+import logging.handlers
+
+logger = logging.getLogger("discord")
+
+
+class listSC:
+    async def list(interaction: discord.Interaction, killer: discord.Member) -> None:
+        #     # Permission Check
+        if not await CP(interaction, "list"):
+            return
+
         guild = interaction.guild
         desc = ""
 
@@ -28,33 +34,47 @@ class listSC():
                     utc_time = calendar.timegm(x[4].timetuple())
                     if count % 10 == 0:
                         if x[5]:
-                            descs.append(f"<@{killer.id}>**'s kills - {len(result)}**\n\n**ID: {x[0]}** - <@{x[1]}> killed <@{x[2]}>\n[**{x[3]}**]({x[5]}) - <t:{utc_time}:R>")
+                            descs.append(
+                                f"<@{killer.id}>**'s kills - {len(result)}**\n\n**ID: {x[0]}** - <@{x[1]}> killed <@{x[2]}>\n[**{x[3]}**]({x[5]}) - <t:{utc_time}:R>"
+                            )
                         else:
-                            descs.append(f"<@{killer.id}>**'s kills - {len(result)}**\n\n**ID: {x[0]}** - <@{x[1]}> killed <@{x[2]}>\n**{x[3]}** - <t:{utc_time}:R>")
+                            descs.append(
+                                f"<@{killer.id}>**'s kills - {len(result)}**\n\n**ID: {x[0]}** - <@{x[1]}> killed <@{x[2]}>\n**{x[3]}** - <t:{utc_time}:R>"
+                            )
                         continue
 
                     if len(result) != count and count % 10 != 0:
                         descs[-1] += "\n\n"
 
                     if x[5]:
-                        descs[-1] += f"**ID: {x[0]}** - <@{x[1]}> killed <@{x[2]}>\n[**{x[3]}**]({x[5]}) - <t:{utc_time}:R>"
+                        descs[-1] += (
+                            f"**ID: {x[0]}** - <@{x[1]}> killed <@{x[2]}>\n[**{x[3]}**]({x[5]}) - <t:{utc_time}:R>"
+                        )
                     else:
-                        descs[-1] += f"**ID: {x[0]}** - <@{x[1]}> killed <@{x[2]}>\n**{x[3]}** - <t:{utc_time}:R>"
+                        descs[-1] += (
+                            f"**ID: {x[0]}** - <@{x[1]}> killed <@{x[2]}>\n**{x[3]}** - <t:{utc_time}:R>"
+                        )
 
-            for desc in descs: pages.append(await EB(description=f"{desc}"))        
-            
+            for desc in descs:
+                pages.append(await EB(description=f"{desc}"))
+
             view = ButtonMenu(pages, 120)
-            if len(pages) == 1: 
-                await interaction.followup.send(embeds = pages[0] if isinstance(pages[0], list) else [pages[0]])
+            if len(pages) == 1:
+                await interaction.followup.send(
+                    embeds=pages[0] if isinstance(pages[0], list) else [pages[0]]
+                )
             else:
-                await interaction.followup.send(embeds = pages[0] if isinstance(pages[0], list) else [pages[0]],view=view)
+                await interaction.followup.send(
+                    embeds=pages[0] if isinstance(pages[0], list) else [pages[0]],
+                    view=view,
+                )
             view.message = await interaction.original_response()
 
         except Exception as e:
-            print(f"List error, {e}")
-            embed:Embed = await EB(
+            logger.error(f"List error, {e}")
+            embed: Embed = await EB(
                 title="Error Occured",
-                description="There has been an error. Please contact MummyX#2616."
+                description="There has been an error. Please contact MummyX#2616.",
             )
-            
-            await interaction.followup.send(embed = embed)
+
+            await interaction.followup.send(embed=embed)

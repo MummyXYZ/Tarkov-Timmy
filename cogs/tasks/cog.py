@@ -4,6 +4,11 @@ import os, topgg, requests, json
 from discord.ext import commands
 from discord.ext import tasks
 
+import logging
+import logging.handlers
+
+logger = logging.getLogger("discord")
+
 
 class tasks(commands.Cog):
     def __init__(self, bot: commands.AutoShardedBot) -> None:
@@ -41,7 +46,7 @@ class tasks(commands.Cog):
                 f.write(ammoJson)
                 f.close()
         except Exception:
-            print("Failed to update ammo")
+            logger.error("Failed to update ammo")
 
         try:
             armorJson = json.dumps(
@@ -59,7 +64,7 @@ class tasks(commands.Cog):
                 f.write(armorJson)
                 f.close()
         except Exception:
-            print("Failed to update armor")
+            logger.error("Failed to update armor")
 
         try:
             bossJson = json.dumps(
@@ -77,7 +82,7 @@ class tasks(commands.Cog):
                 f.write(bossJson)
                 f.close()
         except Exception:
-            print("Failed to update bosses")
+            logger.error("Failed to update bosses")
 
         try:
             bagJson = json.dumps(
@@ -95,7 +100,7 @@ class tasks(commands.Cog):
                 f.write(bagJson)
                 f.close()
         except Exception:
-            print("Failed to update backpacks")
+            logger.error("Failed to update backpacks")
 
         try:
             helmJson = json.dumps(
@@ -113,7 +118,7 @@ class tasks(commands.Cog):
                 f.write(helmJson)
                 f.close()
         except Exception:
-            print("Failed to update helmets")
+            logger.error("Failed to update helmets")
 
         try:
             weaponJson = json.dumps(
@@ -131,7 +136,7 @@ class tasks(commands.Cog):
                 f.write(weaponJson)
                 f.close()
         except Exception:
-            print("Failed to update firearms")
+            logger.error("Failed to update firearms")
 
         try:
             bossJson = json.dumps(
@@ -149,9 +154,9 @@ class tasks(commands.Cog):
                 f.write(bossJson)
                 f.close()
         except Exception:
-            print("Failed to update bosses")
+            logger.error("Failed to update bosses")
 
-        print("JSONs Updated.")
+        logger.info("JSONs Updated.")
 
     @update_jsons.before_loop
     async def before_update_jsons(self):
@@ -164,11 +169,11 @@ class tasks(commands.Cog):
         """This function runs every 30 minutes to automatically update your server count."""
         try:
             await self.topggpy.post_guild_count()
-            print(f"Posted server count ({self.topggpy.guild_count})")
+            logger.info(f"Posted server count ({self.topggpy.guild_count})")
         except Exception as e:
-            print(f"Failed to post server count\n{e.__class__.__name__}: {e}")
+            logger.error(f"Failed to post server count\n{e.__class__.__name__}: {e}")
 
-        print("Stats Updated.")
+        logger.error("Stats Updated.")
 
     @update_stats.before_loop
     async def before_update_stats(self):
@@ -188,7 +193,7 @@ class tasks(commands.Cog):
             f.write(aboutJson)
             f.close()
 
-        print("About Updated.")
+        logger.info("About Updated.")
 
     @update_about.before_loop
     async def before_update_about(self):

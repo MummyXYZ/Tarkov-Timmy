@@ -7,18 +7,28 @@ from datetime import datetime
 from utils.checkperms import checkperms as CP
 from utils.embedbuilder import embedbuilder as EB
 
+import logging
+import logging.handlers
 
-class editSC():
-    async def edit(interaction: discord.Interaction, id: int, category: str, value: str) -> None:
+logger = logging.getLogger("discord")
+
+
+class editSC:
+    async def edit(
+        interaction: discord.Interaction, id: int, category: str, value: str
+    ) -> None:
         # Permission Check
-        if not await CP(interaction, "edit"): return
-        
+        if not await CP(interaction, "edit"):
+            return
+
         if category == "video_link":
-# Validate URL for embeding Ex.(✅: "https://google.com" ❌: google.com)
+            # Validate URL for embeding Ex.(✅: "https://google.com" ❌: google.com)
             if not validators.url(value):
                 await interaction.response.defer(ephemeral=True)
-                embed:Embed = await EB(title="Input Error", description="Invalid URL, please try again.")
-                await interaction.followup.send(embed = embed)
+                embed: Embed = await EB(
+                    title="Input Error", description="Invalid URL, please try again."
+                )
+                await interaction.followup.send(embed=embed)
                 return
             query = """UPDATE tk_entries SET video_link = %s WHERE id = %s && guild_id = %s"""
             category = "video link"
@@ -33,18 +43,22 @@ class editSC():
         try:
             result = await db.query(query, params)
             if result == 0:
-                desc += f"The ID: **{id}** either doesn't exist or had a duplicate value."
+                desc += (
+                    f"The ID: **{id}** either doesn't exist or had a duplicate value."
+                )
             else:
                 desc += f"**ID: {id}**'s **{category}** has been changed to {value}."
 
-            embed:Embed = await EB(title="Team Kill Edited", description=desc, timestamp=datetime.now())
-            await interaction.followup.send(embed = embed)
+            embed: Embed = await EB(
+                title="Team Kill Edited", description=desc, timestamp=datetime.now()
+            )
+            await interaction.followup.send(embed=embed)
 
         except Exception as e:
-            print(f"Edit error, {e}")
-            embed:Embed = await EB(
+            logger.error(f"Edit error, {e}")
+            embed: Embed = await EB(
                 title="Error Occured",
-                description="There has been an error. Please contact MummyX#2616."
+                description="There has been an error. Please contact MummyX#2616.",
             )
-            
-            await interaction.followup.send(embed = embed)
+
+            await interaction.followup.send(embed=embed)

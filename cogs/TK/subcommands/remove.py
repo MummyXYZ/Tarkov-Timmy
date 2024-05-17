@@ -6,11 +6,18 @@ from discord import Embed
 from utils.checkperms import checkperms as CP
 from utils.embedbuilder import embedbuilder as EB
 
-class removeSC():
+import logging
+import logging.handlers
+
+logger = logging.getLogger("discord")
+
+
+class removeSC:
     async def remove(interaction: discord.Interaction, id: int) -> None:
-# Permission Check
-        if not await CP(interaction, "remove"): return
-            
+        # Permission Check
+        if not await CP(interaction, "remove"):
+            return
+
         guild = interaction.guild
         desc = ""
 
@@ -33,14 +40,16 @@ class removeSC():
 
                 await db.query(query, params)
 
-            embed = await EB(title="Team Kill Removed", description=desc, timestamp=True)
-            await interaction.followup.send(embed = embed)
+            embed = await EB(
+                title="Team Kill Removed", description=desc, timestamp=True
+            )
+            await interaction.followup.send(embed=embed)
 
         except Exception as e:
-            print(f"Remove error, {e}")
-            embed:Embed = await EB(
+            logger.error(f"Remove error, {e}")
+            embed: Embed = await EB(
                 title="Error Occured",
-                description="There has been an error. Please contact MummyX#2616."
+                description="There has been an error. Please contact MummyX#2616.",
             )
 
-            await interaction.followup.send(embed = embed)
+            await interaction.followup.send(embed=embed)

@@ -1,10 +1,26 @@
 from __future__ import annotations
 
-import os, sys, discord
+import os, discord, sys
 from datetime import datetime
 from discord.ext import commands
 import utils.guildhandler as GH
 from dotenv import load_dotenv
+
+import logging
+import logging.handlers
+
+logger = logging.getLogger("discord")
+logger.setLevel(logging.INFO)
+handler = logging.handlers.TimedRotatingFileHandler(
+    "log/{:%Y-%m-%d}-discord.log".format(datetime.now()),
+    when="midnight",
+    backupCount=10,
+    encoding="utf-8",
+)
+handler.setFormatter(
+    logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
+)
+logger.addHandler(handler)
 
 load_dotenv()
 
@@ -27,16 +43,16 @@ class Bot(commands.AutoShardedBot):
             await self.load_extension(extension)
 
     async def on_connect(self) -> None:
-        print("Connected to Discord gateway!")
+        logger.info("Connected to Discord gateway!")
 
         # # Implemented sync command
         # if "-sync" in sys.argv:
         #     synced_commands = await self.tree.sync()
-        #     print(f"Successfully synced {len(synced_commands)} commands.")
+        #     logger.info(f"Successfully synced {len(synced_commands)} commands.")
 
     async def on_ready(self):
         await self.wait_until_ready()
-        print(f"{self.user.display_name} is ready!")
+        logger.info(f"{self.user.display_name} is ready!")
         aboutCog = self.get_cog("About")
         aboutCog.startTime = datetime.now()
 

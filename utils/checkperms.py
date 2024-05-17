@@ -3,6 +3,10 @@ import utils.db as db
 from discord import Embed
 from utils.embedbuilder import embedbuilder as EB
 
+import logging
+
+logger = logging.getLogger("discord")
+
 
 async def checkperms(interaction: discord.Interaction, command):
     try:
@@ -32,7 +36,7 @@ async def checkperms(interaction: discord.Interaction, command):
         await interaction.followup.send(embed=embed)
     except Exception as e:
         await interaction.response.defer(ephemeral=True)
-        print(f"Leaderboard error, {e}")
+        logger.error(f"Leaderboard error, {e}")
         embed: Embed = await EB(
             title="Error Occured",
             description="There has been an error. Please contact MummyX#2616.",
