@@ -8,16 +8,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 class Bot(commands.AutoShardedBot):
     def __init__(self):
         intents = discord.Intents.default()
         intents.message_content = True
-        intents.members= True
+        intents.members = True
         intents.guilds = True
         super().__init__(command_prefix="!", intents=intents)
 
         self.init_extensions = []
-        for folder in os.listdir('./cogs'):
+        for folder in os.listdir("./cogs"):
             if os.path.exists(os.path.join("cogs", folder, "cog.py")):
                 self.init_extensions.append(f"cogs.{folder}.cog")
 
@@ -26,10 +27,12 @@ class Bot(commands.AutoShardedBot):
             await self.load_extension(extension)
 
     async def on_connect(self) -> None:
-        print(f"Connected to Discord gateway!")
-        if '-sync' in sys.argv:
-            synced_commands = await self.tree.sync()
-            print(f"Successfully synced {len(synced_commands)} commands.")
+        print("Connected to Discord gateway!")
+
+        # # Implemented sync command
+        # if "-sync" in sys.argv:
+        #     synced_commands = await self.tree.sync()
+        #     print(f"Successfully synced {len(synced_commands)} commands.")
 
     async def on_ready(self):
         await self.wait_until_ready()
@@ -51,6 +54,7 @@ class Bot(commands.AutoShardedBot):
 
     async def on_command_error(self, ctx, error):
         pass
+
 
 if __name__ == "__main__":
     bot = Bot()
