@@ -1,4 +1,5 @@
-import discord, json
+import discord
+import json
 import utils.db as db
 from discord import Embed
 from utils.embedbuilder import embedbuilder as EB

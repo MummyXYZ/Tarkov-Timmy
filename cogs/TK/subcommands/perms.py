@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-import discord, typing
+import discord
+import typing
 import utils.db as db
 from discord import Embed
 from discord.ui import View
@@ -208,7 +209,7 @@ class OtherButton(discord.ui.Button):
             if self.target.id == interaction.guild.id:
                 embed = await EB(
                     title="TK Perms",
-                    description=f"Permissions have been applied to @everyone...",
+                    description="Permissions have been applied to @everyone...",
                 )
             else:
                 embed = await EB(
@@ -222,7 +223,7 @@ class OtherButton(discord.ui.Button):
             if self.target.id == interaction.guild.id:
                 embed = await EB(
                     title="TK Perms",
-                    description=f"No changes have been applied to @everyone...",
+                    description="No changes have been applied to @everyone...",
                 )
             else:
                 embed = await EB(
@@ -240,7 +241,7 @@ class OtherButton(discord.ui.Button):
             if self.target.id == interaction.guild.id:
                 embed = await EB(
                     title="TK Perms",
-                    description=f"Permissions have been cleared from @everyone...",
+                    description="Permissions have been cleared from @everyone...",
                 )
             else:
                 embed = await EB(
@@ -268,7 +269,7 @@ class permsSC:
                 first = False
 
                 if int(x[0]) == guild.id:
-                    desc += f"@everyone - "
+                    desc += "@everyone - "
                 else:
                     desc += f"<@{x[0]}> - "
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-import discord, calendar
+import discord
+import calendar
 import utils.db as db
 from discord import Embed
 from utils.ButtonMenu import ButtonMenu

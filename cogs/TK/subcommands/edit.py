@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-import discord, validators
+import discord
+import validators
 import utils.db as db
 from discord import Embed
 from datetime import datetime

@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-import os, topgg, requests, json
+import os
+import topgg
+import requests
+import json
 from discord.ext import commands
 from discord.ext import tasks
 

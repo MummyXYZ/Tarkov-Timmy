@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-import discord, os
+import discord
+import os
 from discord import Embed, app_commands
 from discord.ext import commands
 from datetime import datetime, timedelta
