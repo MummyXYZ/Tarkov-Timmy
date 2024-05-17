@@ -45,16 +45,9 @@ class Bot(commands.AutoShardedBot):
     async def on_connect(self) -> None:
         logger.info("Connected to Discord gateway!")
 
-        # # Implemented sync command
-        # if "-sync" in sys.argv:
-        #     synced_commands = await self.tree.sync()
-        #     logger.info(f"Successfully synced {len(synced_commands)} commands.")
-
     async def on_ready(self):
         await self.wait_until_ready()
         logger.info(f"{self.user.display_name} is ready!")
-        aboutCog = self.get_cog("About")
-        aboutCog.startTime = datetime.now()
 
     async def on_guild_join(self, guild: discord.Guild):
         await GH.create(guild)

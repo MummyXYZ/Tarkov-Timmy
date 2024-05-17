@@ -21,7 +21,6 @@ class tasks(commands.Cog):
         self.topggpy = topgg.DBLClient(self.bot, dbl_token)
         self.update_stats.start()
         self.update_jsons.start()
-        self.update_about.start()
 
     async def cog_unload(self) -> None:
         await self.topggpy.close()
@@ -173,30 +172,10 @@ class tasks(commands.Cog):
         except Exception as e:
             logger.error(f"Failed to post server count\n{e.__class__.__name__}: {e}")
 
-        logger.error("Stats Updated.")
+        logger.info("Stats Updated.")
 
     @update_stats.before_loop
     async def before_update_stats(self):
-        await self.bot.wait_until_ready()
-
-    @tasks.loop(hours=6)
-    async def update_about(self):
-        users = 0
-        uniqueUsers = []
-        for guild in self.bot.guilds:
-            for user in guild.members:
-                users += 1
-                if user.id not in uniqueUsers:
-                    uniqueUsers.append(user.id)
-        aboutJson = json.dumps({"users": users, "uniqueUsers": len(uniqueUsers)})
-        with open("./configs/data/about.json", "w") as f:
-            f.write(aboutJson)
-            f.close()
-
-        logger.info("About Updated.")
-
-    @update_about.before_loop
-    async def before_update_about(self):
         await self.bot.wait_until_ready()
 
 
