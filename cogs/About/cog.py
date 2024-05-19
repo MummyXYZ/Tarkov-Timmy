@@ -17,7 +17,6 @@ class About(commands.Cog):
     def __init__(self, bot: commands.AutoShardedBot) -> None:
         self.bot = bot
         self.startTime = datetime.now()
-        logger.info("Loaded")
 
     @app_commands.command(name="about", description="Information about the bot")
     async def about(self, interaction: discord.Interaction):
