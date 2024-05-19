@@ -12,10 +12,11 @@ class Sync(commands.Cog):
     def __init__(self, bot: commands.AutoShardedBot) -> None:
         self.bot = bot
 
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.is_owner()
     async def sync(self, ctx: commands.Context) -> None:
         await ctx.defer(ephemeral=True)
+
         synced_commands = await self.bot.tree.sync()
 
         logger.info(f"Successfully synced {len(synced_commands)} commands.")
