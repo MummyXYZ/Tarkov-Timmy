@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import os
 import discord
+import logging
+import logging.handlers
 from discord.ext import commands
 
 from dotenv import load_dotenv
 
-import logging
-import logging.handlers
+load_dotenv()
 
 logger = logging.getLogger("discord")
 logger.setLevel(logging.INFO)
@@ -21,8 +22,6 @@ handler.setFormatter(
     logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
 )
 logger.addHandler(handler)
-
-load_dotenv()
 
 
 class Bot(commands.AutoShardedBot):
