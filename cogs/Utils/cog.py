@@ -1,21 +1,15 @@
-"""
-If you are not using this inside a cog, add the event decorator e.g:
-@bot.event
-async def on_command_error(ctx, error)
-
-For examples of cogs see:
-https://gist.github.com/EvieePy/d78c061a4798ae81be9825468fe146be
-
-For a list of exceptions:
-https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#exceptions
-"""
-
 from __future__ import annotations
 
 import discord
 import traceback
 import sys
+import os
+import topgg
+import requests
+import json
 from discord.ext import commands
+from discord.ext import tasks
+import utils.guildhandler as GH
 
 import logging
 import logging.handlers
@@ -23,6 +17,30 @@ import logging.handlers
 logger = logging.getLogger("discord")
 
 
+#### Events
+class Events(commands.Cog):
+    def __init__(self, bot: commands.AutoShardedBot) -> None:
+        self.bot = bot
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        await self.bot.wait_until_ready()
+        logger.info(f"{self.bot.user.display_name} is ready!")
+
+    @commands.Cog.listener()
+    async def on_connect(self) -> None:
+        logger.info("Connected to Discord gateway!")
+
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild: discord.Guild):
+        await GH.create(guild)
+
+    @commands.Cog.listener()
+    async def on_guild_remove(self, guild: discord.Guild):
+        await GH.delete(guild)
+
+
+#### Error handling
 class CommandErrorHandler(commands.Cog):
     def __init__(self, bot: commands.AutoShardedBot):
         self.bot = bot
@@ -85,5 +103,76 @@ class CommandErrorHandler(commands.Cog):
             )
 
 
+#### Recurring tasks
+class Tasks(commands.Cog):
+    def __init__(self, bot: commands.AutoShardedBot) -> None:
+        super().__init__()
+        self.bot = bot
+
+        dbl_token = os.getenv("TOPGG_TOKEN")
+        self.topggpy = topgg.DBLClient(self.bot, dbl_token)
+        self.update_stats.start()
+        self.update_jsons.start()
+
+    async def cog_unload(self) -> None:
+        await self.topggpy.close()
+
+    @tasks.loop(hours=3)
+    async def update_jsons(self):
+        if os.getenv("RUNTIME") == "DEV":
+            return
+
+        # Endpoint, File name
+        data = [
+            ["ammo", "ammunitions.json"],
+            ["boss", "bosses.json"],
+            ["maps", "maps.json"],
+        ]
+
+        for item in data:
+            try:
+                data = json.dumps(
+                    (
+                        requests.get(
+                            "https://api.tarkov-changes.com/v1/" + item[0],
+                            headers={
+                                "User-Agent": "Mozilla/5.0",
+                                "AUTH-TOKEN": os.getenv("AUTH_TOKEN"),
+                            },
+                        ).json()
+                    )["results"]
+                )
+                with open("./configs/data/" + item[1], "w") as f:
+                    f.write(data)
+                    f.close()
+            except Exception:
+                logger.error("Failed to update " + item[0])
+
+        logger.info("JSONs Updated.")
+
+    @update_jsons.before_loop
+    async def before_update_jsons(self):
+        await self.bot.wait_until_ready()
+
+    @tasks.loop(minutes=30)
+    async def update_stats(self):
+        if os.getenv("RUNTIME") == "DEV":
+            return
+        """This function runs every 30 minutes to automatically update your server count."""
+        try:
+            await self.topggpy.post_guild_count()
+            logger.info(f"Posted server count ({self.topggpy.guild_count})")
+        except Exception as e:
+            logger.error(f"Failed to post server count\n{e.__class__.__name__}: {e}")
+
+        logger.info("Stats Updated.")
+
+    @update_stats.before_loop
+    async def before_update_stats(self):
+        await self.bot.wait_until_ready()
+
+
 async def setup(bot: commands.AutoShardedBot):
+    await bot.add_cog(Events(bot))
     await bot.add_cog(CommandErrorHandler(bot))
+    await bot.add_cog(Tasks(bot))
