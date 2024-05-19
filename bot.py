@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import os
 import discord
-from datetime import datetime
 from discord.ext import commands
 import utils.guildhandler as GH
 from dotenv import load_dotenv
