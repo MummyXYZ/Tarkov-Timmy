@@ -32,7 +32,7 @@ class Bot(commands.AutoShardedBot):
         intents.message_content = True
         intents.members = True
         intents.guilds = True
-        super().__init__(command_prefix="!", intents=intents)
+        super().__init__(command_prefix="!", intents=intents, help_command=None)
 
         self.init_extensions = []
         for folder in os.listdir("./cogs"):
