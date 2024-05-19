@@ -50,23 +50,23 @@ class tasks(commands.Cog):
         except Exception:
             logger.error("Failed to update ammo")
 
-        try:
-            armorJson = json.dumps(
-                (
-                    requests.get(
-                        "https://api.tarkov-changes.com/v1/armor",
-                        headers={
-                            "User-Agent": "Mozilla/5.0",
-                            "AUTH-TOKEN": os.getenv("AUTH_TOKEN"),
-                        },
-                    ).json()
-                )["results"]
-            )
-            with open("./configs/data/armors.json", "w") as f:
-                f.write(armorJson)
-                f.close()
-        except Exception:
-            logger.error("Failed to update armor")
+        # try:
+        #     armorJson = json.dumps(
+        #         (
+        #             requests.get(
+        #                 "https://api.tarkov-changes.com/v1/armor",
+        #                 headers={
+        #                     "User-Agent": "Mozilla/5.0",
+        #                     "AUTH-TOKEN": os.getenv("AUTH_TOKEN"),
+        #                 },
+        #             ).json()
+        #         )["results"]
+        #     )
+        #     with open("./configs/data/armors.json", "w") as f:
+        #         f.write(armorJson)
+        #         f.close()
+        # except Exception:
+        #     logger.error("Failed to update armor")
 
         try:
             bossJson = json.dumps(
@@ -86,41 +86,41 @@ class tasks(commands.Cog):
         except Exception:
             logger.error("Failed to update bosses")
 
-        try:
-            bagJson = json.dumps(
-                (
-                    requests.get(
-                        "https://api.tarkov-changes.com/v1/backpacks",
-                        headers={
-                            "User-Agent": "Mozilla/5.0",
-                            "AUTH-TOKEN": os.getenv("AUTH_TOKEN"),
-                        },
-                    ).json()
-                )["results"]
-            )
-            with open("./configs/data/backpacks.json", "w") as f:
-                f.write(bagJson)
-                f.close()
-        except Exception:
-            logger.error("Failed to update backpacks")
+        # try:
+        #     bagJson = json.dumps(
+        #         (
+        #             requests.get(
+        #                 "https://api.tarkov-changes.com/v1/backpacks",
+        #                 headers={
+        #                     "User-Agent": "Mozilla/5.0",
+        #                     "AUTH-TOKEN": os.getenv("AUTH_TOKEN"),
+        #                 },
+        #             ).json()
+        #         )["results"]
+        #     )
+        #     with open("./configs/data/backpacks.json", "w") as f:
+        #         f.write(bagJson)
+        #         f.close()
+        # except Exception:
+        #     logger.error("Failed to update backpacks")
 
-        try:
-            helmJson = json.dumps(
-                (
-                    requests.get(
-                        "https://api.tarkov-changes.com/v1/helmets",
-                        headers={
-                            "User-Agent": "Mozilla/5.0",
-                            "AUTH-TOKEN": os.getenv("AUTH_TOKEN"),
-                        },
-                    ).json()
-                )["results"]
-            )
-            with open("./configs/data/helmets.json", "w") as f:
-                f.write(helmJson)
-                f.close()
-        except Exception:
-            logger.error("Failed to update helmets")
+        # try:
+        #     helmJson = json.dumps(
+        #         (
+        #             requests.get(
+        #                 "https://api.tarkov-changes.com/v1/helmets",
+        #                 headers={
+        #                     "User-Agent": "Mozilla/5.0",
+        #                     "AUTH-TOKEN": os.getenv("AUTH_TOKEN"),
+        #                 },
+        #             ).json()
+        #         )["results"]
+        #     )
+        #     with open("./configs/data/helmets.json", "w") as f:
+        #         f.write(helmJson)
+        #         f.close()
+        # except Exception:
+        #     logger.error("Failed to update helmets")
 
         try:
             weaponJson = json.dumps(
@@ -139,24 +139,6 @@ class tasks(commands.Cog):
                 f.close()
         except Exception:
             logger.error("Failed to update firearms")
-
-        try:
-            bossJson = json.dumps(
-                (
-                    requests.get(
-                        "https://api.tarkov-changes.com/v1/maps",
-                        headers={
-                            "User-Agent": "Mozilla/5.0",
-                            "AUTH-TOKEN": os.getenv("AUTH_TOKEN"),
-                        },
-                    ).json()
-                )["results"]
-            )
-            with open("./configs/data/mapss.json", "w") as f:
-                f.write(bossJson)
-                f.close()
-        except Exception:
-            logger.error("Failed to update bosses")
 
         logger.info("JSONs Updated.")
 
