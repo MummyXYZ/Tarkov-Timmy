@@ -11,7 +11,7 @@
 
 ## 🔗 Resource Links
 
-- 🤖 Demo Bot: [Invite Here](https://discord.com/oauth2/authorize?client_id=815600918287613962&permissions=2048&scope=applications.commands%20bot)
+- 🤖 Invite Tarkov Timmy: [Invite Here](https://discord.com/oauth2/authorize?client_id=815600918287613962&permissions=2048&scope=bot%20applications.commands)
 - 🤝 Support Server: [Join Here](https://discord.gg/CC9v5aXNyY)
 
 ## Features & Commands
