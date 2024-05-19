@@ -2,11 +2,17 @@
 
 ## Table of Contents
 
+* [Resource Links](#resource-links)
 * [Features & Commands](#features--commands)
 * [Contributing](#contributing)
 * [Author](#author)
 * [Error Reporting](#error-reporting)
 * [License](#license)
+
+## 🔗 Resource Links
+
+- 🤖 Demo Bot: [Invite Here](https://discord.com/oauth2/authorize?client_id=815600918287613962&permissions=2048&scope=applications.commands%20bot)
+- 🤝 Support Server: [Join Here](https://discord.gg/CC9v5aXNyY)
 
 ## Features & Commands
 
