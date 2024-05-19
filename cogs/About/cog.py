@@ -42,7 +42,7 @@ class About(commands.Cog):
 
         embed: Embed = await EB(
             title="About:",
-            description="A Discord bot that helps you in Escape From Tarkov and a tool to have fun with friends and provide information quickly for your raids. Operated with simple and easy to use slash commands.\nTo get started try </help:1067035934073290795>",
+            description="A Discord bot that helps you in Escape From Tarkov and a tool to have fun with friends and provide information quickly for your raids. Operated with simple and easy to use slash commands.\nTo get started try </help:1067035934073290795>\n\nFor support join [my support server](https://discord.gg/CC9v5aXNyY)",
             footer=f"Made with discord.py || Last updated : {updated}",
             footer_icon="https://www.iconattitude.com/icons/open_icon_library/apps/png/256/python2.5.png",
         )
