@@ -13,7 +13,7 @@ import logging.handlers
 logger = logging.getLogger("discord")
 logger.setLevel(logging.INFO)
 handler = logging.handlers.TimedRotatingFileHandler(
-    "log/{:%Y-%m-%d}-discord.log".format(datetime.now()),
+    "log/-discord.log",
     when="midnight",
     backupCount=10,
     encoding="utf-8",
