@@ -93,7 +93,7 @@ class Ammo(commands.Cog):
             header=header, body=body, style=PresetStyle.thin_double_rounded
         )
 
-        embed: Embed = await EB(
+        embed: Embed = EB(
             title=f"{conf['ammo'][caliber]['base']} Ammo Chart",
             title_url=conf["ammo"][caliber]["wiki"],
             description=f"[Ammo Ballistics Chart]({conf['ammo_ballistics']})```{t2ascii}```\n",

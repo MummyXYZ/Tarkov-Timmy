@@ -40,7 +40,7 @@ class About(commands.Cog):
         users = sum([len(guild.members) for guild in self.bot.guilds])
         aboutJson = {"users": users, "uniqueUsers": len(self.bot.users)}
 
-        embed: Embed = await EB(
+        embed: Embed = EB(
             title="About:",
             description="A Discord bot that helps you in Escape From Tarkov and a tool to have fun with friends and provide information quickly for your raids. Operated with simple and easy to use slash commands.\nTo get started try </help:1067035934073290795>\n\nFor support join [my support server](https://discord.gg/CC9v5aXNyY)",
             footer=f"Made with discord.py || Last updated : {updated}",

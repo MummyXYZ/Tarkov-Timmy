@@ -207,12 +207,12 @@ class OtherButton(discord.ui.Button):
             await db.query(query, params)
 
             if self.target.id == interaction.guild.id:
-                embed = await EB(
+                embed = EB(
                     title="TK Perms",
                     description="Permissions have been applied to @everyone...",
                 )
             else:
-                embed = await EB(
+                embed = EB(
                     title="TK Perms",
                     description=f"Permissions have been applied to <@{self.target.id}>...",
                 )
@@ -221,12 +221,12 @@ class OtherButton(discord.ui.Button):
 
         elif self.custom_id == "cancel":
             if self.target.id == interaction.guild.id:
-                embed = await EB(
+                embed = EB(
                     title="TK Perms",
                     description="No changes have been applied to @everyone...",
                 )
             else:
-                embed = await EB(
+                embed = EB(
                     title="TK Perms",
                     description=f"No changes have been applied to <@{self.target.id}>...",
                 )
@@ -239,12 +239,12 @@ class OtherButton(discord.ui.Button):
             await db.query(query, params)
 
             if self.target.id == interaction.guild.id:
-                embed = await EB(
+                embed = EB(
                     title="TK Perms",
                     description="Permissions have been cleared from @everyone...",
                 )
             else:
-                embed = await EB(
+                embed = EB(
                     title="TK Perms",
                     description=f"Permissions have been cleared from <@{self.target.id}>...",
                 )
@@ -294,7 +294,7 @@ class permsSC:
                 if not result[-1][0] == x[0]:
                     desc += "\n"
 
-            embed = await EB(title="TK Perms", description=desc)
+            embed = EB(title="TK Perms", description=desc)
             await interaction.followup.send(embed=embed)
             return
 
@@ -315,12 +315,12 @@ class permsSC:
 
             view = PermsView(myList, target, interaction)
 
-            embed = await EB(title="TK Perms", description=desc)
+            embed = EB(title="TK Perms", description=desc)
             await interaction.followup.send(embed=embed, view=view)
 
         except Exception as e:
             logger.error(f"Perms error, {e}")
-            embed: Embed = await EB(
+            embed: Embed = EB(
                 title="Error Occured",
                 description="There has been an error. Please contact MummyX#2616.",
             )

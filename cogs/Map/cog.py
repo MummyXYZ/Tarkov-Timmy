@@ -122,7 +122,7 @@ class Map(commands.Cog):
         if bossName:
             description = f"**Boss:** {bossName}\n**Spawn Chance:** {bossChance}\n**Followers:** {bossEscorts}"
 
-        embed: Embed = await EB(
+        embed: Embed = EB(
             title=map,
             title_url=url,
             description=description,

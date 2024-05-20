@@ -29,7 +29,7 @@ class CultButton(discord.ui.Button):
                 maps.append(boss["Map"])
                 description += f"**{boss['Map'] if boss['Map'] != 'Sandbox' else 'Ground Zero'}**: {boss['BossChance']}%\n"
 
-        embed: Embed = await EB(
+        embed: Embed = EB(
             title="Cultists",
             description=description,
             title_url=self.conf["cultists"]["wiki"],
@@ -63,7 +63,7 @@ class CultSubButton(discord.ui.Button):
         await interaction.response.defer(ephemeral=True)
         img = f"{self.conf['cultists']['maps'][self.custom_id]}/revision/latest/scale-to-width-down/800"
         desc = f"[**Hi-res Here**]({self.conf['cultists']['maps'][self.custom_id]})"
-        embed: Embed = await EB(
+        embed: Embed = EB(
             title=f"Cultists - {self.custom_id.capitalize()}",
             description=desc,
             image_url=img,

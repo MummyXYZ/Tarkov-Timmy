@@ -40,14 +40,12 @@ class removeSC:
 
                 await db.query(query, params)
 
-            embed = await EB(
-                title="Team Kill Removed", description=desc, timestamp=True
-            )
+            embed = EB(title="Team Kill Removed", description=desc, timestamp=True)
             await interaction.followup.send(embed=embed)
 
         except Exception as e:
             logger.error(f"Remove error, {e}")
-            embed: Embed = await EB(
+            embed: Embed = EB(
                 title="Error Occured",
                 description="There has been an error. Please contact MummyX#2616.",
             )

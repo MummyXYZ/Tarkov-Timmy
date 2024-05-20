@@ -57,7 +57,7 @@ class listSC:
                         )
 
             for desc in descs:
-                pages.append(await EB(description=f"{desc}"))
+                pages.append(EB(description=f"{desc}"))
 
             view = ButtonMenu(pages, 120)
             if len(pages) == 1:
@@ -73,7 +73,7 @@ class listSC:
 
         except Exception as e:
             logger.error(f"List error, {e}")
-            embed: Embed = await EB(
+            embed: Embed = EB(
                 title="Error Occured",
                 description="There has been an error. Please contact MummyX#2616.",
             )

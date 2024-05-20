@@ -30,7 +30,7 @@ async def checkperms(interaction: discord.Interaction, command):
         await interaction.response.defer(ephemeral=True)
         with open("./configs/help.json", "r") as f:
             help = json.load(f)
-        embed: Embed = await EB(
+        embed: Embed = EB(
             title="Insufficient Permissions",
             description=f"You do not have access to use this command. If this is not correct have an administrator grant you access with this command {help['tkperms'][0]}.",
         )
@@ -38,7 +38,7 @@ async def checkperms(interaction: discord.Interaction, command):
     except Exception as e:
         await interaction.response.defer(ephemeral=True)
         logger.error(f"Leaderboard error, {e}")
-        embed: Embed = await EB(
+        embed: Embed = EB(
             title="Error Occured",
             description="There has been an error. Please contact MummyX#2616.",
         )

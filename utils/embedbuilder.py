@@ -2,7 +2,7 @@ from datetime import datetime
 from discord import Embed
 
 
-async def embedbuilder(
+def embedbuilder(
     author: str = "",
     author_url: str = "",
     author_icon: str = "",

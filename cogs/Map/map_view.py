@@ -77,7 +77,7 @@ class MapButton(discord.ui.Button):
         )
         img = f"{self.conf['locations'][self.origMap][self.custom_id]}/revision/latest/scale-to-width-down/1000"
         await interaction.response.defer(ephemeral=True)
-        embed: Embed = await EB(
+        embed: Embed = EB(
             author=author,
             description=f"[**Hi-res Here**]({self.conf['locations'][self.origMap][self.custom_id]})",
             image_url=img,

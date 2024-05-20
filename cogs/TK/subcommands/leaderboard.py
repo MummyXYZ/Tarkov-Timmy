@@ -41,7 +41,7 @@ class leaderboardSC:
 
             for desc in descs:
                 pages.append(
-                    await EB(title=f"{guild.name} Leaderboard", description=f"{desc}")
+                    EB(title=f"{guild.name} Leaderboard", description=f"{desc}")
                 )
 
             view = ButtonMenu(pages, 120)
@@ -58,7 +58,7 @@ class leaderboardSC:
 
         except Exception as e:
             logger.error(f"Leaderboard error, {e}")
-            embed: Embed = await EB(
+            embed: Embed = EB(
                 title="Error Occured",
                 description="There has been an error. Please contact MummyX#2616.",
             )

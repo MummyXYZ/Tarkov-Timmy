@@ -26,7 +26,7 @@ class editSC:
             # Validate URL for embeding Ex.(✅: "https://google.com" ❌: google.com)
             if not validators.url(value):
                 await interaction.response.defer(ephemeral=True)
-                embed: Embed = await EB(
+                embed: Embed = EB(
                     title="Input Error", description="Invalid URL, please try again."
                 )
                 await interaction.followup.send(embed=embed)
@@ -50,14 +50,14 @@ class editSC:
             else:
                 desc += f"**ID: {id}**'s **{category}** has been changed to {value}."
 
-            embed: Embed = await EB(
+            embed: Embed = EB(
                 title="Team Kill Edited", description=desc, timestamp=datetime.now()
             )
             await interaction.followup.send(embed=embed)
 
         except Exception as e:
             logger.error(f"Edit error, {e}")
-            embed: Embed = await EB(
+            embed: Embed = EB(
                 title="Error Occured",
                 description="There has been an error. Please contact MummyX#2616.",
             )

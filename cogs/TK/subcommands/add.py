@@ -27,7 +27,7 @@ class addSC:
         if video:
             if not validators.url(video):
                 await interaction.response.defer(ephemeral=True)
-                embed: Embed = await EB(
+                embed: Embed = EB(
                     title="Input Error", description="Invalid URL, please try again."
                 )
                 await interaction.followup.send(embed=embed)
@@ -73,15 +73,13 @@ class addSC:
                 desc = f"**ID: {id}** - <@{killer.id}> has killed <@{killed.id}>. Here is what happened...\n**{description}**"
             else:
                 desc += f"**ID: {id}** - <@{killer.id}> has killed <@{killed.id}>. Here is what happened...\n[**{description}**]({video})"
-            embed: Embed = await EB(
-                title="Team Kill Added", description=desc, timestamp=True
-            )
+            embed: Embed = EB(title="Team Kill Added", description=desc, timestamp=True)
 
             await interaction.followup.send(embed=embed)
 
         except Exception as e:
             logger.error(f"Add error, {e}")
-            embed: Embed = await EB(
+            embed: Embed = EB(
                 title="Error Occured",
                 description="There has been an error. Please contact MummyX#2616.",
             )

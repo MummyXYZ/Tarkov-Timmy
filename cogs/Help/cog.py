@@ -32,7 +32,7 @@ class HelpButton(discord.ui.Button):
             help = json.load(f)
         cID = self.custom_id.split(" - ", 1)[1]
         desc = help[cID][1]
-        embed = await EB(title=f"{help[cID][0]} Help", description=desc)
+        embed = EB(title=f"{help[cID][0]} Help", description=desc)
         await interaction.followup.send(embed=embed, ephemeral=True)
 
 
@@ -48,7 +48,7 @@ class Help(commands.Cog, name="help"):
     @app_commands.describe(hidden="Hide message?")
     async def help(self, interaction: discord.Interaction, hidden: bool = True):
         await interaction.response.defer(ephemeral=hidden)
-        embed: Embed = await EB(
+        embed: Embed = EB(
             title="Help",
             description="Please select one of the commands below to receive more information about it and examples.",
         )

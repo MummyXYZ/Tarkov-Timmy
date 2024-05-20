@@ -28,7 +28,7 @@ class GoonsButton(discord.ui.Button):
             if boss["BossName"] == "bossKnight":
                 description += f"**{boss['Map']}**: {boss['BossChance']}%\n"
 
-        embed = await EB(
+        embed = EB(
             title="The Goons",
             description=description,
             title_url=self.conf["thegoons"]["wiki"],
@@ -78,7 +78,7 @@ class GoonsSubButton(discord.ui.Button):
         await interaction.response.defer(ephemeral=True)
         img = f"{self.conf['thegoons']['maps'][self.custom_id]}/revision/latest/scale-to-width-down/800"
         desc = f"[**Hi-res Here**]({self.conf['thegoons']['maps'][self.custom_id]})"
-        embed: Embed = await EB(
+        embed: Embed = EB(
             title=f"The Goons - {self.custom_id.capitalize()}",
             description=desc,
             image_url=img,
