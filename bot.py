@@ -43,8 +43,6 @@ class Bot(commands.AutoShardedBot):
         for extension in self.init_extensions:
             await self.load_extension(extension)
 
-        await db.imp(self)
-
 
 if __name__ == "__main__":
     bot = Bot()
