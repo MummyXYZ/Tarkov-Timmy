@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import os
 import discord
+import asyncio
 import logging
 import logging.handlers
 from discord.ext import commands
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,6 +22,14 @@ handler.setFormatter(
     logging.Formatter("%(asctime)s:%(levelname)s:%(name)s: %(message)s")
 )
 logger.addHandler(handler)
+
+
+async def run():
+    bot = Bot()
+    if os.getenv("RUNTIME") == "DEV":
+        await bot.start(os.getenv("DEV_TOKEN"))
+    else:
+        await bot.start(os.getenv("TOKEN"))
 
 
 class Bot(commands.AutoShardedBot):
@@ -43,8 +51,11 @@ class Bot(commands.AutoShardedBot):
 
 
 if __name__ == "__main__":
-    bot = Bot()
-    if os.getenv("RUNTIME") == "DEV":
-        bot.run(os.getenv("DEV_TOKEN"))
-    else:
-        bot.run(os.getenv("TOKEN"))
+    loop = asyncio.new_event_loop()
+
+    try:
+        loop.run_until_complete(run())
+    except KeyboardInterrupt:
+        loop.run_until_complete(loop.shutdown_asyncgens())
+    finally:
+        loop.close()
