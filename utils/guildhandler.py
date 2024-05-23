@@ -1,5 +1,6 @@
 from discord import Guild
 import utils.db as db
+import json
 
 import logging
 
@@ -7,25 +8,49 @@ logger = logging.getLogger("discord")
 
 
 async def create(guild: Guild):
-    query = """INSERT INTO perms (guild_id, target_id, add_perm, edit, remove, leaderboard, list, perms) VALUES (%s, %s, 1, 1, 0, 1, 1, 0)"""
-    params = (guild.id, guild.id)
-    await db.query(query, params)
+    default_perms = json.dumps(
+        {
+            guild.id: {
+                "add": True,
+                "edit": True,
+                "remove": False,
+                "leaderboard": True,
+                "list": True,
+                "perms": False,
+            }
+        }
+    )
 
-    query = f"""INSERT INTO guild (guild_id) VALUES ({guild.id})"""
-    await db.query(query)
+    query = "INSERT INTO tk_bot.guilds (guild_id, guild_name) VALUES (%s, %s) ON CONFLICT DO NOTHING"
+    params = (
+        guild.id,
+        guild.name,
+    )
+    db.insert(query, params)
+
+    query = "INSERT INTO tk_bot.perms (guild_id, guild_name, perms) VALUES (%s, %s, %s) ON CONFLICT (guild_id) DO UPDATE SET perms = %s"
+    params = (
+        guild.id,
+        guild.name,
+        default_perms,
+        default_perms,
+    )
+    db.insert(query, params)
 
     logger.info(f"{guild.name} added.")
 
 
 async def delete(guild: Guild):
-    query = f"""DELETE FROM perms WHERE guild_id = {guild.id}"""
-    await db.query(query)
+    query = "DELETE FROM tk_bot.perms WHERE guild_id = '%s'"
+    params = (guild.id,)
+    db.delete(query, params)
 
-    query = f"""DELETE FROM tk_entries WHERE guild_id = {guild.id}"""
-    await db.query(query)
+    query = "DELETE FROM tk_bot.entries WHERE guild_id = '%s'"
+    params = (guild.id,)
+    db.delete(query, params)
 
-    query = f"""DELETE FROM guild WHERE guild_id = {guild.id}"""
-    await db.query(query)
+    query = "DELETE FROM tk_bot.guilds WHERE guild_id = %s"
+    params = (guild.id,)
+    db.delete(query, params)
 
-    logger.info(guild.id)
     logger.info(f"{guild.name} removed.")

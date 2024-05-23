@@ -9,6 +9,7 @@ import requests
 import json
 from discord.ext import commands
 from discord.ext import tasks
+
 import utils.guildhandler as GH
 
 import logging
@@ -110,8 +111,8 @@ class Tasks(commands.Cog):
 
         dbl_token = os.getenv("TOPGG_TOKEN")
         self.topggpy = topgg.DBLClient(self.bot, dbl_token)
-        self.update_stats.start()
-        self.update_jsons.start()
+        # self.update_stats.start()
+        # self.update_jsons.start()
 
     async def cog_unload(self) -> None:
         await self.topggpy.close()

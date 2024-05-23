@@ -1,68 +1,107 @@
-from mysql.connector import Error
-from mysql.connector import pooling
-import sys
-import os
-from dotenv import load_dotenv
+from __future__ import annotations
 
+import os
+import sys
+import psycopg2
+import psycopg2.pool
+import psycopg2.extras
 import logging
 import logging.handlers
+import traceback
+from dotenv import load_dotenv
 
 logger = logging.getLogger("discord")
-
 load_dotenv()
 
-try:
-    cxnpool = pooling.MySQLConnectionPool(
-        pool_size=32,
-        host=os.getenv("MySQL_HOST"),
-        port=os.getenv("MySQL_PORT"),
-        user=os.getenv("MySQL_USER"),
-        password=os.getenv("MySQL_PASS"),
-        database=os.getenv("MySQL_NAME"),
-    )
 
-except Error as e:
-    logger.error(f"Error connecting to MariaDB: {e}")
+pg_connection_dict = {
+    "minconn": 2,
+    "maxconn": 32,
+    "dbname": os.getenv("DB_NAME"),
+    "user": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD"),
+    "host": os.getenv("DB_HOST"),
+    "port": os.getenv("DB_PORT"),
+}
+
+try:
+    pool = psycopg2.pool.SimpleConnectionPool(**pg_connection_dict)
+except Exception as e:
+    logger.error(f"Error connecting to postgresql: {e}")
     sys.exit(1)
 
 
-async def query(query, params=None):
-    try:
-        cxn: pooling.MySQLConnection = cxnpool.get_connection()
+# def execute(query, params=None):
+#     # try:
+#     cxn: psycopg2.extensions.connection = pool.getconn()
 
-        if cxn.is_connected():
-            cur = cxn.cursor()
-            cur.execute(query, params)
+#     if not cxn.closed:
+#         cur = cxn.cursor()
+#         cur.execute(query, params)
 
-            result = cur.fetchall()
-            return result
+#         print(cur.rowcount)
 
-    except Error as e:
-        logger.error("Error while connecting to MySQL using Connection pool ", e)
+#         # result = cur.fetchall()
+#         # return result
 
-    finally:
-        if cxn.is_connected():
-            cur.close()
-            cxn.commit()
-            cxn.close()
+#     # except Exception as e:
+#     #     logger.error(f"Error while connecting to postgresql using Connection pool: {e}")
+#     #     # traceback.print_stack()
+
+#     # finally:
+#     #     if not cxn.closed:
+#     #         cur.close()
+#     #         cxn.commit()694707513764872202
+#     #         cxn.close()
 
 
-async def edit(query, params=None):
-    try:
-        cxn: pooling.MySQLConnection = cxnpool.get_connection()
+def execute(query, params=None):
+    cxn: psycopg2.extensions.connection = pool.getconn()
 
-        if cxn.is_connected():
-            cur = cxn.cursor()
-            cur.execute(query, params, multi=True)
+    if not cxn.closed:
+        cur = cxn.cursor()
+        cur.execute(query, params)
 
-            result = cur.rowcount
-            return result
+        result = cur.fetchall()
+        cur.close()
+        cxn.commit()
+        cxn.close()
+        return result
 
-    except Error as e:
-        logger.error("Error while connecting to MySQL using Connection pool ", e)
 
-    finally:
-        if cxn.is_connected():
-            cur.close()
-            cxn.commit()
-            cxn.close()
+def update(query, params=None):
+    cxn: psycopg2.extensions.connection = pool.getconn()
+
+    if not cxn.closed:
+        cur = cxn.cursor()
+        cur.execute(query, params)
+
+        result = cur.rowcount
+        cur.close()
+        cxn.commit()
+        cxn.close()
+        return result
+
+
+def insert(query, params=None):
+    cxn: psycopg2.extensions.connection = pool.getconn()
+
+    if not cxn.closed:
+        cur = cxn.cursor()
+        cur.execute(query, params)
+
+        cur.close()
+        cxn.commit()
+        cxn.close()
+
+
+def delete(query, params=None):
+    cxn: psycopg2.extensions.connection = pool.getconn()
+
+    if not cxn.closed:
+        cur = cxn.cursor()
+        cur.execute(query, params)
+
+        cur.close()
+        cxn.commit()
+        cxn.close()

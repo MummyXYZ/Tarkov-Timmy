@@ -25,41 +25,31 @@ class editSC:
         if category == "video_link":
             # Validate URL for embeding Ex.(✅: "https://google.com" ❌: google.com)
             if not validators.url(value):
-                await interaction.response.defer(ephemeral=True)
                 embed: Embed = EB(
                     title="Input Error", description="Invalid URL, please try again."
                 )
                 await interaction.followup.send(embed=embed)
                 return
-            query = """UPDATE tk_entries SET video_link = %s WHERE id = %s && guild_id = %s"""
+            query = (
+                "UPDATE tk_bot.entries SET video_link=%s WHERE id=%s AND guild_id=%s"
+            )
             category = "video link"
         else:
-            query = """UPDATE tk_entries SET description = %s WHERE id = %s && guild_id = %s"""
+            query = (
+                "UPDATE tk_bot.entries SET description=%s WHERE id=%s AND guild_id=%s"
+            )
             category = "description"
 
-        guild = interaction.guild
+        params = (value, id, interaction.guild.id)
         desc = ""
-        params = (value, id, guild.id)
+        result = db.update(query, params)
 
-        try:
-            result = await db.query(query, params)
-            if result == 0:
-                desc += (
-                    f"The ID: **{id}** either doesn't exist or had a duplicate value."
-                )
-            else:
-                desc += f"**ID: {id}**'s **{category}** has been changed to {value}."
+        if result == 0:
+            desc += f"The ID: **{id}** either doesn't exist."
+        else:
+            desc += f"**ID: {id}**'s **{category}** has been changed to {value}."
 
-            embed: Embed = EB(
-                title="Team Kill Edited", description=desc, timestamp=datetime.now()
-            )
-            await interaction.followup.send(embed=embed)
-
-        except Exception as e:
-            logger.error(f"Edit error, {e}")
-            embed: Embed = EB(
-                title="Error Occured",
-                description="There has been an error. Please contact MummyX#2616.",
-            )
-
-            await interaction.followup.send(embed=embed)
+        embed: Embed = EB(
+            title="Team Kill Edited", description=desc, timestamp=datetime.now()
+        )
+        await interaction.followup.send(embed=embed)

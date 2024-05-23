@@ -26,7 +26,6 @@ class addSC:
             # Validate URL for embeding Ex.(✅: "https://google.com" ❌: google.com)
         if video:
             if not validators.url(video):
-                await interaction.response.defer(ephemeral=True)
                 embed: Embed = EB(
                     title="Input Error", description="Invalid URL, please try again."
                 )
@@ -36,16 +35,17 @@ class addSC:
         guild = interaction.guild
         desc = ""
 
-        query = """SELECT id FROM tk_entries WHERE guild_id = %s"""
+        query = "SELECT id FROM tk_bot.entries WHERE guild_id = %s ORDER BY date ASC "
         params = (guild.id,)
-        res = await db.query(query, params)
+        res = db.execute(query, params)
+
         if not res:
             id = 1
         else:
             id = res[-1][0] + 1
 
         if not video:
-            query = """INSERT INTO tk_entries (id, guild_id, killer_id, killed_id, date, description) VALUES (%s, %s, %s, %s, %s, %s)"""
+            query = "INSERT INTO tk_bot.entries (id, guild_id, killer_id, killed_id, date, description) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id"
             params = (
                 id,
                 guild.id,
@@ -55,7 +55,7 @@ class addSC:
                 description,
             )
         else:
-            query = """INSERT INTO tk_entries (id, guild_id, killer_id, killed_id, date, description, video_link) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+            query = "INSERT INTO tk_bot.entries (id, guild_id, killer_id, killed_id, date, description, video_link) VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING id"
             params = (
                 id,
                 guild.id,
@@ -65,23 +65,12 @@ class addSC:
                 description,
                 video,
             )
+        res = db.execute(query, params)
 
-        try:
-            await db.query(query, params)
+        if not video:
+            desc = f"**ID: {id}** - <@{killer.id}> has killed <@{killed.id}>. Here is what happened...\n**{description}**"
+        else:
+            desc += f"**ID: {id}** - <@{killer.id}> has killed <@{killed.id}>. Here is what happened...\n[**{description}**]({video})"
+        embed: Embed = EB(title="Team Kill Added", description=desc, timestamp=True)
 
-            if not video:
-                desc = f"**ID: {id}** - <@{killer.id}> has killed <@{killed.id}>. Here is what happened...\n**{description}**"
-            else:
-                desc += f"**ID: {id}** - <@{killer.id}> has killed <@{killed.id}>. Here is what happened...\n[**{description}**]({video})"
-            embed: Embed = EB(title="Team Kill Added", description=desc, timestamp=True)
-
-            await interaction.followup.send(embed=embed)
-
-        except Exception as e:
-            logger.error(f"Add error, {e}")
-            embed: Embed = EB(
-                title="Error Occured",
-                description="There has been an error. Please contact MummyX#2616.",
-            )
-
-            await interaction.followup.send(embed=embed)
+        await interaction.followup.send(embed=embed)

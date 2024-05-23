@@ -21,33 +21,23 @@ class removeSC:
         guild = interaction.guild
         desc = ""
 
-        query = """SELECT id, killer_id, killed_id, date, description, video_link FROM tk_entries WHERE guild_id = %s AND id = %s"""
+        query = "SELECT id, killer_id, killed_id, date, description, video_link FROM tk_bot.entries WHERE guild_id = %s AND id = %s"
         params = (guild.id, id)
 
-        try:
-            result = await db.query(query, params)
+        result = db.execute(query, params)
 
-            if not result:
-                desc += f"The ID: **{id}** doesn't exist."
+        if not result:
+            desc += f"The ID: **{id}** doesn't exist."
+        else:
+            if not result[0][5]:
+                desc += f"**ID: {id}.** <@{result[0][1]}> killed <@{result[0][2]}> Description: **{result[0][4]}**.\nHas been removed from the database."
             else:
-                if not result[0][5]:
-                    desc += f"**ID: {id}.** <@{result[0][1]}> killed <@{result[0][2]}> Description: **{result[0][4]}**.\nHas been removed from the database."
-                else:
-                    desc += f"**ID: {id}.** <@{result[0][1]}> killed <@{result[0][2]}> Description: [**{result[0][4]}**]({result[0][5]}).\nHas been removed from the database."
+                desc += f"**ID: {id}.** <@{result[0][1]}> killed <@{result[0][2]}> Description: [**{result[0][4]}**]({result[0][5]}).\nHas been removed from the database."
 
-                query = """DELETE FROM tk_entries WHERE guild_id = %s AND id = %s"""
-                params = (guild.id, id)
+            query = """DELETE FROM tk_bot.entries WHERE guild_id = %s AND id = %s"""
+            params = (guild.id, id)
 
-                await db.query(query, params)
+            db.delete(query, params)
 
-            embed = EB(title="Team Kill Removed", description=desc, timestamp=True)
-            await interaction.followup.send(embed=embed)
-
-        except Exception as e:
-            logger.error(f"Remove error, {e}")
-            embed: Embed = EB(
-                title="Error Occured",
-                description="There has been an error. Please contact MummyX#2616.",
-            )
-
-            await interaction.followup.send(embed=embed)
+        embed = EB(title="Team Kill Removed", description=desc, timestamp=True)
+        await interaction.followup.send(embed=embed)

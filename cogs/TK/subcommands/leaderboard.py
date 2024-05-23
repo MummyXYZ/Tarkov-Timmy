@@ -22,9 +22,9 @@ class leaderboardSC:
         guild = interaction.guild
         desc = ""
 
-        query = f"SELECT killer_id, COUNT(killer_id) AS count FROM tk_entries WHERE guild_id = '{guild.id}' GROUP BY killer_id ORDER BY count DESC"
+        query = f"SELECT killer_id, COUNT(killer_id) AS count FROM tk_bot.entries WHERE guild_id='{guild.id}' GROUP BY killer_id ORDER BY count DESC"
         try:
-            result = await db.query(query)
+            result = db.execute(query)
             descs, pages = [], []
             if not result:
                 descs.append("No TKs on this server.")
