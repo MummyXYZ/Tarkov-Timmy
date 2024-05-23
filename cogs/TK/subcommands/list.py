@@ -6,7 +6,6 @@ import utils.db as db
 from utils.ButtonMenu import ButtonMenu
 from utils.checkperms import checkperms as CP
 from utils.embedbuilder import embedbuilder as EB
-
 import logging
 import logging.handlers
 
@@ -22,10 +21,10 @@ class listSC:
         guild = interaction.guild
         desc = ""
 
-        query = "SELECT id, killer_id, killed_id, description, date, video_link FROM tk_bot.entries WHERE guild_id = %s AND killer_id = %s ORDER BY date ASC "
+        query = "SELECT id, killer_id, killed_id, description, date, video_link FROM tk_bot.entries WHERE guild_id = $1 AND killer_id = $2 ORDER BY date ASC"
         params = (guild.id, killer.id)
 
-        result = db.execute(query, params)
+        result = await db.fetch(query, *params)
 
         descs, pages = [], []
         if not result:

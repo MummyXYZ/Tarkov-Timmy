@@ -7,7 +7,6 @@ import json
 from discord.ui import View
 from utils.checkperms import checkperms as CP
 from utils.embedbuilder import embedbuilder as EB
-
 import logging
 import logging.handlers
 
@@ -186,12 +185,12 @@ class OtherButton(discord.ui.Button):
         if self.custom_id == "confirm":
             if not any(value for value in self.result[str(self.target.id)].values()):
                 self.result.pop(str(self.target.id))
-            query = "UPDATE tk_bot.perms SET perms = %s WHERE guild_id = '%s'"
+            query = "UPDATE tk_bot.perms SET perms = $1 WHERE guild_id = $2"
             params = (
                 json.dumps(self.result),
                 interaction.guild_id,
             )
-            db.update(query, params)
+            await db.execute(query, *params)
 
             embed = EB(
                 title="TK Perms",
@@ -207,9 +206,9 @@ class OtherButton(discord.ui.Button):
         elif self.custom_id == "clear":
             if self.result.get(str(self.target.id)):
                 self.result.pop(str(self.target.id))
-                query = "UPDATE tk_bot.perms SET perms = %s WHERE guild_id = %s"
+                query = "UPDATE tk_bot.perms SET perms = $1 WHERE guild_id = $2"
                 params = (json.dumps(self.result), interaction.guild_id)
-                db.update(query, params)
+                await db.execute(query, *params)
 
             embed = EB(
                 title="TK Perms",
@@ -233,41 +232,49 @@ class permsSC:
         if not target:
             query = f"SELECT perms FROM tk_bot.perms WHERE guild_id = '{guild.id}'"
 
-            result = db.execute(query)[0][0]
+            result = (await db.fetch(query))[0]["perms"]
+
             if isinstance(result, dict):
                 result = json.dumps(result)
 
             result = json.loads(result)
 
-            for id in result:
-                perms = result[id]
+            if result:
+                for id in result:
+                    perms = result[id]
 
-                if int(id) == guild.id:
-                    desc += "@everyone - "
-                elif any(role.id == int(id) for role in guild.roles):
-                    desc += f"<@&{id}> - "
-                else:
-                    desc += f"<@{id}> - "
+                    if int(id) == guild.id:
+                        desc += "@everyone - "
+                    elif any(role.id == int(id) for role in guild.roles):
+                        desc += f"<@&{id}> - "
+                    else:
+                        desc += f"<@{id}> - "
 
-                permissions_list = [
-                    "Add" if perms["add"] else "",
-                    "Edit" if perms["edit"] else "",
-                    "Remove" if perms["remove"] else "",
-                    "Leaderboard" if perms["leaderboard"] else "",
-                    "List" if perms["list"] else "",
-                    "Perms" if perms["perms"] else "",
-                ]
-                desc += ", ".join(filter(None, permissions_list))
+                    permissions_list = [
+                        "Add" if perms["add"] else "",
+                        "Edit" if perms["edit"] else "",
+                        "Remove" if perms["remove"] else "",
+                        "Leaderboard" if perms["leaderboard"] else "",
+                        "List" if perms["list"] else "",
+                        "Perms" if perms["perms"] else "",
+                    ]
+                    desc += ", ".join(filter(None, permissions_list))
 
-                if not list(result)[-1] == int(id):
-                    desc += "\n"
+                    if not list(result)[-1] == int(id):
+                        desc += "\n"
+            else:
+                desc = "No permissions have been set in this server."
 
             embed = EB(title="TK Perms", description=desc)
             await interaction.followup.send(embed=embed)
             return
 
         query = f"SELECT perms FROM tk_bot.perms WHERE guild_id = '{guild.id}'"
-        result = db.execute(query)[0][0]
+        result = (await db.fetch(query))[0]["perms"]
+        if isinstance(result, dict):
+            result = json.dumps(result)
+
+        result = json.loads(result)
 
         if int(target.id) == guild.id:
             targetMod = "@everyone"

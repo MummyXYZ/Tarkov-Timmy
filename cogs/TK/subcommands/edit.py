@@ -31,20 +31,20 @@ class editSC:
                 await interaction.followup.send(embed=embed)
                 return
             query = (
-                "UPDATE tk_bot.entries SET video_link=%s WHERE id=%s AND guild_id=%s"
+                "UPDATE tk_bot.entries SET video_link=$1 WHERE id=$2 AND guild_id=$3"
             )
             category = "video link"
         else:
             query = (
-                "UPDATE tk_bot.entries SET description=%s WHERE id=%s AND guild_id=%s"
+                "UPDATE tk_bot.entries SET description=$1 WHERE id=$2 AND guild_id=$3"
             )
             category = "description"
 
         params = (value, id, interaction.guild.id)
         desc = ""
-        result = db.update(query, params)
+        result = await db.execute(query, *params)
 
-        if result == 0:
+        if result == "0":
             desc += f"The ID: **{id}** either doesn't exist."
         else:
             desc += f"**ID: {id}**'s **{category}** has been changed to {value}."

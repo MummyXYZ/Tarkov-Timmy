@@ -1,7 +1,6 @@
 from discord import Guild
 import utils.db as db
 import json
-
 import logging
 
 logger = logging.getLogger("discord")
@@ -21,36 +20,36 @@ async def create(guild: Guild):
         }
     )
 
-    query = "INSERT INTO tk_bot.guilds (guild_id, guild_name) VALUES (%s, %s) ON CONFLICT DO NOTHING"
+    query = "INSERT INTO tk_bot.guilds (guild_id, guild_name) VALUES ($1, $2) ON CONFLICT DO NOTHING"
     params = (
         guild.id,
         guild.name,
     )
-    db.insert(query, params)
+    await db.insert(query, *params)
 
-    query = "INSERT INTO tk_bot.perms (guild_id, guild_name, perms) VALUES (%s, %s, %s) ON CONFLICT (guild_id) DO UPDATE SET perms = %s"
+    query = "INSERT INTO tk_bot.perms (guild_id, guild_name, perms) VALUES ($1, $2, $3) ON CONFLICT (guild_id) DO UPDATE SET perms = $4"
     params = (
         guild.id,
         guild.name,
         default_perms,
         default_perms,
     )
-    db.insert(query, params)
+    await db.insert(query, *params)
 
     logger.info(f"{guild.name} added.")
 
 
 async def delete(guild: Guild):
-    query = "DELETE FROM tk_bot.perms WHERE guild_id = '%s'"
+    query = "DELETE FROM tk_bot.perms WHERE guild_id = $1"
     params = (guild.id,)
-    db.delete(query, params)
+    await db.delete(query, params)
 
-    query = "DELETE FROM tk_bot.entries WHERE guild_id = '%s'"
+    query = "DELETE FROM tk_bot.entries WHERE guild_id = $1"
     params = (guild.id,)
-    db.delete(query, params)
+    await db.delete(query, params)
 
-    query = "DELETE FROM tk_bot.guilds WHERE guild_id = %s"
+    query = "DELETE FROM tk_bot.guilds WHERE guild_id = $1"
     params = (guild.id,)
-    db.delete(query, params)
+    await db.delete(query, params)
 
     logger.info(f"{guild.name} removed.")

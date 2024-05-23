@@ -3,7 +3,6 @@ import json
 import utils.db as db
 from discord import Embed
 from utils.embedbuilder import embedbuilder as EB
-
 import logging
 
 logger = logging.getLogger("discord")
@@ -13,11 +12,11 @@ async def checkperms(interaction: discord.Interaction, command):
     user: discord.Member = interaction.user
 
     # User is Guild owner or MummyX
-    if interaction.guild.owner_id == user.id or user.id == 170925319518158848:
-        return True
+    # if interaction.guild.owner_id == user.id or user.id == 170925319518158848:
+    #     return True
 
     query = f"SELECT perms FROM tk_bot.perms WHERE guild_id = {interaction.guild.id}"
-    result = db.execute(query)[0][0]
+    result = (await db.fetch(query))[0]["perms"]
 
     if isinstance(result, dict):
         result = json.dumps(result)
