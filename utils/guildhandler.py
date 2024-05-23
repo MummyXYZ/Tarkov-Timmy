@@ -42,14 +42,14 @@ async def create(guild: Guild):
 async def delete(guild: Guild):
     query = "DELETE FROM tk_bot.perms WHERE guild_id = $1"
     params = (guild.id,)
-    await db.delete(query, params)
+    await db.delete(query, *params)
 
     query = "DELETE FROM tk_bot.entries WHERE guild_id = $1"
     params = (guild.id,)
-    await db.delete(query, params)
+    await db.delete(query, *params)
 
     query = "DELETE FROM tk_bot.guilds WHERE guild_id = $1"
     params = (guild.id,)
-    await db.delete(query, params)
+    await db.delete(query, *params)
 
     logger.info(f"{guild.name} removed.")
