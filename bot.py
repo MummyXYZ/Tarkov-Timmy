@@ -6,6 +6,8 @@ import logging
 import logging.handlers
 from discord.ext import commands
 
+import utils.db as db
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -40,6 +42,8 @@ class Bot(commands.AutoShardedBot):
     async def setup_hook(self: Bot) -> None:
         for extension in self.init_extensions:
             await self.load_extension(extension)
+
+        await db.imp(self)
 
 
 if __name__ == "__main__":

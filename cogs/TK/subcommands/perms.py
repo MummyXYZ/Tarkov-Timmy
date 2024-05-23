@@ -184,6 +184,8 @@ class OtherButton(discord.ui.Button):
             targetMod = f"<@{self.target.id}>"
 
         if self.custom_id == "confirm":
+            if not any(value for value in self.result[str(self.target.id)].values()):
+                self.result.pop(str(self.target.id))
             query = "UPDATE tk_bot.perms SET perms = %s WHERE guild_id = '%s'"
             params = (
                 json.dumps(self.result),
