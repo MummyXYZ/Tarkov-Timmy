@@ -10,39 +10,37 @@ logger = logging.getLogger("discord")
 
 
 async def checkperms(interaction: discord.Interaction, command):
-    try:
-        user: discord.Member = interaction.user
+    user: discord.Member = interaction.user
 
-        # User is Administrator or MummyX
-        if user.guild_permissions.administrator or user.id == 170925319518158848:
-            return True
+    # User is Guild owner or MummyX
+    if interaction.guild.owner_id == user.id or user.id == 170925319518158848:
+        return True
 
-        query = f"SELECT {command} FROM perms WHERE guild_id = {interaction.guild.id} AND (target_id = {user.id}"
-        for role in user.roles:
-            query += f" OR target_id = {role.id}"
-        query += ")"
-        result = await db.query(query)
+    query = f"SELECT perms FROM tk_bot.perms WHERE guild_id = {interaction.guild.id}"
+    result = db.execute(query)[0][0]
 
-        for x in result:
-            if x[0]:
+    if isinstance(result, dict):
+        result = json.dumps(result)
+
+    result = json.loads(result)
+
+    for role in user.roles:
+        if result.get(str(role.id)):
+            logger.debug("Found permissions role")
+            logger.debug(result[str(role.id)][command])
+            if result[str(role.id)][command]:
                 return True
 
-        await interaction.response.defer(ephemeral=True)
-        with open("./configs/help.json", "r") as f:
-            help = json.load(f)
-        embed: Embed = EB(
-            title="Insufficient Permissions",
-            description=f"You do not have access to use this command. If this is not correct have an administrator grant you access with this command {help['tkperms'][0]}.",
-        )
-        await interaction.followup.send(embed=embed)
-    except Exception as e:
-        await interaction.response.defer(ephemeral=True)
-        logger.error(f"Leaderboard error, {e}")
-        embed: Embed = EB(
-            title="Error Occured",
-            description="There has been an error. Please contact MummyX#2616.",
-        )
+    if result.get(user.id):
+        logger.debug("Found permissions user")
+        logger.debug(result[str(user.id)][command])
+        if result[str(user.id)][command]:
+            return True
 
-        await interaction.followup.send(embed=embed)
+    embed: Embed = EB(
+        title="Insufficient Permissions",
+        description=f"You do not have access to use this **/TK {command}**, by default the owner of the server must give out permissions.",
+    )
+    await interaction.followup.send(embed=embed)
 
     return False

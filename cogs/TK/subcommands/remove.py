@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import discord
 import utils.db as db
-from discord import Embed
 from utils.checkperms import checkperms as CP
 from utils.embedbuilder import embedbuilder as EB
 

@@ -21,7 +21,7 @@ class addSC:
         video: str = None,
     ) -> None:
         # Permission Check
-        if not await CP(interaction, "add_perm"):
+        if not await CP(interaction, "add"):
             return
             # Validate URL for embeding Ex.(✅: "https://google.com" ❌: google.com)
         if video:

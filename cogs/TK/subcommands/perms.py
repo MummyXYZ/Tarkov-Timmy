@@ -4,7 +4,6 @@ import discord
 import typing
 import utils.db as db
 import json
-from discord import Embed
 from discord.ui import View
 from utils.checkperms import checkperms as CP
 from utils.embedbuilder import embedbuilder as EB
@@ -177,6 +176,13 @@ class OtherButton(discord.ui.Button):
         )
 
     async def callback(self, interaction: discord.Interaction):
+        if int(self.target.id) == interaction.guild.id:
+            targetMod = "@everyone"
+        elif any(role.id == int(self.target.id) for role in interaction.guild.roles):
+            targetMod = f"<@&{self.target.id}>"
+        else:
+            targetMod = f"<@{self.target.id}>"
+
         if self.custom_id == "confirm":
             query = "UPDATE tk_bot.perms SET perms = %s WHERE guild_id = '%s'"
             params = (
@@ -185,32 +191,16 @@ class OtherButton(discord.ui.Button):
             )
             db.update(query, params)
 
-            if self.target.id == interaction.guild.id:
-                embed = EB(
-                    title="TK Perms",
-                    description="Permissions have been applied to @everyone...",
-                )
-            else:
-                embed = EB(
-                    title="TK Perms",
-                    description=f"Permissions have been applied to <@{self.target.id}>...",
-                )
-
-            await interaction.response.edit_message(embed=embed, view=None)
+            embed = EB(
+                title="TK Perms",
+                description=f"Permissions have been applied to {targetMod}...",
+            )
 
         elif self.custom_id == "cancel":
-            if self.target.id == interaction.guild.id:
-                embed = EB(
-                    title="TK Perms",
-                    description="No changes have been applied to @everyone...",
-                )
-            else:
-                embed = EB(
-                    title="TK Perms",
-                    description=f"No changes have been applied to <@{self.target.id}>...",
-                )
-
-            await interaction.response.edit_message(embed=embed, view=None)
+            embed = EB(
+                title="TK Perms",
+                description=f"No changes have been applied to {targetMod}...",
+            )
 
         elif self.custom_id == "clear":
             if self.result.get(str(self.target.id)):
@@ -219,17 +209,12 @@ class OtherButton(discord.ui.Button):
                 params = (json.dumps(self.result), interaction.guild_id)
                 db.update(query, params)
 
-            if self.target.id == interaction.guild.id:
-                embed = EB(
-                    title="TK Perms",
-                    description="Permissions have been cleared from @everyone...",
-                )
-            else:
-                embed = EB(
-                    title="TK Perms",
-                    description=f"Permissions have been cleared from <@{self.target.id}>...",
-                )
-            await interaction.response.edit_message(embed=embed, view=None)
+            embed = EB(
+                title="TK Perms",
+                description=f"Permissions have been cleared from {targetMod}...",
+            )
+
+        await interaction.response.edit_message(embed=embed, view=None)
 
 
 class permsSC:
@@ -244,43 +229,34 @@ class permsSC:
         guild: discord.Guild = interaction.guild
         desc = ""
         if not target:
-            # query = f"SELECT target_id, add_perm, edit, remove, leaderboard, list, perms FROM tk_bot.perms WHERE guild_id = {guild.id}"
             query = f"SELECT perms FROM tk_bot.perms WHERE guild_id = '{guild.id}'"
 
             result = db.execute(query)[0][0]
             if isinstance(result, dict):
-                result = json.dumps(result)  # Convert the dictionary to a JSON string
+                result = json.dumps(result)
 
             result = json.loads(result)
 
             for id in result:
                 perms = result[id]
 
-                first = False
-
                 if int(id) == guild.id:
                     desc += "@everyone - "
+                elif any(role.id == int(id) for role in guild.roles):
+                    desc += f"<@&{id}> - "
                 else:
                     desc += f"<@{id}> - "
 
-                if perms["add"]:
-                    desc += "Add"
-                    first = True
-                if perms["edit"]:
-                    desc += f"{', ' if first else ''}Edit"
-                    first = True
-                if perms["remove"]:
-                    desc += f"{', ' if first else ''}Remove"
-                    first = True
-                if perms["leaderboard"]:
-                    desc += f"{', ' if first else ''}Leaderboard"
-                    first = True
-                if perms["list"]:
-                    desc += f"{', ' if first else ''}List"
-                    first = True
-                if perms["perms"]:
-                    desc += f"{', ' if first else ''}Perms"
-                    first = True
+                permissions_list = [
+                    "Add" if perms["add"] else "",
+                    "Edit" if perms["edit"] else "",
+                    "Remove" if perms["remove"] else "",
+                    "Leaderboard" if perms["leaderboard"] else "",
+                    "List" if perms["list"] else "",
+                    "Perms" if perms["perms"] else "",
+                ]
+                desc += ", ".join(filter(None, permissions_list))
+
                 if not list(result)[-1] == int(id):
                     desc += "\n"
 
@@ -291,10 +267,14 @@ class permsSC:
         query = f"SELECT perms FROM tk_bot.perms WHERE guild_id = '{guild.id}'"
         result = db.execute(query)[0][0]
 
-        if target.id == guild.id:
-            desc += f"Use the buttons below to control @everyone's access to the TK Bot commands.\n**[ENABLED is Blue]** // **[DISABLED is Grey]**\nWhen finished press the ✅ to apply, the ❌ to cancel, or **CLEAR** to remove any permissions from the database.\n\nThis message will timeout in {tOut} seconds."
+        if int(target.id) == guild.id:
+            targetMod = "@everyone"
+        elif any(role.id == int(target.id) for role in guild.roles):
+            targetMod = f"<@&{target.id}>"
         else:
-            desc += f"Use the buttons below to control <@{target.id}>'s access to the TK Bot commands.\n**[ENABLED is Blue]** // **[DISABLED is Grey]**\nWhen finished press the ✅ to apply, the ❌ to cancel, or **CLEAR** to remove any permissions from the database.\n\nThis message will timeout in {tOut} seconds."
+            targetMod = f"<@{target.id}>"
+
+        desc += f"Use the buttons below to control {targetMod}'s access to the TK Bot commands.\n**[ENABLED is Blue]** // **[DISABLED is Grey]**\nWhen finished press the ✅ to apply, the ❌ to cancel, or **CLEAR** to remove any permissions from the database.\n\nThis message will timeout in {tOut} seconds."
 
         if not result.get(str(target.id)):
             result[str(target.id)] = {
