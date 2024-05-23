@@ -6,8 +6,6 @@ import logging
 import logging.handlers
 from discord.ext import commands
 
-import utils.db as db
-
 from dotenv import load_dotenv
 
 load_dotenv()
