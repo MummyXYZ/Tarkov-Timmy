@@ -11,12 +11,6 @@ from bs4 import BeautifulSoup as soup
 from .map_view import MapView
 from utils.embedbuilder import embedbuilder as EB
 
-embedData = {
-    "title": "TK Bot - Map",
-    "color": 0x000000,
-    "support": "\n\n Enjoy using this Bot? Consider upvoting it [Here](https://top.gg/bot/815600918287613962/vote).",
-}
-
 
 class Map(commands.Cog):
     def __init__(self, bot: commands.AutoShardedBot) -> None:
