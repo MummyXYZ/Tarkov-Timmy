@@ -19,7 +19,7 @@
 > Note: The repository now uses the new Discord slash commands
 
 * [About](#about)
-* [Time](#time)
+* [Goons](#goons)
 * [Map](#map)
 * [Time](#time)
 * [TK](#tk)
@@ -31,17 +31,23 @@
 
 `/about`
 
-### Time
+### Goons
 
-* Display in-game time with button updates.
+* Display community provided information of when the goons were last seen. Powered by TarkovPal.com.
 
-`/time`
+`/goons`
 
 ### Map
 
 * Display map information
 
 `/map [MAP]`
+
+### Time
+
+* Display in-game time with button updates.
+
+`/time`
 
 ### TK Commands
 
