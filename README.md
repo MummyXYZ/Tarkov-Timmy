@@ -33,7 +33,7 @@
 
 ### Goons
 
-* Display community provided information of when the goons were last seen. Powered by TarkovPal.com.
+* Display community provided information of when the goons were last seen. Powered by [TarkovPal.com](https://tarkovpal.com).
 
 `/goons`
 
