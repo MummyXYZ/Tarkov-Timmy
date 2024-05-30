@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import discord
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 from discord import app_commands, Embed
 from discord.ext import commands
 from utils.embedbuilder import embedbuilder as EB
@@ -25,7 +25,10 @@ class Goons(commands.Cog):
         ).json()
 
         timestamp = int(
-            datetime.strptime(data["Time"][0], "%b %d, %Y, %I:%M %p").timestamp()
+            (
+                datetime.strptime(data["Time"][0], "%b %d, %Y, %I:%M %p")
+                + timedelta(hours=1)
+            ).timestamp()
         )
 
         embed: Embed = EB(
