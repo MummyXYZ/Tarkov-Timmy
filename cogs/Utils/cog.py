@@ -9,11 +9,10 @@ import requests
 import json
 from discord.ext import commands
 from discord.ext import tasks
-
-import utils.guildhandler as GH
-
 import logging
 import logging.handlers
+import utils.guildhandler as GH
+
 
 logger = logging.getLogger("discord")
 
@@ -113,6 +112,7 @@ class Tasks(commands.Cog):
         self.topggpy = topgg.DBLClient(self.bot, dbl_token)
         self.update_stats.start()
         self.update_jsons.start()
+        self.update_goons.start()
 
     async def cog_unload(self) -> None:
         await self.topggpy.close()
@@ -124,24 +124,21 @@ class Tasks(commands.Cog):
 
         # Endpoint, File name
         data = [
-            ["ammo", "ammunitions.json"],
-            ["boss", "bosses.json"],
-            ["maps", "maps.json"],
+            ["https://api.tarkov-changes.com/v1/ammo", "ammunitions.json"],
+            ["https://api.tarkov-changes.com/v1/boss", "bosses.json"],
+            ["https://api.tarkov-changes.com/v1/maps", "maps.json"],
+            ["https://api.tarkov-changes.com/v1/weather", "weather.json"],
         ]
 
         for item in data:
+            headers = {
+                "User-Agent": "Mozilla/5.0",
+                "AUTH-TOKEN": os.getenv("AUTH_TOKEN"),
+            }
             try:
-                data = json.dumps(
-                    (
-                        requests.get(
-                            "https://api.tarkov-changes.com/v1/" + item[0],
-                            headers={
-                                "User-Agent": "Mozilla/5.0",
-                                "AUTH-TOKEN": os.getenv("AUTH_TOKEN"),
-                            },
-                        ).json()
-                    )["results"]
-                )
+                data = requests.get(item[0], headers=headers).json()
+                data = json.dumps(data["results"])
+
                 with open("./configs/data/" + item[1], "w") as f:
                     f.write(data)
                     f.close()
@@ -152,6 +149,38 @@ class Tasks(commands.Cog):
 
     @update_jsons.before_loop
     async def before_update_jsons(self):
+        await self.bot.wait_until_ready()
+
+    @tasks.loop(minutes=1)
+    async def update_goons(self):
+        if os.getenv("RUNTIME") == "DEV":
+            return
+
+        # Endpoint, File name
+        data = [
+            ["https://tarkovpal.com/api", "goons.json"],
+        ]
+
+        for item in data:
+            headers = {"User-Agent": "Mozilla/5.0"}
+            try:
+                data = requests.get(item[0], headers=headers).json()
+                data = (
+                    json.dumps(data["results"])
+                    if item[0] != "https://tarkovpal.com/api"
+                    else json.dumps(data)
+                )
+
+                with open("./configs/data/" + item[1], "w") as f:
+                    f.write(data)
+                    f.close()
+            except Exception:
+                logger.error("Failed to update " + item[0])
+
+        logger.info("Goons Updated.")
+
+    @update_goons.before_loop
+    async def before_update_goons(self):
         await self.bot.wait_until_ready()
 
     @tasks.loop(minutes=30)

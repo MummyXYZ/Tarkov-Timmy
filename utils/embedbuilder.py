@@ -8,6 +8,7 @@ def embedbuilder(
     author_icon: str = "",
     title: str = "",
     description: str = "",
+    thumbnail: str = "",
     title_url: str = "",
     footer: str = "",
     footer_icon: str = "",
@@ -31,6 +32,8 @@ def embedbuilder(
         timestamp=timestamp,
         color=color,
     )
+    if thumbnail:
+        embed.set_thumbnail(url=thumbnail)
     if author:
         embed.set_author(name=author, url=author_url, icon_url=author_icon)
     if footer_icon:

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import discord
-import requests
+import random
+import json
 from datetime import datetime, timedelta
 from discord import app_commands, Embed
 from discord.ext import commands
@@ -19,32 +20,35 @@ class Goons(commands.Cog):
     async def map(self, interaction: discord.Interaction):
         await interaction.response.defer()
 
-        data = requests.get(
-            "https://tarkovpal.com/api",
-            headers={"User-Agent": "Mozilla/5.0"},
-        ).json()
+        with open("./configs/data/goons.json", "r") as f:
+            conf = json.load(f)
 
         timestamp = int(
             (
-                datetime.strptime(data["Time"][0], "%b %d, %Y, %I:%M %p")
+                datetime.strptime(conf["Time"][0], "%B %d, %Y, %I:%M %p")
                 + timedelta(hours=1)
             ).timestamp()
         )
 
+        images = ["big_pipe.png", "birdeye.png", "knight.png"]
+
+        file = discord.File("./assets/" + random.choice(images), filename="image.png")
+
         embed: Embed = EB(
             title="Goons Sightings",
-            description="The most recent Goons sighting from TarkovPal.com",
+            description="The most recent Goons sighting.",
+            thumbnail="attachment://image.png",
             footer="Powered by TarkovPal.com",
             footer_icon="https://tarkovpal.com/logov2.png",
         )
 
         embed.add_field(
             name="Map",
-            value=data["Current Map"][0],
+            value=conf["Current Map"][0],
         )
         embed.add_field(name="Last Seen", value=f"<t:{timestamp}:t>")
 
-        await interaction.followup.send(embed=embed)
+        await interaction.followup.send(file=file, embed=embed)
 
 
 async def setup(bot: commands.AutoShardedBot) -> None:
