@@ -47,36 +47,26 @@ class Ammo(commands.Cog):
             ammoJson = json.load(f)
 
         body, ammoList = [], []
+        # Extract the ammunition data for the specified caliber
         ammos = json.loads(
-            json.dumps([ammo for ammo in ammoJson if ammo["Caliber"] == caliber])
+            json.dumps([ammo for ammo in ammoJson if ammo["caliber"] == caliber])
         )
 
         for ammo in ammos:
-            ammoName: str = (
-                (" ".join(ammo["Name"].split(" ")[1:]))
-                .replace("Blackout", "")
-                .replace(" slug", "")
-                .replace(" buckshot", "")
-                .replace(" Premier HP", "")
-                .replace('"', "")
-                .replace(" armor-piercing", "")
-                .replace("makeshift ", "")
-                .replace(" flashbang round", "")
-                .replace("Lapua Magnum ", "")
-                .replace("distress signal ", "")
-                .replace("cartridge", "cart.")
-            )
+            ammoName = ammo["item"]["shortName"]
             ammoList.append(
                 {
                     "name": ammoName,
-                    "pen": int(ammo["Penetration Power"]),
-                    "damage": int(ammo["Flesh Damage"]),
-                    "frag": int(float(ammo["Frag Chance"]) * 100),
-                    "recoil": int(ammo["Recoil"]),
+                    "pen": int(ammo["penetrationPower"]),
+                    "damage": int(ammo["damage"]),
+                    "frag": int(float(ammo["fragmentationChance"]) * 100),
+                    "recoil": int(ammo["recoilModifier"] * 100),
                 }
             )
 
+        # Sort the ammoList by the specified sort criteria
         ammoSorted = sorted(ammoList, key=lambda e: e[sort], reverse=True)
+
         for ammo in ammoSorted:
             body.append(
                 [
@@ -89,10 +79,12 @@ class Ammo(commands.Cog):
             )
 
         header = ["", "PEN", "DMG", "FRAG%", "RECOIL"]
+        # Generate the table using table2ascii
         t2ascii = table2ascii(
             header=header, body=body, style=PresetStyle.thin_double_rounded
         )
 
+        # Create the embed with the table
         embed: Embed = EB(
             title=f"{conf['ammo'][caliber]['base']} Ammo Chart",
             title_url=conf["ammo"][caliber]["wiki"],

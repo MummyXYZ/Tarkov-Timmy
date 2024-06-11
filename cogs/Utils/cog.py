@@ -9,9 +9,9 @@ import requests
 import json
 from discord.ext import commands
 from discord.ext import tasks
+import utils.guildhandler as GH
 import logging
 import logging.handlers
-import utils.guildhandler as GH
 
 
 logger = logging.getLogger("discord")
@@ -46,16 +46,6 @@ class CommandErrorHandler(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: commands.Context, error):
-        """The event triggered when an error is raised while invoking a command.
-
-        Parameters
-        ------------
-        ctx: commands.Context
-            The context used for command invocation.
-        error: commands.CommandError
-            The Exception raised.
-        """
-
         # This prevents any commands with local handlers being handled here in on_command_error.
         if hasattr(ctx.command, "on_error"):
             return
@@ -111,76 +101,106 @@ class Tasks(commands.Cog):
         dbl_token = os.getenv("TOPGG_TOKEN")
         self.topggpy = topgg.DBLClient(self.bot, dbl_token)
         self.update_stats.start()
-        self.update_jsons.start()
+        self.update_data.start()
         self.update_goons.start()
 
     async def cog_unload(self) -> None:
         await self.topggpy.close()
 
-    @tasks.loop(hours=3)
-    async def update_jsons(self):
-        if os.getenv("RUNTIME") == "DEV":
-            return
-
-        # Endpoint, File name
-        data = [
-            ["https://api.tarkov-changes.com/v1/ammo", "ammunitions.json"],
-            ["https://api.tarkov-changes.com/v1/boss", "bosses.json"],
-            ["https://api.tarkov-changes.com/v1/maps", "maps.json"],
-            ["https://api.tarkov-changes.com/v1/weather", "weather.json"],
-        ]
-
-        for item in data:
-            headers = {
-                "User-Agent": "Mozilla/5.0",
-                "AUTH-TOKEN": os.getenv("AUTH_TOKEN"),
-            }
-            try:
-                data = requests.get(item[0], headers=headers).json()
-                data = json.dumps(data["results"])
-
-                with open("./configs/data/" + item[1], "w") as f:
-                    f.write(data)
-                    f.close()
-            except Exception:
-                logger.error("Failed to update " + item[0])
-
-        logger.info("JSONs Updated.")
-
-    @update_jsons.before_loop
-    async def before_update_jsons(self):
-        await self.bot.wait_until_ready()
-
     @tasks.loop(minutes=1)
     async def update_goons(self):
-        if os.getenv("RUNTIME") == "DEV":
-            return
+        endpoints = [("https://tarkovpal.com/api", "goons.json")]
 
-        # Endpoint, File name
-        data = [
-            ["https://tarkovpal.com/api", "goons.json"],
-        ]
-
-        for item in data:
+        for endpoint, filename in endpoints:
             headers = {"User-Agent": "Mozilla/5.0"}
             try:
-                data = requests.get(item[0], headers=headers).json()
-                data = (
-                    json.dumps(data["results"])
-                    if item[0] != "https://tarkovpal.com/api"
-                    else json.dumps(data)
-                )
+                response = requests.get(endpoint, headers=headers)
+                response.raise_for_status()
+                data = json.dumps(response.json())
 
-                with open("./configs/data/" + item[1], "w") as f:
+                with open(f"./configs/data/{filename}", "w") as f:
                     f.write(data)
-                    f.close()
-            except Exception:
-                logger.error("Failed to update " + item[0])
 
-        logger.info("Goons Updated.")
+            except (requests.RequestException, json.JSONDecodeError):
+                logger.error(f"Failed to update {endpoint}")
+
+        logger.debug("Goons Updated.")
+        return
 
     @update_goons.before_loop
     async def before_update_goons(self):
+        await self.bot.wait_until_ready()
+
+    @tasks.loop(minutes=5)
+    async def update_data(self):
+        dataPoints = [
+            ("ammo", "ammunitions.json"),
+            ("maps", "maps.json"),
+            ("traderResetTimes", "traderresets.json"),
+        ]
+
+        query = """
+        {
+            ammo {
+                item {
+                name
+                shortName
+                }
+                caliber
+                penetrationPower
+                damage
+                fragmentationChance
+                recoilModifier
+                projectileCount
+            }
+            maps {
+                name
+                wiki
+                players
+                description
+                raidDuration
+                
+                bosses {
+                boss {
+                    name
+                }
+                escorts {
+                    amount {
+                        count
+                    }
+                }
+                spawnChance
+                }
+            }
+            traderResetTimes {
+                name
+                resetTimestamp
+            }
+        }"""
+        headers = {
+            "User-Agent": "Mozilla/5.0",
+            "Content-Type": "application/json",
+        }
+        response = requests.post(
+            "https://api.tarkov.dev/graphql", headers=headers, json={"query": query}
+        )
+
+        if response.status_code == 200:
+            for selector, filename in dataPoints:
+                with open(f"./configs/data/{filename}", "w") as f:
+                    f.write(json.dumps(response.json()["data"][selector]))
+        else:
+            raise Exception(
+                "Query failed to run by returning code of {}. {}".format(
+                    response.status_code, query
+                )
+            )
+
+        logger.debug("Data Updated.")
+        return
+
+    @update_data.before_loop
+    async def before_update_data(self):
         await self.bot.wait_until_ready()
 
     @tasks.loop(minutes=30)
@@ -195,6 +215,7 @@ class Tasks(commands.Cog):
             logger.error(f"Failed to post server count\n{e.__class__.__name__}: {e}")
 
         logger.info("Stats Updated.")
+        return
 
     @update_stats.before_loop
     async def before_update_stats(self):

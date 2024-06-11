@@ -24,70 +24,69 @@
 	},
 	"locations": {
 		"Customs": {
-			"internal": "bigmap",
 			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/9f/Customs_Banner.png",
-			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/4/49/CustomsMapRealNorthBW_Reemr.png",
+			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/5/55/CustomsLargeExpansionGloryMonki.png",
 			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Customs",
-			"dorms": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/96/DormRoomsMap.jpg"
+			"3D": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/4/49/CustomsMapRealNorthBW_Reemr.png",
+			"Dorms": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/96/DormRoomsMap.jpg"
 		},
 		"Factory": {
-			"internal": "factory",
 			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/1/1a/Factory-Day_Banner.png",
 			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/94/Factory_loot.png",
-			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Factory"
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Factory",
+			"3D": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/c/cd/Factory_3D_b_Johnny_Tushonka.jpg"
 		},
 		"Ground Zero": {
-			"internal": "Sandbox_high",
 			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/4/4d/Ground_Zero_Banner.png",
 			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/9b/GroundZeroByxTycho.png",
-			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Ground_Zero"
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Ground_Zero",
+			"3D": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/4/44/GroundZero3DMapByRe3mr.png"
 		},
 		"Interchange": {
-			"internal": "Interchange",
 			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/3/3e/Banner_interchange.png",
 			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/2/27/Interchange2DMapLorathor.jpg",
-			"interactive": "https://mapgenie.io/tarkov/maps/interchange"
+			"interactive": "https://mapgenie.io/tarkov/maps/interchange",
+			"3D": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/8/8e/Interchange3DMapMrYundaz.jpg"
 		},
 		"The Lab": {
-			"internal": "laboratory",
 			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/d/d7/TheLabBanner.png",
 			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/9e/LabsMapByMonkimonkimonk.png",
 			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:The_Lab"
 		},
 		"Lighthouse": {
-			"internal": "Lighthouse",
 			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/d/dc/Banner_lighthouse.png",
 			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/1/13/Jindouz_Lighthouse_Map_V1.png",
-			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Lighthouse"
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Lighthouse",
+			"3D": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/9f/Re3mrLighthouseVerticalDay-min.jpg/revision/latest/scale-to-width-down/800?cb=20221230134021"
 		},
 		"Reserve": {
-			"internal": "RezervBase",
 			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/f/f4/Reserve.png",
 			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/3/38/Re3mrReserveCardinalNorthWikiVer.jpg",
-			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Reserve"
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Reserve",
+			"3D": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/3/38/Re3mrReserveCardinalNorthWikiVer.jpg"
 		},
 		"Shoreline": {
-			"internal": "Shoreline",
 			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/d/d5/Banner_shoreline.png",
 			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/1/17/Shoreline2DMapByMonkiUpdatedByJindouz.png",
-			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Shoreline"
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Shoreline",
+			"3D": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/a/a1/ShorelineQuestsRe3mr.jpg",
+			"3D Resort": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/b/b1/ShorelineResortRoomsByreemr.png"
 		},
 		"Streets of Tarkov": {
-			"internal": "TarkovStreets",
 			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/4/41/Banner_streets.png",
 			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/7/71/StreetsOfTarkov2DMapByJindouz.png",
-			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Streets_of_Tarkov"
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Streets_of_Tarkov",
+			"3D": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/1/17/StreetsOfTarkov3DMapByRE3MR.jpg"
 		},
 		"Terminal": {
-			"internal": "Terminal",
-			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/4/41/Banner_streets.png",
-			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/7/71/StreetsOfTarkov2DMapByJindouz.png"
+			"base": "Temp",
+			"map": "Temp"
 		},
 		"Woods": {
-			"internal": "Woods",
 			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/3/3e/Banner_woods.png",
 			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/0/05/Glory4lyfeWoods_map_v4_marked.png",
-			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Woods"
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Woods",
+			"3D": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/d/de/WikiWoodsRe3mr.jpg"
 		}
 	},
 	"ammo_ballistics": "https://escapefromtarkov.fandom.com/wiki/Ballistics#Armor_penetration_table",

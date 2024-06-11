@@ -1,14 +1,12 @@
 import discord
-import json
 from discord import Embed
 from utils.embedbuilder import embedbuilder as EB
 
 
 class GoonsButton(discord.ui.Button):
-    def __init__(self, origMap, map, conf):
-        self.origMap = origMap
-        self.map = map
+    def __init__(self, conf, mapsJson):
         self.conf = conf
+        self.mapsJson = mapsJson
         super().__init__(
             style=discord.ButtonStyle.danger,
             label="The Goons",
@@ -19,14 +17,13 @@ class GoonsButton(discord.ui.Button):
     async def callback(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
 
-        with open("./configs/data/bosses.json", "r") as f:
-            bossJson = json.load(f)
-
         description = "**Spawn chance:**\n"
+        for map in self.mapsJson:
+            for boss in map["bosses"]:
+                if boss["boss"]["name"] == "Death Knight":
+                    description += f"**{map['name'] if map['name'] != 'Ground Zero 21+' else 'Ground Zero'}**: {int(boss['spawnChance'] * 100)}%\n"
 
-        for boss in bossJson:
-            if boss["BossName"] == "bossKnight":
-                description += f"**{boss['Map']}**: {boss['BossChance']}%\n"
+        description += "\nCheck out the </goons:1245395766374170644> command."
 
         embed = EB(
             title="The Goons",
@@ -35,21 +32,17 @@ class GoonsButton(discord.ui.Button):
             image_url=self.conf["thegoons"]["img"],
         )
 
-        embed.add_field(
-            inline=True,
-            name="\u200b",
-            value=f"[**Big Pipe**]({self.conf['thegoons']['bigP']})\n[Health]({self.conf['thegoons']['bigP']}#Notes)\n[Loot]({self.conf['thegoons']['bigP']}#Loot)\n[Strategy]({self.conf['thegoons']['bigP']}#Strategy)",
-        )
-        embed.add_field(
-            inline=True,
-            name="\u200b",
-            value=f"[**Death Knight**]({self.conf['thegoons']['knight']})\n[Health]({self.conf['thegoons']['knight']}#Notes)\n[Loot]({self.conf['thegoons']['knight']}#Loot)\n[Strategy]({self.conf['thegoons']['knight']}#Strategy)",
-        )
-        embed.add_field(
-            inline=True,
-            name="\u200b",
-            value=f"[**Birdeye**]({self.conf['thegoons']['birdeye']})\n[Health]({self.conf['thegoons']['birdeye']}#Notes)\n[Loot]({self.conf['thegoons']['birdeye']}#Loot)\n[Strategy]({self.conf['thegoons']['birdeye']}#Strategy)",
-        )
+        links = [
+            ("Big Pipe", self.conf["thegoons"]["bigP"]),
+            ("Death Knight", self.conf["thegoons"]["knight"]),
+            ("Birdeye", self.conf["thegoons"]["birdeye"]),
+        ]
+        for name, link in links:
+            embed.add_field(
+                inline=True,
+                name=f"\u200b**{name}**",
+                value=f"[Link]({link})\n[Health]({link}#Notes)\n[Loot]({link}#Loot)\n[Strategy]({link}#Strategy)",
+            )
 
         await interaction.followup.send(
             embed=embed, view=GoonsView(self.conf), ephemeral=True

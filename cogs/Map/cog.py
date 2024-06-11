@@ -2,12 +2,10 @@ from __future__ import annotations
 
 import discord
 import json
-import requests
 from discord import Embed
 from discord import app_commands
 from discord.app_commands import Choice
 from discord.ext import commands
-from bs4 import BeautifulSoup as soup
 from .map_view import MapView
 from utils.embedbuilder import embedbuilder as EB
 
@@ -24,10 +22,9 @@ class Map(commands.Cog):
         mapsJson = json.load(f)
 
     for location in conf["locations"]:
-        loc_Data = conf["locations"][location]
-        for y in mapsJson:
-            if y["Map Internal Name"] == loc_Data["internal"] and not y["Map Locked"]:
-                maps.append(Choice(name=location.title(), value=location))
+        for map in mapsJson:
+            if location == map["name"]:
+                maps.append(Choice(name=map["name"], value=map["name"]))
 
     @app_commands.command(
         name="map", description="Maps and information for a specific location"
@@ -39,82 +36,88 @@ class Map(commands.Cog):
     ):
         await interaction.response.defer(ephemeral=hidden)
 
+        # Load the configuration file
         with open("./configs/conf.json", "r") as f:
             conf = json.load(f)
 
+        # Load the maps JSON file
         with open("./configs/data/maps.json", "r") as f:
             mapsJson = json.load(f)
 
-        with open("./configs/data/bosses.json", "r") as f:
-            bossJson = json.load(f)
+        # Initialize the description variable
+        description = ""
 
-        url = "https://escapefromtarkov.fandom.com/wiki/{0}".format(
-            map.title().replace(" ", "_").replace("Of", "of")
-        )
-        res = requests.get(url)
-        mapWiki = soup(res.text, "html.parser")
+        # Initialize the boss data dictionary
+        bossData = {
+            "name": [],  # List to store boss names
+            "chance": [],  # List to store boss spawn chances
+            "escorts": [],  # List to store escort names
+            "cult": False,  # Bool to store whether the map has Cultists
+            "goons": False,  # Bool to store whether the map has The Goons
+        }
 
+        # Iterate through the mapsJson data
         for mapData in mapsJson:
-            if mapData["Map Internal Name"] == conf["locations"][map]["internal"]:
-                duration = f"{mapData['Raid Timer']} Mins"
-                players = (
-                    f"{int(mapData['Min Players'])} - {int(mapData['Max Players'])}"
-                )
+            # Check if the map is Ground Zero and assign the appropriate mapName
+            if map == "Ground Zero":
+                mapName = "Ground Zero 21+"
+            else:
+                mapName = map
 
-        flavor = f"{mapWiki.find(id='Description').find_next('p').text}"
+            # Check if the mapName matches the current mapData
+            if mapData["name"] == mapName:
+                # Extract necessary information from mapData
+                duration = f"{mapData['raidDuration']} Mins"
+                players = mapData["players"]
+                flavor = mapData["description"]
+                url = mapData["wiki"]
+
+                # Iterate through the bosses in the current mapData
+                for boss in mapData["bosses"]:
+                    # Define a set of boss names to skip
+                    notBoss = {"Raider", "Rogue"}
+
+                    # Skip the boss if it is in the notBoss set
+                    if boss["boss"]["name"] in notBoss:
+                        continue
+
+                    # Check if the boss is a Cultist Priest or Death Knight
+                    if boss["boss"]["name"] == "Cultist Priest":
+                        # Set the cult flag to True and continue to the next boss
+                        bossData["cult"] = True
+                        continue
+                    if boss["boss"]["name"] == "Death Knight":
+                        # Set the goons flag to True and continue to the next boss
+                        bossData["goons"] = True
+                        continue
+
+                    # Add the boss name to the bossData dictionary with a link to its wiki page
+                    bossData["name"].append(
+                        f"[{boss['boss']['name']}](https://escapefromtarkov.fandom.com/wiki/{boss['boss']['name']})"
+                    )
+
+                    # Add the spawn chance to the bossData dictionary
+                    bossData["chance"].append(f"{int(boss['spawnChance'] * 100)}%")
+                    # Check if the boss has escorts
+                    if len(boss["escorts"]) > 0:
+                        # Get the count of the first escort
+                        escort_count = boss["escorts"][0]["amount"][0]["count"]
+                        # Add the escort count to the bossData dictionary
+                        bossData["escorts"].append(str(escort_count))
+                    else:
+                        # If the boss does not have escorts, add "0" to the bossData dictionary
+                        bossData["escorts"].append("0")
+
+        # Format the description based on the bossData dictionary
+        if len(bossData["name"]) != 0:
+            description = f"**Boss:** {', '.join(bossData['name'])}\n**Spawn Chance:** {', '.join(bossData['chance'])}"
+            # Check if the boss has escortss
+            if len(boss["escorts"]) > 0:
+                description += f"\n**Followers:** {', '.join(bossData['escorts'])}"
+
         image = (
             f"{conf['locations'][map]['base']}/revision/latest/scale-to-width-down/800"
         )
-        description = ""
-
-        # Boss Variables
-        bossName: str = None
-        bossChance: str = None
-        bossEscorts: str = None
-
-        cult: bool = False
-        goons: bool = False
-
-        for boss in bossJson:
-            if boss["MAP_ID"] == conf["locations"][map]["internal"]:
-                if boss["BossName"] == "sectantPriest":
-                    cult = True
-                    continue
-                if boss["BossName"] == "bossKnight":
-                    goons = True
-                    continue
-                if (
-                    boss["BossName"] == "bossTagilla"
-                    and boss["MAP_ID"] == "factory4_night"
-                ):
-                    continue
-                if (
-                    boss["BossName"] == "pmcBot"
-                    or boss["BossName"] == "exUsec"
-                    or boss["BossName"] == "gifter"
-                    or boss["BossName"] == "bossBoarSniper"
-                ):
-                    continue
-
-                nameTemp = boss["BossName"].removeprefix("boss")
-                if nameTemp == "Bully":
-                    nameTemp = "Reshala"
-                if nameTemp == "Kojaniy":
-                    nameTemp = "Shturman"
-                if nameTemp == "Boar":
-                    nameTemp = "Kaban"
-                if bossName is None:
-                    bossName = f"[{nameTemp}](https://escapefromtarkov.fandom.com/wiki/{nameTemp})"
-                    bossChance = f"{boss['BossChance']}%"
-                    bossEscorts = f"{boss['BossEscortAmount']}"
-                else:
-                    if nameTemp != "Kolontay":
-                        bossName += f", [{nameTemp}](https://escapefromtarkov.fandom.com/wiki/{nameTemp})"
-                        bossChance += f", {boss['BossChance']}%"
-                        bossEscorts += f", {boss['BossEscortAmount']}"
-
-        if bossName:
-            description = f"**Boss:** {bossName}\n**Spawn Chance:** {bossChance}\n**Followers:** {bossEscorts}"
 
         embed: Embed = EB(
             title=map,
@@ -126,11 +129,15 @@ class Map(commands.Cog):
 
         embed.add_field(inline=True, name="Duration", value=duration)
         embed.add_field(inline=True, name="Players", value=players)
-        embed.add_field(inline=True, name="The Goons", value=True if goons else False)
-        embed.add_field(inline=True, name="Cultists", value=True if cult else False)
+        embed.add_field(
+            inline=True, name="The Goons", value=True if bossData["goons"] else False
+        )
+        embed.add_field(
+            inline=True, name="Cultists", value=True if bossData["cult"] else False
+        )
 
         await interaction.followup.send(
-            embed=embed, view=MapView(map, conf), ephemeral=True
+            embed=embed, view=MapView(map, conf, mapsJson), ephemeral=True
         )
 
 

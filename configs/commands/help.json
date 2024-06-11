@@ -1,11 +1,15 @@
 {
-	"About": [
+    "About": [
         "About",
         "Displays information about Tarkov Timmy.\n\n**E.g.** </about:1241780138593616027>"
     ],
     "Ammo": [
         "Ammo",
         "Displays ammo information from the fandom page. The information by default is sorted by Penetration values.\n\n**E.g.**  </ammo:1241780138593616028> {7.62x39mm} [Penetration]\n(*{} are require, [] are optional*)"
+    ],
+    "Goons": [
+        "Goons",
+        "Displays information about what map The Goons are on.\n\n**E.g.** </goons:1245395766374170644>"
     ],
     "Map": [
         "Map",
