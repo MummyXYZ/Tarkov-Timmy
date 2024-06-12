@@ -59,15 +59,17 @@ class Ammo(commands.Cog):
                     "name": ammoName,
                     "pen": int(ammo["penetrationPower"]),
                     "damage": int(ammo["damage"]),
-                    "frag": int(float(ammo["fragmentationChance"]) * 100),
+                    "frag": int(ammo["fragmentationChance"]) * 100,
                     "recoil": int(ammo["recoilModifier"] * 100),
+                    "projCount": int(ammo["projectileCount"]),
                 }
             )
 
         # Sort the ammoList by the specified sort criteria
         ammoSorted = sorted(ammoList, key=lambda e: e[sort], reverse=True)
-
         for ammo in ammoSorted:
+            if ammo["projCount"] > 1:
+                ammo["damage"] = f"{ammo['damage']}x{ammo['projCount']}"
             body.append(
                 [
                     ammo["name"],
@@ -81,7 +83,7 @@ class Ammo(commands.Cog):
         header = ["", "PEN", "DMG", "FRAG%", "RECOIL"]
         # Generate the table using table2ascii
         t2ascii = table2ascii(
-            header=header, body=body, style=PresetStyle.thin_double_rounded
+            header=header, body=body, style=PresetStyle.double_thin_box
         )
 
         # Create the embed with the table
