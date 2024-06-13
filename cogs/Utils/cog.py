@@ -131,11 +131,12 @@ class Tasks(commands.Cog):
     async def before_update_goons(self):
         await self.bot.wait_until_ready()
 
-    @tasks.loop(hours=3)
+    @tasks.loop(minutes=5)
     async def update_data(self):
         dataPoints = [
             ("ammo", "ammunitions.json"),
             ("maps", "maps.json"),
+            ("traderResetTimes", "traderresets.json"),
         ]
 
         query = """
@@ -171,7 +172,12 @@ class Tasks(commands.Cog):
                 spawnChance
                 }
             }
+            traderResetTimes {
+                name
+                resetTimestamp
+            }
         }"""
+
         headers = {
             "User-Agent": "Mozilla/5.0",
             "Content-Type": "application/json",
@@ -221,3 +227,100 @@ async def setup(bot: commands.AutoShardedBot):
     await bot.add_cog(Events(bot))
     await bot.add_cog(CommandErrorHandler(bot))
     await bot.add_cog(Tasks(bot))
+
+    # @tasks.loop(minutes=5)
+    # async def update_weather(self):
+    #     endpoints = [
+    #         "https://api.tarkov-changes.com/v1/weather",
+    #         "weather.json",
+    #     ]
+    #     headers = {
+    #         "User-Agent": "Mozilla/5.0",
+    #         "AUTH-TOKEN": os.getenv("AUTH_TOKEN"),
+    #     }
+    #     try:
+    #         response = requests.get(endpoints[0], headers=headers)
+    #         response.raise_for_status()
+    #         data = json.dumps(response.json()["results"])
+    #         print(endpoints[1])
+    #         if response.json()["results"][0]["rain_intensity"] != 0.0:
+    #             channel = await self.bot.fetch_channel("1029456229510172754")
+    #             await channel.send(f"<@170925319518158848> {data}")
+    #         print(data)
+
+    #         with open(f"./configs/data/{endpoints[1]}", "w") as f:
+    #             f.write(data)
+
+    #     except (requests.RequestException, json.JSONDecodeError):
+    #         logger.error(f"Failed to update {endpoints[0]}")
+
+    #     logger.debug("Weather Updated.")
+    #     return
+
+    # @update_weather.before_loop
+    # async def before_update_weather(self):
+    #     await self.bot.wait_until_ready()
+
+    # if (
+    #     data["cloud"] >= -0.7
+    #     and data["wind_speed"] <= 1
+    #     and data["rain"] > 1
+    #     and data["rain"] <= 3
+    # ):
+    #     weather_info["icon"] = "fa-cloud-sun-rain"
+    #     weather_info["raining"] = "Yes"
+    # elif data["wind_speed"] <= 1 and data["rain"] > 3:
+    #     weather_info["icon"] = "fa-cloud-rain"
+    #     weather_info["raining"] = "Yes"
+    # elif (
+    #     data["cloud"] < -0.4
+    #     and data["wind_speed"] <= 1
+    #     and data["rain"] < 2
+    #     and data["fog"] <= 0.004
+    #     or data["cloud"] < -0.4
+    #     and data["wind_speed"] > 1
+    #     and data["rain"] < 2
+    #     and data["fog"] <= 0.004
+    # ):
+    #     weather_info["icon"] = "fa-sun"
+    # elif (
+    #     data["cloud"] >= -0.7
+    #     and data["cloud"] <= -0.4
+    #     and data["wind_speed"] <= 1
+    #     and data["rain"] < 2
+    #     and data["fog"] <= 0.004
+    # ):
+    #     weather_info["icon"] = "fa-clouds-sun"
+    # elif data["cloud"] < -0.4 and data["fog"] > 0.004 and data["fog"] < 0.1:
+    #     weather_info["icon"] = "fa-sun-haze"
+    #     weather_info["foggy"] = "Yes"
+    # elif data["fog"] >= 0.1:
+    #     weather_info["icon"] = "fa-cloud-fog"
+    # elif data["cloud"] >= -0.4 and data["cloud"] <= 0.7 and data["fog"] > 0.004:
+    #     weather_info["icon"] = "fa-cloud-fog"
+    #     weather_info["foggy"] = "Yes"
+    # elif data["cloud"] >= -0.4 and data["cloud"] <= 0.7 and data["rain"] <= 1:
+    #     weather_info["icon"] = "fa-clouds-sun"
+    # elif data["cloud"] >= 0.7 and data["cloud"] <= 1 and data["rain"] <= 1:
+    #     weather_info["icon"] = "fa-clouds"
+    # elif data["cloud"] >= 1 and data["rain"] <= 1:
+    #     weather_info["icon"] = "fa-cloud-bolt"
+    #     weather_info["raining"] = "Yes"
+    # elif data["cloud"] >= 0 and data["wind_speed"] >= 2 and data["rain"] <= 1:
+    #     weather_info["icon"] = "fa-clouds"
+    # elif data["wind_speed"] >= 2 and data["rain"] >= 2:
+    #     weather_info["icon"] = "fa-cloud-rain"
+    #     weather_info["raining"] = "Yes"
+    # else:
+    #     weather_info["icon"] = "fa-exclamation"
+    #     weather_info["raining"] = "NO WEATHER FOUND"
+
+    # weather_info_html = """
+    # <i class="fa-solid {icon} sisterSiteSVG sisterSiteFA"></i>
+    # <p>Temperature: {temperature} &#176;C</p>
+    # <p>Pressure: {pressure} Hg</p>
+    # <p>Wind Speed: {wind_speed} km/h</p>
+    # <p>Raining: {raining}</p>
+    # <p>Foggy: {foggy}</p>
+    # <p>{metar}</p>
+    # """.format(**weather_info)
