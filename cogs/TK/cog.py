@@ -14,6 +14,7 @@ from .subcommands.perms import permsSC
 from .subcommands.remove import removeSC
 
 
+@app_commands.guild_only()
 class TK(commands.GroupCog, name="tk"):
     def __init__(self, bot: commands.AutoShardedBot) -> None:
         self.bot = bot
@@ -29,8 +30,18 @@ class TK(commands.GroupCog, name="tk"):
         video (str, optional): Link to video evidence. Defaults to None.
     """
 
-    @commands.guild_only()
-    @app_commands.command(name="add", description="Add to users TKs")
+    @app_commands.command(
+        name="add",
+        # Short description of the command
+        description="Add to users TKs",
+        # Help description of the command
+        extras=[
+            """Keep track of your guilds team kills by adding them with this command.
+            
+            **E.g.** </tk add:1241780138593616026> <@KILLER> <@KILLED> <GL Accident> [[URL](https://youtu.be/btVxW309bEE)]
+            (*<> are required, [] are optional*)""",
+        ],
+    )
     @app_commands.describe(
         killer="Player who TK'd",
         killed="Player who was TK'd",
@@ -57,8 +68,18 @@ class TK(commands.GroupCog, name="tk"):
         value (str): What to change it to.
     """
 
-    @commands.guild_only()
-    @app_commands.command(name="edit", description="Edit a TK")
+    @app_commands.command(
+        name="edit",
+        # Short description of the command
+        description="Edit a TK",
+        # Help description of the command
+        extras=[
+            """Edit your guilds team kills.
+            
+            **E.g.** </tk edit:1241780138593616026> <@ID> <Description/Video> <New Value>
+            (*<> are required*)""",
+        ],
+    )
     @app_commands.describe(
         id="ID of TK from Killers list",
         category="Change a Team Kills Description or video link",
@@ -80,8 +101,17 @@ class TK(commands.GroupCog, name="tk"):
     A command that displays the TK leaderboard in the current guild.
     """
 
-    @commands.guild_only()
-    @app_commands.command(name="leaderboard", description="See the TK leaderboard")
+    @app_commands.command(
+        name="leaderboard",
+        # Short description of the command
+        description="See the TK leaderboard",
+        # Help description of the command
+        extras=[
+            """Display the team kill leaders.
+            
+            **E.g.** </tk leaderboard:1241780138593616026>""",
+        ],
+    )
     async def leaderboard(self, interaction: discord.Interaction) -> None:
         await interaction.response.defer()
         await leaderboardSC.leaderboard(interaction)
@@ -93,8 +123,18 @@ class TK(commands.GroupCog, name="tk"):
         killer (discord.Member): The player who TK'd.
     """
 
-    @commands.guild_only()
-    @app_commands.command(name="list", description="List a users TKs")
+    @app_commands.command(
+        name="list",
+        # Short description of the command
+        description="List a users TKs",
+        # Help description of the command
+        extras=[
+            """Display a members team kills.
+            
+            **E.g.** </tk list:1241780138593616026> <@User>
+            (*<> are required*)""",
+        ],
+    )
     @app_commands.describe(killer="Player who TK'd")
     async def list(
         self, interaction: discord.Interaction, killer: discord.Member
@@ -109,10 +149,19 @@ class TK(commands.GroupCog, name="tk"):
         target (Union[discord.Member, discord.Role], optional): The user or role to modify permissions for. Defaults to None.
     """
 
-    @commands.guild_only()
     @app_commands.command(
         name="perms",
+        # Short description of the command
         description="List/Add/Remove permissions from a specific user/role",
+        # Help description of the command
+        extras=[
+            """Edit or list permissions for the TK commands.
+            
+            **E.g.**
+            To list permissions: </tk perms:1241780138593616026>
+            To edit permissions: </tk perms:1241780138593616026> [@User/@Role]
+            (*[] are optional*)""",
+        ],
     )
     @app_commands.describe(target="A User/Role to modify")
     async def perms(
@@ -130,8 +179,19 @@ class TK(commands.GroupCog, name="tk"):
         id (int): The ID of the TK entry to remove.
     """
 
-    @commands.guild_only()
-    @app_commands.command(name="remove", description="remove a users TKs")
+    @app_commands.command(
+        name="remove",
+        # Short description of the command
+        description="remove a users TKs",
+        # Help description of the command
+        extras=[
+            """Remove a team kill from someones list.
+
+            To get a team kill ID use /tk list <@User>
+            **E.g.** </tk remove:1241780138593616026> <@ID>
+            (*<> are required*)""",
+        ],
+    )
     @app_commands.describe(id="ID of the TK to remove")
     async def remove(self, interaction: discord.Interaction, id: int) -> None:
         await interaction.response.defer()

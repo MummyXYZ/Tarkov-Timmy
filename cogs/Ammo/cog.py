@@ -28,7 +28,18 @@ class Ammo(commands.Cog):
         Choice(name="Recoil", value="recoil"),
     ]
 
-    @app_commands.command(name="ammo", description="Displays ammo information")
+    @app_commands.command(
+        name="ammo",
+        # Short description of the command
+        description="Displays ammo information",
+        # Help description of the command
+        extras=[
+            """Displays ammo information from the fandom page. The information by default is sorted by Penetration values.
+            
+            **E.g.**  </ammo:1241780138593616028> <7.62x39mm> [Penetration]
+            (*<> are required, [] are optional*)""",
+        ],
+    )
     @app_commands.describe(caliber="Ammo Type", sort="Sort by", hidden="Hide message?")
     @app_commands.choices(caliber=calibers, sort=sort)
     async def ammo(

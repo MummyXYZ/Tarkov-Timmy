@@ -5,8 +5,6 @@ from .goons import GoonsButton
 from .cult import CultButton
 from utils.embedbuilder import embedbuilder as EB
 
-VIEW_NAME = "MapView"
-
 
 class MapView(discord.ui.View):
     def __init__(self, map, conf, mapsJson):

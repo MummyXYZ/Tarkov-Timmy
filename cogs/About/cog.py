@@ -18,7 +18,17 @@ class About(commands.Cog):
         self.bot = bot
         self.startTime = datetime.now()
 
-    @app_commands.command(name="about", description="Information about the bot")
+    @app_commands.command(
+        name="about",
+        # Short description of the command
+        description="Information about the bot",
+        # Help description of the command
+        extras=[
+            """Displays information about Tarkov Timmy.
+            
+            **E.g.** </about:1241780138593616027>""",
+        ],
+    )
     async def about(self, interaction: discord.Interaction):
         await interaction.response.defer()
         await self.bot.wait_until_ready()

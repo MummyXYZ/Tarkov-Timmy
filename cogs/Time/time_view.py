@@ -1,8 +1,6 @@
 import discord
 from datetime import datetime, timedelta, timezone
 
-VIEW_NAME = "TimeView"
-
 
 class TimeView(discord.ui.View):
     def __init__(self):
@@ -22,7 +20,7 @@ class TimeView(discord.ui.View):
         super().__init__(timeout=None)
         self.add_item(
             TimeButton(
-                custom_id=f"{VIEW_NAME}:time_button",
+                custom_id="time_button",
                 label=f"{inGameTime(True)} ⌚ {inGameTime(False)}",
             )
         )

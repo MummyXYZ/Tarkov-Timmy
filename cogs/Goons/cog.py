@@ -15,7 +15,14 @@ class Goons(commands.Cog):
 
     @app_commands.command(
         name="goons",
+        # Short description of the command
         description="Display community provided information of where the Goons may be spawning",
+        # Help description of the command
+        extras=[
+            """Displays information about what map The Goons are on.
+            
+            **E.g.** </goons:1245395766374170644>""",
+        ],
     )
     async def map(self, interaction: discord.Interaction):
         await interaction.response.defer()

@@ -14,7 +14,17 @@ class Time(commands.Cog, name="time"):
     async def on_ready(self):
         self.bot.add_view(TimeView())
 
-    @app_commands.command(name="time", description="Current in-game raid time")
+    @app_commands.command(
+        name="time",
+        # Short description of the command
+        description="Current in-game raid time",
+        # Help description of the command
+        extras=[
+            """Displays a button thats label has in-game Tarkov time. Press the button to refresh the time.
+            
+            **E.g.** </time:1241780138593616022>""",
+        ],
+    )
     async def time(self, interaction: discord.Interaction):
         await interaction.response.defer()
         await interaction.followup.send(view=TimeView())

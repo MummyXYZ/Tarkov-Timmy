@@ -27,7 +27,14 @@ class Map(commands.Cog):
                 maps.append(Choice(name=map["name"], value=map["name"]))
 
     @app_commands.command(
-        name="map", description="Maps and information for a specific location"
+        name="map",
+        description="Maps and information for a specific location",
+        # Help description of the command
+        extras=[
+            """Displays maps and information for a specified map with buttons for additional information at the bottom.
+            
+            **E.g.** </map:1241780138593616025> <Customs>\n(*<> are required*)""",
+        ],
     )
     @app_commands.describe(map="Specify the map", hidden="Hide message?")
     @app_commands.choices(map=maps)
