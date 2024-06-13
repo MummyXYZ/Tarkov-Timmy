@@ -131,12 +131,11 @@ class Tasks(commands.Cog):
     async def before_update_goons(self):
         await self.bot.wait_until_ready()
 
-    @tasks.loop(minutes=5)
+    @tasks.loop(hours=3)
     async def update_data(self):
         dataPoints = [
             ("ammo", "ammunitions.json"),
             ("maps", "maps.json"),
-            ("traderResetTimes", "traderresets.json"),
         ]
 
         query = """
