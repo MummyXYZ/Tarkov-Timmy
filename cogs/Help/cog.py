@@ -51,7 +51,7 @@ class SlashHelpView(discord.ui.View):
         self.add_item(HelpDropdown(bot, options))
 
 
-class HelpCog(commands.Cog, name="Help"):
+class Help(commands.Cog, name="Help"):
     def __init__(self, bot: commands.AutoShardedBot):
         self.bot = bot
 
@@ -83,7 +83,8 @@ class HelpCog(commands.Cog, name="Help"):
     async def _cog_select_options(self) -> list[discord.SelectOption]:
         options: list[discord.SelectOption] = []
 
-        for app in self.bot.tree.walk_commands():
+        apps = sorted(self.bot.tree.walk_commands(), key=lambda app: app.qualified_name)
+        for app in apps:
             if hasattr(app, "_children"):
                 continue
             options.append(
@@ -97,5 +98,4 @@ class HelpCog(commands.Cog, name="Help"):
 
 
 async def setup(bot: commands.AutoShardedBot) -> None:
-    await bot.add_cog(HelpCog(bot))
-    # await bot.add_cog(Help(bot))
+    await bot.add_cog(Help(bot))
