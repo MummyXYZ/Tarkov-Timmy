@@ -171,10 +171,6 @@ class Tasks(commands.Cog):
                 spawnChance
                 }
             }
-            traderResetTimes {
-                name
-                resetTimestamp
-            }
         }"""
 
         headers = {
