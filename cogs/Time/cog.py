@@ -25,6 +25,8 @@ class Time(commands.Cog, name="time"):
             **E.g.** </time:1241780138593616022>""",
         ],
     )
+    @app_commands.allowed_installs(guilds=True, users=True)
+    @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
     async def time(self, interaction: discord.Interaction):
         await interaction.response.defer()
         await interaction.followup.send(view=TimeView())

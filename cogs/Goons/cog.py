@@ -24,6 +24,8 @@ class Goons(commands.Cog):
             **E.g.** </goons:1245395766374170644>""",
         ],
     )
+    @app_commands.allowed_installs(guilds=True, users=True)
+    @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
     async def map(self, interaction: discord.Interaction):
         await interaction.response.defer()
 

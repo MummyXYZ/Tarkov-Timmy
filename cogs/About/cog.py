@@ -29,6 +29,8 @@ class About(commands.Cog):
             **E.g.** </about:1241780138593616027>""",
         ],
     )
+    @app_commands.allowed_installs(guilds=True, users=True)
+    @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
     async def about(self, interaction: discord.Interaction):
         await interaction.response.defer()
         await self.bot.wait_until_ready()

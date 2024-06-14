@@ -15,6 +15,8 @@ from .subcommands.remove import removeSC
 
 
 @app_commands.guild_only()
+@app_commands.allowed_installs(guilds=True, users=False)
+@app_commands.allowed_contexts(guilds=True, dms=False, private_channels=True)
 class TK(commands.GroupCog, name="tk"):
     def __init__(self, bot: commands.AutoShardedBot) -> None:
         self.bot = bot
