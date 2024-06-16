@@ -40,7 +40,6 @@ class Goons(commands.Cog):
         )
 
         images = ["big_pipe.png", "birdeye.png", "knight.png"]
-
         file = discord.File("./assets/" + random.choice(images), filename="image.png")
 
         embed: Embed = EB(

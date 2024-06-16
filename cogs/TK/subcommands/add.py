@@ -71,6 +71,11 @@ class addSC:
             desc = f"**ID: {id}** - <@{killer.id}> has killed <@{killed.id}>. Here is what happened...\n**{description}**"
         else:
             desc += f"**ID: {id}** - <@{killer.id}> has killed <@{killed.id}>. Here is what happened...\n[**{description}**]({video})"
-        embed: Embed = EB(title="Team Kill Added", description=desc, timestamp=True)
+        embed: Embed = EB(
+            title="Team Kill Added",
+            description=desc,
+            timestamp=True,
+            footer="If you didn't know you can add video links too!",
+        )
 
         await interaction.followup.send(embed=embed)
