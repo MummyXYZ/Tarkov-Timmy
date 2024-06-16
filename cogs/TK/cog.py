@@ -5,6 +5,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.app_commands import Choice
 from typing import Union
+import utils.guildhandler as GH
 
 from .subcommands.add import addSC
 from .subcommands.edit import editSC
@@ -14,8 +15,7 @@ from .subcommands.perms import permsSC
 from .subcommands.remove import removeSC
 
 
-@app_commands.guild_only()
-@app_commands.allowed_installs(guilds=True, users=False)
+@app_commands.allowed_installs(guilds=True, users=True)
 @app_commands.allowed_contexts(guilds=True, dms=False, private_channels=True)
 class TK(commands.GroupCog, name="tk"):
     def __init__(self, bot: commands.AutoShardedBot) -> None:
@@ -58,7 +58,7 @@ class TK(commands.GroupCog, name="tk"):
         description: str,
         video: str = None,
     ) -> None:
-        await interaction.response.defer()
+        await _check_User_Interaction(self.bot, interaction)
         await addSC.add(interaction, killer, killed, description, video)
 
     """
@@ -96,7 +96,7 @@ class TK(commands.GroupCog, name="tk"):
     async def edit(
         self, interaction: discord.Interaction, id: int, category: str, value: str
     ) -> None:
-        await interaction.response.defer()
+        await _check_User_Interaction(self.bot, interaction)
         await editSC.edit(interaction, id, category, value)
 
     """
@@ -115,7 +115,7 @@ class TK(commands.GroupCog, name="tk"):
         ],
     )
     async def leaderboard(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer()
+        await _check_User_Interaction(self.bot, interaction)
         await leaderboardSC.leaderboard(interaction)
 
     """
@@ -141,7 +141,7 @@ class TK(commands.GroupCog, name="tk"):
     async def list(
         self, interaction: discord.Interaction, killer: discord.Member
     ) -> None:
-        await interaction.response.defer()
+        await _check_User_Interaction(self.bot, interaction)
         await listSC.list(interaction, killer)
 
     """
@@ -171,7 +171,7 @@ class TK(commands.GroupCog, name="tk"):
         interaction: discord.Interaction,
         target: Union[discord.Member, discord.Role] = None,
     ) -> None:
-        await interaction.response.defer()
+        await _check_User_Interaction(self.bot, interaction)
         await permsSC.perms(interaction, target)
 
     """
@@ -196,8 +196,18 @@ class TK(commands.GroupCog, name="tk"):
     )
     @app_commands.describe(id="ID of the TK to remove")
     async def remove(self, interaction: discord.Interaction, id: int) -> None:
-        await interaction.response.defer()
+        await _check_User_Interaction(self.bot, interaction)
         await removeSC.remove(interaction, id)
+
+
+async def _check_User_Interaction(
+    bot: discord.AutoShardedClient, interaction: discord.Interaction
+):
+    if interaction.is_user_integration():
+        for guild in bot.guilds:
+            if guild.id == interaction.guild.id:
+                return
+        await GH.create(interaction.guild)
 
 
 async def setup(bot: commands.AutoShardedBot) -> None:

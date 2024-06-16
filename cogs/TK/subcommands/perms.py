@@ -223,6 +223,7 @@ class permsSC:
         interaction: discord.Interaction,
         target: typing.Union[discord.Member, discord.Role] = None,
     ) -> None:
+        await interaction.response.defer()
         # Permission Check
         if not await CP(interaction, "perms"):
             return

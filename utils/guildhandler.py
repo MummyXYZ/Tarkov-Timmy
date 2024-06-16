@@ -20,18 +20,17 @@ async def create(guild: Guild):
         }
     )
 
-    query = "INSERT INTO tk_bot.guilds (guild_id, guild_name) VALUES ($1, $2) ON CONFLICT DO NOTHING"
+    query = "INSERT INTO tk_bot.guilds (guild_id, guild_name) VALUES ($1, $2) ON CONFLICT (guild_id) DO UPDATE SET guild_name = $2"
     params = (
         guild.id,
         guild.name,
     )
     await db.insert(query, *params)
 
-    query = "INSERT INTO tk_bot.perms (guild_id, guild_name, perms) VALUES ($1, $2, $3) ON CONFLICT (guild_id) DO UPDATE SET perms = $4"
+    query = "INSERT INTO tk_bot.perms (guild_id, guild_name, perms) VALUES ($1, $2, $3) ON CONFLICT (guild_id) DO UPDATE SET guild_name = $3"
     params = (
         guild.id,
         guild.name,
-        default_perms,
         default_perms,
     )
     await db.insert(query, *params)

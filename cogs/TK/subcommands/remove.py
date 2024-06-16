@@ -12,6 +12,7 @@ logger = logging.getLogger("discord")
 
 class removeSC:
     async def remove(interaction: discord.Interaction, id: int) -> None:
+        await interaction.response.defer()
         # Permission Check
         if not await CP(interaction, "remove"):
             return

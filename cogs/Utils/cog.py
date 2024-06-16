@@ -136,6 +136,7 @@ class Tasks(commands.Cog):
         dataPoints = [
             ("ammo", "ammunitions.json"),
             ("maps", "maps.json"),
+            ("traders", "traderresets.json"),
         ]
 
         query = """
@@ -170,6 +171,10 @@ class Tasks(commands.Cog):
                 }
                 spawnChance
                 }
+            }
+            traders {
+                name
+                resetTime
             }
         }"""
 

@@ -18,6 +18,7 @@ class editSC:
     async def edit(
         interaction: discord.Interaction, id: int, category: str, value: str
     ) -> None:
+        await interaction.response.defer()
         # Permission Check
         if not await CP(interaction, "edit"):
             return

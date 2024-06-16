@@ -16,10 +16,10 @@ class Goons(commands.Cog):
     @app_commands.command(
         name="goons",
         # Short description of the command
-        description="Display community provided information of where the Goons may be spawning",
+        description="Displays information about what map The Goons are on",
         # Help description of the command
         extras=[
-            """Displays information about what map The Goons are on.
+            """Display community provided information of where the Goons may be spawning.
             
             **E.g.** </goons:1245395766374170644>""",
         ],

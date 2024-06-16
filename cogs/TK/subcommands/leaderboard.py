@@ -13,6 +13,7 @@ logger = logging.getLogger("discord")
 
 class leaderboardSC:
     async def leaderboard(interaction: discord.Interaction) -> None:
+        await interaction.response.defer()
         # Permission Check
         if not await CP(interaction, "leaderboard"):
             return

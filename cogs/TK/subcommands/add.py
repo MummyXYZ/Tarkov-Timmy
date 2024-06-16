@@ -19,6 +19,7 @@ class addSC:
         description: str,
         video: str = None,
     ) -> None:
+        await interaction.response.defer()
         # Permission Check
         if not await CP(interaction, "add"):
             return

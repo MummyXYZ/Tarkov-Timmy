@@ -14,6 +14,7 @@ logger = logging.getLogger("discord")
 
 class listSC:
     async def list(interaction: discord.Interaction, killer: discord.Member) -> None:
+        await interaction.response.defer()
         #     # Permission Check
         if not await CP(interaction, "list"):
             return
