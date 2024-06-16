@@ -19,7 +19,9 @@ def tradersEmbed() -> Embed:
 
     value = ""
 
-    embed: Embed = EB(title="Trader Resets")
+    embed: Embed = EB(
+        title="Trader Resets", footer="Information may have some inaccuracies"
+    )
 
     for trader in tradersJson:
         if trader["name"] == "Lightkeeper" or trader["name"] == "BTR Driver":
@@ -30,10 +32,7 @@ def tradersEmbed() -> Embed:
         else:
             value = f"<t:{int(reset_timestamp)}:R>\n"
 
-        embed.add_field(
-            name=trader["name"],
-            value=value,
-        )
+        embed.add_field(name=trader["name"], value=value)
 
     return embed
 
