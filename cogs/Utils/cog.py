@@ -9,6 +9,7 @@ import requests
 import json
 from discord.ext import commands
 from discord.ext import tasks
+from itertools import cycle
 import utils.guildhandler as GH
 import logging
 import logging.handlers
@@ -97,15 +98,39 @@ class Tasks(commands.Cog):
     def __init__(self, bot: commands.AutoShardedBot) -> None:
         super().__init__()
         self.bot = bot
+        self.statuses = cycle(
+            [
+                "Check out /help",
+                "Extract Camping",
+                "Beat the Chads!",
+                "You can't escape Tarkov",
+                "Is it wipe yet?",
+                "☠️(Head, Eyes)",
+                "Maybe Chad? Maybe Luck?",
+                "Timmys for life",
+            ]
+        )
 
         dbl_token = os.getenv("TOPGG_TOKEN")
         self.topggpy = topgg.DBLClient(self.bot, dbl_token)
         self.update_stats.start()
         self.update_data.start()
         self.update_goons.start()
+        self.update_status.start()
 
     async def cog_unload(self) -> None:
         await self.topggpy.close()
+
+    @tasks.loop(seconds=30)
+    async def update_status(self):
+        await self.bot.change_presence(
+            activity=discord.CustomActivity(name=next(self.statuses))
+        )
+        return
+
+    @update_status.before_loop
+    async def before_update_status(self):
+        await self.bot.wait_until_ready()
 
     @tasks.loop(minutes=1)
     async def update_goons(self):
