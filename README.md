@@ -23,7 +23,7 @@
 * [Goons](#goons)
 * [Map](#map)
 * [Time](#time)
-* [Traders](#traders
+* [Traders](#traders)
 * [TK](#tk)
 * [Help](#help)
 
