@@ -133,7 +133,7 @@ class Map(commands.Cog):
             title_url=url,
             description=description,
             image_url=image,
-            footer=flavor,
+            footer=flavor + "\n\nDeletes in 5 mins",
         )
 
         embed.add_field(inline=True, name="Duration", value=duration)
@@ -145,9 +145,12 @@ class Map(commands.Cog):
             inline=True, name="Cultists", value=True if bossData["cult"] else False
         )
 
-        await interaction.followup.send(
-            embed=embed, view=MapView(map, conf, mapsJson), ephemeral=True
+        message: discord.Message = await interaction.followup.send(
+            embed=embed,
+            view=MapView(map, conf, mapsJson),
+            ephemeral=True,
         )
+        await message.delete(delay=300)
 
 
 async def setup(bot: commands.AutoShardedBot) -> None:
