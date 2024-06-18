@@ -26,10 +26,7 @@ logger.addHandler(handler)
 
 async def run():
     bot = Bot()
-    if os.getenv("RUNTIME") == "DEV":
-        await bot.start(os.getenv("DEV_TOKEN"))
-    else:
-        await bot.start(os.getenv("TOKEN"))
+    await bot.start(os.getenv("TOKEN"))
 
 
 class Bot(commands.AutoShardedBot):
