@@ -161,7 +161,6 @@ class Tasks(commands.Cog):
         dataPoints = [
             ("ammo", "ammunitions.json"),
             ("maps", "maps.json"),
-            ("traders", "traderresets.json"),
         ]
 
         query = """
@@ -196,10 +195,6 @@ class Tasks(commands.Cog):
                 }
                 spawnChance
                 }
-            }
-            traders {
-                name
-                resetTime
             }
         }"""
 
@@ -245,6 +240,46 @@ class Tasks(commands.Cog):
 
     @update_stats.before_loop
     async def before_update_stats(self):
+        await self.bot.wait_until_ready()
+
+    @tasks.loop(minutes=5)
+    async def update_traders(self):
+        dataPoints = [
+            ("traders", "traderresets.json"),
+        ]
+
+        query = """
+        {
+            traders {
+                name
+                resetTime
+            }
+        }"""
+
+        headers = {
+            "User-Agent": "Mozilla/5.0",
+            "Content-Type": "application/json",
+        }
+        response = requests.post(
+            "https://api.tarkov.dev/graphql", headers=headers, json={"query": query}
+        )
+
+        if response.status_code == 200:
+            for selector, filename in dataPoints:
+                with open(f"./configs/data/{filename}", "w") as f:
+                    f.write(json.dumps(response.json()["data"][selector]))
+        else:
+            raise Exception(
+                "Query failed to run by returning code of {}. {}".format(
+                    response.status_code, query
+                )
+            )
+
+        logger.debug("Traders Updated.")
+        return
+
+    @update_traders.before_loop
+    async def before_update_traders(self):
         await self.bot.wait_until_ready()
 
 
