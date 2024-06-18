@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import discord
 from discord.ext import commands
 from discord.ext import tasks
@@ -52,15 +54,16 @@ class Support_Server(commands.Cog):
         current_Time = datetime.now(timezone.utc)
 
         for trader in tradersJson:
-            if trader["name"] == "Lightkeeper" or trader["name"] == "BTR Driver":
+            trader_Name = trader["name"]
+            if trader_Name == "Lightkeeper" or trader_Name == "BTR Driver":
                 continue
 
             traderTime = datetime.fromisoformat(trader["resetTime"])
 
             if (traderTime - time_Window) < current_Time < traderTime:
-                if trader["name"] not in self.traders_Notified:
-                    self.traders_Notified[trader["name"]] = False
-                if self.traders_Notified[trader["name"]]:
+                if trader_Name not in self.traders_Notified:
+                    self.traders_Notified[trader_Name] = False
+                if self.traders_Notified[trader_Name]:
                     return
 
                 trader_Announcement_Channel = self.bot.get_channel(1252613698816708708)
@@ -69,17 +72,17 @@ class Support_Server(commands.Cog):
                 ).get_role(1252624330601267241)
 
                 embed = EB(
-                    description=f"🛒 {trader_Announcement_Role.mention} **{trader["name"]}** restock within the next {offset} minutes!"
+                    description=f"🛒 {trader_Announcement_Role.mention} **{trader_Name}** restock within the next {offset} minutes!"
                 )
                 # Send message to channel
                 announcement = await trader_Announcement_Channel.send(embed=embed)
                 # Publish message to all guilds that follow
                 await announcement.publish()
 
-                self.traders_Notified[trader["name"]] = True
+                self.traders_Notified[trader_Name] = True
 
             elif current_Time > traderTime:
-                self.traders_Notified[trader["name"]] = False
+                self.traders_Notified[trader_Name] = False
 
         return
 
