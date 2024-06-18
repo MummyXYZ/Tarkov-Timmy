@@ -116,6 +116,7 @@ class Tasks(commands.Cog):
         self.update_stats.start()
         self.update_data.start()
         self.update_goons.start()
+        self.update_traders.start()
         self.update_status.start()
 
     async def cog_unload(self) -> None:
