@@ -23,6 +23,7 @@
 * [Goons](#goons)
 * [Map](#map)
 * [Time](#time)
+* [Traders](#traders
 * [TK](#tk)
 * [Help](#help)
 
@@ -40,7 +41,7 @@
 
 ### Map
 
-* Display map information
+* Display map and boss information
 
 `/map [MAP]`
 
@@ -49,6 +50,10 @@
 * Display in-game time with button updates.
 
 `/time`
+
+### Traders
+* Display trader reset timers.
+`/traders`
 
 ### TK Commands
 
