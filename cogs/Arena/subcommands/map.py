@@ -30,11 +30,9 @@ class mapSC:
             title_url=url,
             description=f"[**Hi-res Here**]({conf['arena_Locations'][map]['base']})",
             image_url=image,
-            footer="Deletes in 5 mins",
         )
 
-        message: discord.Message = await interaction.followup.send(
+        await interaction.followup.send(
             embed=embed,
             ephemeral=True,
         )
-        await message.delete(delay=300)
