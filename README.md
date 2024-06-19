@@ -23,6 +23,7 @@
 * [Time](#time)
 * [Traders](#traders)
 * [TK](#tk)
+* [Arena](#arena)
 * [Help](#help)
 
 ### About
@@ -87,6 +88,13 @@
 
 `/tk perms`
 `/tk perms @USER/ROLE`
+
+### Arena
+
+#### Arena Map
+* Display map information for EFT: Arena
+
+`/arena map [Map]`
 
 ### Help
 * Display commands.
