@@ -191,5 +191,29 @@
 			"base": "40x53mm",
 			"wiki": "https://escapefromtarkov.fandom.com/wiki/40x53mm"
 		}
-	}
+	},
+	"arena_Locations": {
+		"Air Pit": {
+			"base": "https://cdn.discordapp.com/attachments/1226975319836065793/1251312737418608800/Air_Pit_Callouts.png?ex=66740e0c&is=6672bc8c&hm=9db22496c0e236dee9ef32485742ab40ac77f8d8731a9439b7635dab1a27e9bb&"
+		},
+		"Bay 5": {
+			"base": "https://cdn.discordapp.com/attachments/1226976843199021196/1251312763503120404/Bay5_Callouts.png?ex=66740e13&is=6672bc93&hm=0c4a343add2e44af307e632e74ca85eb73adc432c0c8dc716d3ee57f5a8ed70f&"
+		},
+		"Block": {
+			"base": "https://cdn.discordapp.com/attachments/1226977262251802644/1251312807559827597/image.webp?ex=66740e1d&is=6672bc9d&hm=4ae910d327915dc1d23da6b04e2003a824f9c8bf3c29c112cb43ce32d375ddd6&"
+		},
+		"Bowl": {
+			"base": "https://cdn.discordapp.com/attachments/1226976889147625532/1251312867534180392/Bowl_Callouts.png?ex=66740e2b&is=6672bcab&hm=cde9f2aeaaccd3d9fca059ffc15749a14b1e22e1611ad2019acee8c4b05cb457&"
+		},
+		"Chop Shop": {
+			"base": "https://i.imgur.com/7mbVk4Z.png"
+		},
+		"Equator": {
+			"base": "https://cdn.discordapp.com/attachments/1226977388030595294/1251312940473389057/Equator_Callouts.png?ex=66740e3d&is=6672bcbd&hm=63907112bb83c58304e10d2f9773d8b1d8bea261ecd8453bb0b7ae4252b6f289&"
+		},
+		"Sawmill": {
+			"base": "https://cdn.discordapp.com/attachments/1226977587432259655/1251312974048661534/Sawmill_Callouts.png?ex=66740e45&is=6672bcc5&hm=bc3741e2f34bef85004ddac2b124ebc14043668f76cdca46d4f1c20763bdc742&"
+		}
+	},
+	"upcoming_Arena_Locations": "The Box, Resort, Sky Bridge"
 }
