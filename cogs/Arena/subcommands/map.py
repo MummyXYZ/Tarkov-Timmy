@@ -21,7 +21,9 @@ class mapSC:
 
         image = f"{conf['arena_Locations'][map]['base']}/revision/latest/scale-to-width-down/800"
 
-        url = f"https://escapefromtarkov.fandom.com/wiki/Arena#{map.replace(" ", "_")}"
+        map_Format = map.replace(" ", "_")
+
+        url = f"https://escapefromtarkov.fandom.com/wiki/Arena#{map_Format}"
 
         embed: Embed = EB(
             title=map,
