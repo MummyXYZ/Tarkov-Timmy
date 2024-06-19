@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import discord
-from discord.ext import commands
-from discord.ext import tasks
 import json
 import os
+from discord.ext import commands
+from discord.ext import tasks
 from datetime import datetime, timedelta, timezone
 from utils.embedbuilder import embedbuilder as EB
 import logging
@@ -41,7 +41,6 @@ class Support_Server(commands.Cog):
                 embed = EB(description=desc)
 
                 announcements_chn.send(embed=embed)
-
         return
 
     @tasks.loop(seconds=5)
@@ -83,7 +82,6 @@ class Support_Server(commands.Cog):
 
             elif current_Time > traderTime:
                 self.traders_Notified[trader_Name] = False
-
         return
 
     @traders_Restock_Notification.before_loop
