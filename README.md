@@ -7,7 +7,11 @@
 * [Author](#author)
 * [Error Reporting](#error-reporting)
 * [License](#license)
+<<<<<<< HEAD
 * [ToS and Privacy Policy](#terms-of-service-and-pricacy-policy)
+=======
+* [ToS & Privacy Policy](#Terms of Service and Pricacy Policy)
+>>>>>>> a790d25145fa636c203b094e03b0902e3494d586
 
 ## 🔗 Resource Links
 - 🤖 Invite Tarkov Timmy: [Invite Here](https://discord.com/oauth2/authorize?client_id=815600918287613962&permissions=2048&scope=bot%20applications.commands)
