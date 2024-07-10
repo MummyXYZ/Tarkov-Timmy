@@ -7,6 +7,7 @@
 * [Author](#author)
 * [Error Reporting](#error-reporting)
 * [License](#license)
+* [ToS & Privacy Policy](#Terms of Service and Pricacy Policy)
 
 ## 🔗 Resource Links
 - 🤖 Invite Tarkov Timmy: [Invite Here](https://discord.com/oauth2/authorize?client_id=815600918287613962&permissions=2048&scope=bot%20applications.commands)
@@ -112,3 +113,8 @@ Feel free submit an issue here on github or send me a [MSG](https://discordapp.c
 
 ## License
 This project is licensed under the GPL-3.0 License - see the [LICENSE.md](LICENSE) file for details
+
+## Terms of Service and Pricacy Policy
+Discord requires me to make one of these.
+
+There isn't really anything to note. No personal data is stored.
