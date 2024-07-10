@@ -15,7 +15,7 @@ class MapView(discord.ui.View):
         if interactive_button:
             # Add an interactive button to the view if the URL exists
             self.add_item(Button(label="Interactive", url=interactive_button))
-
+            self.add_dynamic_item()
         # Iterate over the map links in the configuration
         for mapLink in conf["locations"][map]:
             # Exclude certain map links
@@ -39,6 +39,23 @@ class MapView(discord.ui.View):
 
     async def on_timeout(self):
         self.clear_items()
+
+
+class DynMapButton(
+    discord.ui.DynamicItem[discord.ui.Button],
+    template=r"mapButton:(?P<count>[0-9]+):user:(?P<id>[0-9]+)",
+):
+    def __init__(self, user_id: int, count: int = 0) -> None:
+        self.user_id: int = user_id
+        self.count: int = count
+        super().__init__(
+            discord.ui.Button(
+                label=f"Total: {count}",
+                style=discord.ButtonStyle.green,
+                custom_id=f"counter:{count}:user:{user_id}",
+                emoji="\N{THUMBS UP SIGN}",
+            )
+        )
 
 
 class MapButton(discord.ui.Button):
