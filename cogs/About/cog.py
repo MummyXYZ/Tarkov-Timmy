@@ -49,8 +49,11 @@ class About(commands.Cog):
 
         updated = os.getenv("UPDATED")
 
-        users = sum([len(guild.members) for guild in self.bot.guilds])
-        aboutJson = {"users": users, "uniqueUsers": len(self.bot.users)}
+        users = sum(
+            [self.bot.get_guild(guild.id).member_count for guild in self.bot.guilds]
+        )
+        aboutJson = {"users": users}
+        # , "uniqueUsers": len(self.bot.users)}
 
         embed: Embed = EB(
             title="About:",
@@ -61,7 +64,8 @@ class About(commands.Cog):
 
         embed.add_field(
             name="Members",
-            value=f"{aboutJson['users']} total\n{aboutJson['uniqueUsers']} unique",
+            value=f"{aboutJson['users']} total",
+            # \n{aboutJson['uniqueUsers']} unique",
         )
         embed.add_field(name="Servers", value=f"{len(self.bot.guilds)}")
         embed.add_field(name="Uptime", value=f"{uptime}")

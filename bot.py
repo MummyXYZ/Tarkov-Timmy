@@ -32,9 +32,9 @@ async def run():
 class Bot(commands.AutoShardedBot):
     def __init__(self):
         intents = discord.Intents.default()
-        intents.message_content = True
-        intents.members = True
-        intents.guilds = True
+        # intents.message_content = True
+        # intents.members = True
+        # intents.guilds = True
         super().__init__(command_prefix="!", intents=intents, help_command=None)
 
         self.init_extensions = []
