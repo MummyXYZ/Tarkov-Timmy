@@ -19,28 +19,40 @@ logger = logging.getLogger("discord")
 class Support_Server(commands.Cog):
     def __init__(self, bot: commands.AutoShardedBot) -> None:
         self.bot = bot
+
         if os.getenv("RUNTIME") == "DEV":
             return
         self.traders_Notified = {}
         self.traders_Restock_Notification.start()
 
     @commands.Cog.listener()
+    async def on_ready(self):
+        self.support_Server = self.bot.get_guild(int(os.getenv("SUPPORT_SERVER_ID")))
+        self.announcements_Channel = self.support_Server.get_channel(
+            int(os.getenv("ANNOUNCEMENTS_CHANNEL_ID"))
+        )
+        self.trader_Announcement_Channel = self.support_Server.get_channel(
+            int(os.getenv("TRADER_ANNOUNCEMENTS_CHANNEL_ID"))
+        )
+        self.trader_Announcement_Role = self.support_Server.get_role(
+            int(os.getenv("TRADER_ANNOUNCEMENT_ROLE_ID"))
+        )
+
+    @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
-        if is_Guild_Tarkov_Timmy(member.guild):
+        if self.is_Guild_Tarkov_Timmy(member.guild):
             await send_Welcome_Message(member)
 
     @commands.Cog.listener()
     async def on_member_update(self, before: discord.Member, after: discord.Member):
-        if not is_Guild_Tarkov_Timmy(before.guild):
+        if not self.is_Guild_Tarkov_Timmy(before.guild):
             return
         if "Server Booster" in after.roles:
             if "Server Booster" not in str(before.roles):
-                announcements_chn = after.guild.get_channel(1252103463186333817)
-
                 desc = f"{after.mention} boosted the server!"
                 embed = EB(description=desc)
 
-                announcements_chn.send(embed=embed)
+                self.announcements_Channel.send(embed=embed)
         return
 
     @tasks.loop(seconds=5)
@@ -65,16 +77,11 @@ class Support_Server(commands.Cog):
                 if self.traders_Notified[trader_Name]:
                     return
 
-                trader_Announcement_Channel = self.bot.get_channel(1252613698816708708)
-                trader_Announcement_Role = self.bot.get_guild(
-                    1065456838658768956
-                ).get_role(1252624330601267241)
-
                 embed = EB(
-                    description=f"🛒 {trader_Announcement_Role.mention} **{trader_Name}** restock within the next {offset} minutes!"
+                    description=f"🛒 {self.trader_Announcement_Role.mention} **{trader_Name}** restock within the next {offset} minutes!"
                 )
                 # Send message to channel
-                announcement = await trader_Announcement_Channel.send(embed=embed)
+                announcement = await self.trader_Announcement_Channel.send(embed=embed)
                 # Publish message to all guilds that follow
                 await announcement.publish()
 
@@ -98,13 +105,19 @@ class Support_Server(commands.Cog):
 
     #     await message.channel.send(embed=embed)
 
+    def is_Guild_Tarkov_Timmy(self, guild: discord.Guild) -> bool:
+        if guild.id == self.support_Server.id:
+            return True
+
+        return False
+
 
 async def send_Welcome_Message(member: discord.Member):
     welcome_Chnanel = member.guild.get_channel(int(os.getenv("WELCOME_CHANNEL_ID")))
     bot_Support_Forum = member.guild.get_channel(1241790880784973825)
     suggestions_Forum = member.guild.get_channel(1241790784764903564)
 
-    desc = f"""Hey {member.mention}, Welcome to the **Tarkov Timmy** support server. Thanks for joining! Feel Free to look around.
+    desc = f"""Welcome to the **Tarkov Timmy** support server. Thanks for joining! Feel Free to look around.
     If you are having issues please start a post in {bot_Support_Forum.mention}.
     If you have a suggestion please start a post in {suggestions_Forum.mention}.
     
@@ -113,15 +126,7 @@ async def send_Welcome_Message(member: discord.Member):
 
     embed = EB(description=desc)
 
-    await welcome_Chnanel.send(embed=embed)
-
-
-def is_Guild_Tarkov_Timmy(guild: discord.Guild) -> bool:
-    support_Guild = int(os.getenv("SUPPORT_SERVER_ID"))
-    if guild.id == support_Guild:
-        return True
-
-    return False
+    await welcome_Chnanel.send(content=f"Hey {member.mention}!", embed=embed)
 
 
 async def setup(bot: commands.AutoShardedBot):
