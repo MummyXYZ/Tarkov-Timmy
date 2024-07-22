@@ -12,6 +12,18 @@ import logging.handlers
 
 logger = logging.getLogger("discord")
 
+emoji = {
+    "Fence": "<:Fence:1265002810790117459>",
+    "Jaeger": "<:Jaeger:1265002835502829632>",
+    "Mechanic": "<:Mechanic:1265002843295711387>",
+    "Peacekeeper": "<:Peacekeeper:1265002852183445515>",
+    "Prapor": "<:Prapor:1265002862321074186>",
+    "Ragman": "<:Ragman:1265002869803847761>",
+    "Ref": "<:Ref:1265002880696320040>",
+    "Skier": "<:Skier:1265002889470939278>",
+    "Therapist": "<:Therapist:1265002897561882756>",
+}
+
 
 def tradersEmbed() -> Embed:
     with open("./configs/data/traderresets.json", "r") as f:
@@ -32,7 +44,7 @@ def tradersEmbed() -> Embed:
         else:
             value = f"<t:{int(reset_timestamp)}:R>\n"
 
-        embed.add_field(name=trader["name"], value=value)
+        embed.add_field(name=f"{emoji[trader["name"]]}{trader["name"]}", value=value)
 
     return embed
 
