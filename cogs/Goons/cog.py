@@ -81,3 +81,4 @@ class Goons(commands.Cog):
 
 async def setup(bot: commands.AutoShardedBot) -> None:
     await bot.add_cog(Goons(bot))
+    bot.add_view(GoonsView())
