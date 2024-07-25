@@ -204,6 +204,8 @@ async def _check_User_Interaction(
     bot: discord.AutoShardedClient, interaction: discord.Interaction
 ):
     if interaction.is_user_integration():
+        if interaction.guild.id is None:
+            return
         for guild in bot.guilds:
             if guild.id == interaction.guild.id:
                 return
