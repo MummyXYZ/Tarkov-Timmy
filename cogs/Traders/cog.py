@@ -44,7 +44,7 @@ def tradersEmbed() -> Embed:
         else:
             value = f"<t:{int(reset_timestamp)}:R>\n"
 
-        embed.add_field(name=f"{emoji[trader["name"]]}{trader["name"]}", value=value)
+        embed.add_field(name=f"{emoji[trader['name']]}{trader['name']}", value=value)
 
     return embed
 
