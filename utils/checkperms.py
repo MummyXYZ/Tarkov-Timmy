@@ -21,14 +21,18 @@ async def checkperms(interaction: discord.Interaction, command):
     if isinstance(result, dict):
         result = json.dumps(result)
 
-    result = json.loads(result)
+    result: dict = json.loads(result)
 
-    for role in user.roles:
-        if result.get(str(role.id)):
-            logger.debug("Found permissions role")
-            logger.debug(result[str(role.id)][command])
-            if result[str(role.id)][command]:
-                return True
+    if user.roles != [None]:
+        for role in user.roles:
+            if result.get(str(role.id)):
+                logger.debug("Found permissions role")
+                logger.debug(result[str(role.id)][command])
+                if result[str(role.id)][command]:
+                    return True
+    else:
+        if result[str(interaction.guild.id)][command]:
+            return True
 
     if result.get(user.id):
         logger.debug("Found permissions user")
