@@ -5,7 +5,7 @@ import traceback
 import sys
 import os
 import topgg
-import requests
+import aiohttp
 import json
 from discord.ext import commands
 from discord.ext import tasks
@@ -140,14 +140,15 @@ class Tasks(commands.Cog):
         for endpoint, filename in endpoints:
             headers = {"User-Agent": "Mozilla/5.0"}
             try:
-                response = requests.get(endpoint, headers=headers)
-                response.raise_for_status()
-                data = json.dumps(response.json())
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(endpoint, headers=headers) as r:
+                        if r.status == 200:
+                            data = await r.text()
 
-                with open(f"./configs/data/{filename}", "w") as f:
-                    f.write(data)
+                            with open(f"./configs/data/{filename}", "w") as f:
+                                f.write(data)
 
-            except (requests.RequestException, json.JSONDecodeError):
+            except aiohttp.ClientError:
                 logger.error(f"Failed to update {endpoint}")
 
         logger.debug("Goons Updated.")
@@ -203,22 +204,31 @@ class Tasks(commands.Cog):
             "User-Agent": "Mozilla/5.0",
             "Content-Type": "application/json",
         }
-        response = requests.post(
-            "https://api.tarkov.dev/graphql", headers=headers, json={"query": query}
-        )
 
-        if response.status_code == 200:
-            for selector, filename in dataPoints:
-                with open(f"./configs/data/{filename}", "w") as f:
-                    f.write(json.dumps(response.json()["data"][selector]))
-        else:
-            raise Exception(
-                "Query failed to run by returning code of {}. {}".format(
-                    response.status_code, query
-                )
-            )
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.post(
+                    "https://api.tarkov.dev/graphql",
+                    headers=headers,
+                    json={"query": query},
+                ) as r:
+                    if r.status == 200:
+                        data = json.loads(await r.text())["data"]
+                        for selector, filename in dataPoints:
+                            with open(f"./configs/data/{filename}", "w") as f:
+                                f.write(json.dumps(data[selector]))
+                    else:
+                        raise Exception(
+                            "Query failed to run by returning code of {}. {}".format(
+                                r.status, query
+                            )
+                        )
 
-        logger.debug("Data Updated.")
+                    logger.debug("Data Updated.")
+
+        except (json.JSONDecodeError, aiohttp.ClientError):
+            logger.error("Failed to update Data")
+
         return
 
     @update_data.before_loop
@@ -261,22 +271,31 @@ class Tasks(commands.Cog):
             "User-Agent": "Mozilla/5.0",
             "Content-Type": "application/json",
         }
-        response = requests.post(
-            "https://api.tarkov.dev/graphql", headers=headers, json={"query": query}
-        )
 
-        if response.status_code == 200:
-            for selector, filename in dataPoints:
-                with open(f"./configs/data/{filename}", "w") as f:
-                    f.write(json.dumps(response.json()["data"][selector]))
-        else:
-            raise Exception(
-                "Query failed to run by returning code of {}. {}".format(
-                    response.status_code, query
-                )
-            )
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.post(
+                    "https://api.tarkov.dev/graphql",
+                    headers=headers,
+                    json={"query": query},
+                ) as r:
+                    if r.status == 200:
+                        data = json.loads(await r.text())["data"]
 
-        logger.debug("Traders Updated.")
+                        for selector, filename in dataPoints:
+                            with open(f"./configs/data/{filename}", "w") as f:
+                                f.write(json.dumps(data[selector]))
+
+                        logger.debug("Traders Updated.")
+                    else:
+                        raise Exception(
+                            "Query failed to run by returning code of {}. {}".format(
+                                r.status, query
+                            )
+                        )
+
+        except (json.JSONDecodeError, aiohttp.ClientError):
+            logger.error("Failed to update Traders")
         return
 
     @update_traders.before_loop
