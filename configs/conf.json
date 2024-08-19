@@ -194,25 +194,28 @@
 	},
 	"arena_Locations": {
 		"Air Pit": {
-			"base": "https://cdn.discordapp.com/attachments/1226975319836065793/1251312737418608800/Air_Pit_Callouts.png?ex=66740e0c&is=6672bc8c&hm=9db22496c0e236dee9ef32485742ab40ac77f8d8731a9439b7635dab1a27e9bb&"
+			"base": "https://cdn.discordapp.com/attachments/1275157764959899659/1275157826246807605/Air_Pit_Callouts.png?ex=66c4dec5&is=66c38d45&hm=10f4d953fe1ada79642f7ed0f936c14ec36b373d83f21aa208e4adcc85284642&"
 		},
 		"Bay 5": {
-			"base": "https://cdn.discordapp.com/attachments/1226976843199021196/1251312763503120404/Bay5_Callouts.png?ex=66740e13&is=6672bc93&hm=0c4a343add2e44af307e632e74ca85eb73adc432c0c8dc716d3ee57f5a8ed70f&"
+			"base": "https://cdn.discordapp.com/attachments/1275157764959899659/1275157827010297927/Bay_5_Callouts.png?ex=66c4dec5&is=66c38d45&hm=466b0dfae0a51aee798dd16171f18d82fa8bc8fad052bfdc3a02a1fb2daed4de&"
 		},
 		"Block": {
-			"base": "https://cdn.discordapp.com/attachments/1226977262251802644/1251312807559827597/image.webp?ex=66740e1d&is=6672bc9d&hm=4ae910d327915dc1d23da6b04e2003a824f9c8bf3c29c112cb43ce32d375ddd6&"
+			"base": "https://cdn.discordapp.com/attachments/1275157764959899659/1275157827622801542/Block_Callouts.webp?ex=66c4dec5&is=66c38d45&hm=80be8e0825636f62af7add75f47cf89d0c6b6420a3fad742cdd78418d75abba5&"
 		},
 		"Bowl": {
-			"base": "https://cdn.discordapp.com/attachments/1226976889147625532/1251312867534180392/Bowl_Callouts.png?ex=66740e2b&is=6672bcab&hm=cde9f2aeaaccd3d9fca059ffc15749a14b1e22e1611ad2019acee8c4b05cb457&"
+			"base": "https://cdn.discordapp.com/attachments/1275157764959899659/1275157828348149873/Bowl_Callouts.png?ex=66c4dec5&is=66c38d45&hm=98326af12cbc77b98e155d3197a38b95290c6eea48563f0a8ac75f646778a152&"
 		},
 		"Chop Shop": {
-			"base": "https://i.imgur.com/7mbVk4Z.png"
+			"base": "https://cdn.discordapp.com/attachments/1275157764959899659/1275159184392065086/Chop_Shop_Callouts.png?ex=66c4e008&is=66c38e88&hm=99aefe08887829da62fdeb40f535285a92cb0043edc6eb500d9061ef4c350736&"
 		},
 		"Equator": {
-			"base": "https://cdn.discordapp.com/attachments/1226977388030595294/1251312940473389057/Equator_Callouts.png?ex=66740e3d&is=6672bcbd&hm=63907112bb83c58304e10d2f9773d8b1d8bea261ecd8453bb0b7ae4252b6f289&"
+			"base": "https://cdn.discordapp.com/attachments/1275157764959899659/1275157829346529353/Equator_Callouts.png?ex=66c4dec5&is=66c38d45&hm=a898587fa2219b58ac0cffa7a58bca52cc08301de06c171159af1b807b2de5ef&"
 		},
 		"Sawmill": {
-			"base": "https://cdn.discordapp.com/attachments/1226977587432259655/1251312974048661534/Sawmill_Callouts.png?ex=66740e45&is=6672bcc5&hm=bc3741e2f34bef85004ddac2b124ebc14043668f76cdca46d4f1c20763bdc742&"
+			"base": "https://cdn.discordapp.com/attachments/1275157764959899659/1275157830168739890/Sawmill_Callouts.png?ex=66c4dec5&is=66c38d45&hm=cdf3c35ca82fb14b82e59b0a29405186324f485b9680c0e5e51992a3d0e21013&"
+		},
+		"Skybridge": {
+			"base": "https://cdn.discordapp.com/attachments/1275157764959899659/1275157830911004733/Skybridge.png?ex=66c4dec6&is=66c38d46&hm=dac10c57139a99da19cbab3355dc7b32bd172a9f415ff849310a4117d7923ee2&"
 		}
 	},
 	"upcoming_Arena_Locations": "The Box, Resort, Sky Bridge"
