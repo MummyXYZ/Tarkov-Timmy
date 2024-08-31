@@ -30,7 +30,7 @@ class Arena(commands.GroupCog, name="arena"):
         extras=[
             """Displays maps and information for maps on EFT: Arena.
             
-            **E.g.** </map:1241780138593616025> <Customs>\n(*<> are required*)""",
+            **E.g.** </arena map:1253013351018266729> <Block>\n(*<> are required*)""",
         ],
     )
     @app_commands.describe(map="Specify the map", hidden="Hide message?")
