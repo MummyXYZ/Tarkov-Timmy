@@ -215,8 +215,9 @@ class Tasks(commands.Cog):
                     if r.status == 200:
                         data = json.loads(await r.text())["data"]
                         for selector, filename in dataPoints:
-                            with open(f"./configs/data/{filename}", "w") as f:
-                                f.write(json.dumps(data[selector]))
+                            if data[selector] is not None:
+                                with open(f"./configs/data/{filename}", "w") as f:
+                                    f.write(json.dumps(data[selector]))
                     else:
                         raise Exception(
                             "Query failed to run by returning code of {}. {}".format(
