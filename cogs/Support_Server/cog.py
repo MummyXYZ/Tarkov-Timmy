@@ -31,6 +31,7 @@ class Support_Server(commands.Cog):
         self.announcements_Channel = self.support_Server.get_channel(
             int(os.getenv("ANNOUNCEMENTS_CHANNEL_ID"))
         )
+        self.bot_Support_Forum = self.support_Server.get_channel(1241790880784973825)
         self.trader_Announcement_Channel = self.support_Server.get_channel(
             int(os.getenv("TRADER_ANNOUNCEMENTS_CHANNEL_ID"))
         )
@@ -42,6 +43,7 @@ class Support_Server(commands.Cog):
     async def on_member_join(self, member: discord.Member):
         if self.is_Guild_Tarkov_Timmy(member.guild):
             await send_Welcome_Message(member)
+        return
 
     @commands.Cog.listener()
     async def on_member_update(self, before: discord.Member, after: discord.Member):
@@ -53,6 +55,14 @@ class Support_Server(commands.Cog):
                 embed = EB(description=desc)
 
                 self.announcements_Channel.send(embed=embed)
+        return
+
+    @commands.Cog.listener()
+    async def on_thread_create(self, thread: discord.Thread):
+        if self.is_Guild_Tarkov_Timmy(thread.guild):
+            if thread.parent_id == self.bot_Support_Forum.id:
+                reply = f"Hello {thread.owner.mention}, please do not unfollow this forum, do not ping anyone and do not make duplicates. If no one responds to your thread within 12hrs, ping <@&1065469238149652490> Thanks!"
+                await thread.send(reply)
         return
 
     @tasks.loop(seconds=5)
@@ -78,10 +88,12 @@ class Support_Server(commands.Cog):
                     return
 
                 embed = EB(
-                    description=f"🛒 {self.trader_Announcement_Role.mention} **{trader_Name}** restock within the next {offset} minutes!"
+                    description=f"🛒 **{trader_Name}** restock within the next {offset} minutes!"
                 )
                 # Send message to channel
-                announcement = await self.trader_Announcement_Channel.send(embed=embed)
+                announcement = await self.trader_Announcement_Channel.send(
+                    content=self.trader_Announcement_Role.mention, embed=embed
+                )
                 # Publish message to all guilds that follow
                 await announcement.publish()
 
