@@ -36,7 +36,7 @@ class Ammo(commands.Cog):
         extras=[
             """Displays ammo information from the fandom page. The information by default is sorted by Penetration values.
             
-            **E.g.**  </ammo:1241780138593616028> <7.62x39mm> [Penetration]
+            **E.g.**  </ammo:1260719258481066044> <7.62x39mm> [Penetration]
             (*<> are required, [] are optional*)""",
         ],
     )

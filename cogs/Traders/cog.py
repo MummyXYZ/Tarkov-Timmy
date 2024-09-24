@@ -76,7 +76,7 @@ class Traders(commands.Cog):
         extras=[
             """Displays reset timers for Traders with a refresh button for ease of use.
             
-            **E.g.** </time:1241780138593616022>""",
+            **E.g.** </traders:1251904115936727142>""",
         ],
     )
     @app_commands.allowed_installs(guilds=True, users=True)
