@@ -20,7 +20,7 @@ class GoonsButton(discord.ui.Button):
         description = "**Spawn chance:**\n"
         for map in self.mapsJson:
             for boss in map["bosses"]:
-                if boss["boss"]["name"] == "Death Knight":
+                if boss["boss"]["name"] == "Knight":
                     description += f"**{map['name'] if map['name'] != 'Ground Zero 21+' else 'Ground Zero'}**: {int(boss['spawnChance'] * 100)}%\n"
 
         description += "\nCheck out the </goons:1245395766374170644> command."

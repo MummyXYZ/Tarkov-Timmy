@@ -3,14 +3,12 @@ from __future__ import annotations
 import discord
 from discord import Embed, app_commands
 from discord.ext import commands
-from typing import Optional
+from typing import Optional, List
 from utils.embedbuilder import embedbuilder as EB
 
 
 class HelpDropdown(discord.ui.Select):
-    def __init__(
-        self, bot: commands.AutoShardedBot, options: list[discord.SelectOption]
-    ):
+    def __init__(self, bot: commands.AutoShardedBot, options: List[discord.SelectOption]):
         self.bot = bot
         super().__init__(
             placeholder="Select a command",
@@ -20,34 +18,32 @@ class HelpDropdown(discord.ui.Select):
         )
 
     async def callback(self, interaction: discord.Interaction):
-        selected: commands.Command = None
-
-        for app in self.bot.tree.walk_commands():
-            if hasattr(app, "_children"):
-                continue
-            if app.qualified_name.title() == self.values[0]:
-                selected = app
-                break
-
-        embed = EB(
-            title=selected.qualified_name.title(),
-            description=selected.extras[0]
-            if selected.extras and len(selected.extras) > 0
-            else "No description provided",
+        # Find the selected command more efficiently using a dict lookup
+        selected_command = next(
+            (app for app in self.bot.tree.walk_commands()
+             if app.qualified_name.title() == self.values[0]),
+            None
         )
+
+        # Handle case if command is not found (shouldn't happen)
+        if selected_command:
+            description = selected_command.extras[0] if selected_command.extras else "No description provided"
+            embed = EB(
+                title=selected_command.qualified_name.title(),
+                description=description
+            )
+        else:
+            embed = EB(
+                title="Command not found",
+                description="The selected command could not be found."
+            )
+
         await interaction.response.edit_message(embed=embed)
 
 
 class SlashHelpView(discord.ui.View):
-    def __init__(
-        self: discord.ui.View,
-        bot: commands.AutoShardedBot,
-        options: list[discord.SelectOption],
-        *,
-        timeout: Optional[float] = 120.0,
-    ):
+    def __init__(self, bot: commands.AutoShardedBot, options: List[discord.SelectOption], *, timeout: Optional[float] = 120.0):
         super().__init__(timeout=timeout)
-
         self.add_item(HelpDropdown(bot, options))
 
 
@@ -56,9 +52,7 @@ class Help(commands.Cog, name="Help"):
         self.bot = bot
 
     @app_commands.command(
-        # Short description of the command
         description="Help for the various commands of the TK Bot",
-        # Help description of the command
         extras=[
             """Provides examples of commands and other useful information.
             
@@ -70,31 +64,37 @@ class Help(commands.Cog, name="Help"):
     @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
     async def help(self, interaction: discord.Interaction, hidden: bool = True):
         await interaction.response.defer(ephemeral=hidden)
-        embed: Embed = EB(
+
+        # Create initial help embed
+        embed = EB(
             title="Help",
             description="Please select one of the commands below to receive more information and examples.",
         )
 
-        options = await self._cog_select_options()
+        # Fetch the available command options
+        options = await self._get_command_options()
         await interaction.followup.send(
             embed=embed,
             view=SlashHelpView(self.bot, options),
             ephemeral=hidden,
         )
 
-    async def _cog_select_options(self) -> list[discord.SelectOption]:
-        options: list[discord.SelectOption] = []
+    async def _get_command_options(self) -> List[discord.SelectOption]:
+        """Fetch and sort the commands into options for the dropdown."""
+        commands_list = sorted(
+            (app for app in self.bot.tree.walk_commands()
+             if not hasattr(app, "_children")),
+            key=lambda app: app.qualified_name
+        )
 
-        apps = sorted(self.bot.tree.walk_commands(), key=lambda app: app.qualified_name)
-        for app in apps:
-            if hasattr(app, "_children"):
-                continue
-            options.append(
-                discord.SelectOption(
-                    label=app.qualified_name.title() if app else "No Category",
-                    description=app.description[:100] if app.description else None,
-                )
+        options = [
+            discord.SelectOption(
+                label=app.qualified_name.title(),
+                description=(app.description[:100]
+                             if app.description else None)
             )
+            for app in commands_list
+        ]
 
         return options
 

@@ -4,9 +4,8 @@ import discord
 import os
 from discord import Embed, app_commands
 from discord.ext import commands
-from datetime import datetime, timedelta
+from datetime import datetime
 from utils.embedbuilder import embedbuilder as EB
-
 import logging
 import logging.handlers
 
@@ -20,9 +19,7 @@ class About(commands.Cog):
 
     @app_commands.command(
         name="about",
-        # Short description of the command
         description="Information about the bot",
-        # Help description of the command
         extras=[
             """Displays information about Tarkov Timmy.
             
@@ -33,42 +30,28 @@ class About(commands.Cog):
     @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
     async def about(self, interaction: discord.Interaction):
         await interaction.response.defer()
-        await self.bot.wait_until_ready()
 
-        delta: timedelta = datetime.now() - self.startTime
+        start_timestamp = int(self.startTime.timestamp())
 
-        seconds = int(delta.total_seconds())
-        hours, remainder = divmod(seconds, 3600)
-        minutes, seconds = divmod(remainder, 60)
+        updated = os.getenv("UPDATED", "Unknown")
 
-        if hours >= 24:
-            days, hours = divmod(hours, 24)
-            uptime = f"{days}d {hours}h {minutes}m {seconds}s"
-        else:
-            uptime = f"{hours}h {minutes}m {seconds}s"
-
-        updated = os.getenv("UPDATED")
-
-        users = sum(
-            [self.bot.get_guild(guild.id).member_count for guild in self.bot.guilds]
-        )
-        aboutJson = {"users": users}
-        # , "uniqueUsers": len(self.bot.users)}
+        users = sum(guild.member_count for guild in self.bot.guilds)
 
         embed: Embed = EB(
             title="About:",
-            description="A Discord bot that helps you in Escape From Tarkov and a tool to have fun with friends and provide information quickly for your raids. Operated with simple and easy to use slash commands.\nTo get started try </help:1067035934073290795>\n\nFor support join [my support server](https://discord.gg/CC9v5aXNyY)",
-            footer=f"Made with discord.py || Last updated : {updated}",
+            description=(
+                "A Discord bot that helps you in Escape From Tarkov and a tool to have fun with friends, "
+                "providing information quickly for your raids. Operated with simple and easy-to-use slash commands.\n"
+                "To get started, try </help:1067035934073290795>\n\n"
+                "For support, join [my support server](https://discord.gg/CC9v5aXNyY)"
+            ),
+            footer=f"Made with discord.py || Last updated: {updated}",
             footer_icon="https://www.iconattitude.com/icons/open_icon_library/apps/png/256/python2.5.png",
         )
 
-        embed.add_field(
-            name="Members",
-            value=f"{aboutJson['users']} total",
-            # \n{aboutJson['uniqueUsers']} unique",
-        )
+        embed.add_field(name="Members", value=f"{users} total")
         embed.add_field(name="Servers", value=f"{len(self.bot.guilds)}")
-        embed.add_field(name="Uptime", value=f"{uptime}")
+        embed.add_field(name="Uptime", value=f"<t:{start_timestamp}:R>")
 
         await interaction.followup.send(embed=embed)
 

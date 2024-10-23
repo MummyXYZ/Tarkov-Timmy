@@ -1,5 +1,5 @@
 {
-	"updated": "5/12/2024",
+	"updated": "10/19/2024",
 	"thegoons": {
 		"img": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/b/bd/Three_lighthouse_bosses.jpg/revision/latest/scale-to-width-down/800",
 		"wiki": "https://escapefromtarkov.fandom.com/wiki/The_Goons",
@@ -27,14 +27,13 @@
 			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/9f/Customs_Banner.png",
 			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/5/55/CustomsLargeExpansionGloryMonki.png",
 			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Customs",
-			"3D": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/4/49/CustomsMapRealNorthBW_Reemr.png",
-			"Dorms": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/96/DormRoomsMap.jpg"
+			"3D": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/0/0b/CustomsMapRealNorthColour_Reemr.png",
+			"Dorms": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/4/44/CustomsDormsByre3mr.jpg"
 		},
 		"Factory": {
 			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/1/1a/Factory-Day_Banner.png",
-			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/9/94/Factory_loot.png",
-			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Factory",
-			"3D": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/c/cd/Factory_3D_b_Johnny_Tushonka.jpg"
+			"map": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/3/33/Factory2DMapbyRe3mr.jpg",
+			"interactive": "https://escapefromtarkov.fandom.com/wiki/Map:Factory"
 		},
 		"Ground Zero": {
 			"base": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/4/4d/Ground_Zero_Banner.png",
@@ -89,7 +88,7 @@
 			"3D": "https://static.wikia.nocookie.net/escapefromtarkov_gamepedia/images/d/de/WikiWoodsRe3mr.jpg"
 		}
 	},
-	"ammo_ballistics": "https://escapefromtarkov.fandom.com/wiki/Ballistics#Armor_penetration_table",
+	"ammo_ballistics": "https://escapefromtarkov.fandom.com/wiki/Ballistics#Ammo_and_penetration_chart",
 	"ammo": {
 		"Caliber12g": {
 			"base": "12x70mm",
@@ -190,6 +189,14 @@
 		"Caliber40mmRU": {
 			"base": "40x53mm",
 			"wiki": "https://escapefromtarkov.fandom.com/wiki/40x53mm"
+		},
+		"Caliber127x33": {
+			"base": ".50 Action Express",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/.50_Action_Express"
+		},
+		"Caliber20x1mm": {
+			"base": "20x1mm",
+			"wiki": "https://escapefromtarkov.fandom.com/wiki/20x1mm"
 		}
 	},
 	"arena_Locations": {

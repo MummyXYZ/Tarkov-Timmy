@@ -15,9 +15,10 @@ from .subcommands.perms import permsSC
 from .subcommands.remove import removeSC
 
 
-@app_commands.allowed_installs(guilds=True, users=True)
+@app_commands.allowed_installs(guilds=True, users=False)
 @app_commands.allowed_contexts(guilds=True, dms=False, private_channels=True)
 class TK(commands.GroupCog, name="tk"):
+
     def __init__(self, bot: commands.AutoShardedBot) -> None:
         self.bot = bot
         super().__init__()
@@ -87,15 +88,12 @@ class TK(commands.GroupCog, name="tk"):
         category="Change a Team Kills Description or video link",
         value="What to change it to",
     )
-    @app_commands.choices(
-        category=[
-            Choice(name="Description", value="description"),
-            Choice(name="Video Link", value="video_link"),
-        ]
-    )
-    async def edit(
-        self, interaction: discord.Interaction, id: int, category: str, value: str
-    ) -> None:
+    @app_commands.choices(category=[
+        Choice(name="Description", value="description"),
+        Choice(name="Video Link", value="video_link"),
+    ])
+    async def edit(self, interaction: discord.Interaction, id: int,
+                   category: str, value: str) -> None:
         await _check_User_Interaction(self.bot, interaction)
         await editSC.edit(interaction, id, category, value)
 
@@ -138,9 +136,8 @@ class TK(commands.GroupCog, name="tk"):
         ],
     )
     @app_commands.describe(killer="Player who TK'd")
-    async def list(
-        self, interaction: discord.Interaction, killer: discord.Member
-    ) -> None:
+    async def list(self, interaction: discord.Interaction,
+                   killer: discord.Member) -> None:
         await _check_User_Interaction(self.bot, interaction)
         await listSC.list(interaction, killer)
 
