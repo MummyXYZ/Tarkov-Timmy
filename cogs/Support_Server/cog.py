@@ -29,9 +29,12 @@ class Support_Server(commands.Cog):
     async def on_ready(self):
         try:
             self.support_Server = self.bot.get_guild(int(os.getenv("SUPPORT_SERVER_ID")))
+            if self.support_Server is None:
+                logger.error("Support server not found!")
+                return
+            
             self.announcements_Channel = self.support_Server.get_channel(int(os.getenv("ANNOUNCEMENTS_CHANNEL_ID")))
             self.bot_Support_Forum = self.support_Server.get_channel(1241790880784973825)
-
             self.trader_Announcement_Channel = self.support_Server.get_channel(
                 int(os.getenv("TRADER_ANNOUNCEMENTS_CHANNEL_ID"))
             )
@@ -131,7 +134,13 @@ class Support_Server(commands.Cog):
     #     await message.channel.send(embed=embed)
 
     def is_Guild_Tarkov_Timmy(self, guild: discord.Guild) -> bool:
+        # Ensure that self.support_Server is set
+        if not hasattr(self, 'support_Server') or self.support_Server is None:
+            logger.error("Support server is not initialized.")
+            return False
+        
         return guild.id == self.support_Server.id
+
 
 
 
