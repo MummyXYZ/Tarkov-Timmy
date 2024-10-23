@@ -19,17 +19,24 @@ pg_connection_dict = {
     "host": os.getenv("DB_HOST"),
     "port": os.getenv("DB_PORT"),
 }
-
 pool = None
 
 
 async def create_pool():
     global pool
-    try:
-        pool = await asyncpg.create_pool(**pg_connection_dict)
-    except Exception as e:
-        logger.error(f"Error connecting to postgresql: {e}")
-        sys.exit(1)
+    retries = 5
+    for i in range(retries):
+        try:
+            pool = await asyncpg.create_pool(**pg_connection_dict)
+            break
+        except Exception as e:
+            logger.error(f"Error connecting to postgresql: {e}")
+
+            if i < retries - 1:
+                logger.info(f"Retrying ({i+1}/{retries})...")
+                await asyncio.sleep(2 ** i)
+            else:
+                sys.exit(1)
 
 
 async def fetch(query: str, *params) -> list:
@@ -66,4 +73,8 @@ async def delete(query: str, *params) -> None:
         await cxn.execute(query, *params)
 
 
-asyncio.create_task(create_pool())
+async def initialize():
+    await create_pool()
+
+if __name__ == "__main__":
+    asyncio.run(initialize())

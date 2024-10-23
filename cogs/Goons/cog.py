@@ -28,8 +28,8 @@ def goonsEmbed():
         title="Goons Sightings",
         description="The most recent Goons sighting.",
         thumbnail="attachment://image.png",
-        footer="Powered by TarkovPal.com",
-        footer_icon="https://tarkovpal.com/logov2.png",
+        # footer="Powered by TarkovPal.com",
+        # footer_icon="https://tarkovpal.com/logov2.png",
     )
 
     embed.add_field(

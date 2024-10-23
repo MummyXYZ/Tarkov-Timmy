@@ -4,29 +4,22 @@ import discord
 from typing import Optional, List
 
 class ButtonMenu(View):
-    def __init__(self, pages:list, timeout: Optional[float]=None, user:Optional[discord.Member]=None) -> None:
+    def __init__(self, pages: list, timeout: Optional[float] = None, user: Optional[discord.Member] = None) -> None:
         super().__init__(timeout=timeout)
-        self.current_page= 0
+        self.current_page = 0
         self.pages = pages
         self.user = user
-        self.length = len(self.pages)-1
+        self.length = len(self.pages) - 1
         self.children[1].label = f'{self.current_page + 1} / {self.length + 1}'
         self.children[0].disabled, self.children[1].disabled = True, True
 
-    async def update(self, page:int):
+    async def update(self, page: int):
         self.current_page = page
         self.children[1].label = f'{self.current_page + 1} / {self.length + 1}'
-        if page == 0:
-            self.children[0].disabled = True
-            self.children[-1].disabled = False
-        elif page == self.length:
-            self.children[0].disabled = False
-            self.children[-1].disabled = True
-        else:
-            self.children[0].disabled = False
-            self.children[-1].disabled = False
+        self.children[0].disabled = page == 0
+        self.children[-1].disabled = page == self.length
 
-    async def getPage(self, page):
+    async def getPage(self, page) -> tuple[Optional[str], list[discord.Embed], list[discord.File]]:
         if isinstance(page, str):
             return page, [], []
         if isinstance(page, discord.Embed):
@@ -34,23 +27,22 @@ class ButtonMenu(View):
         if isinstance(page, discord.File):
             return None, [], [page]
         if isinstance(page, List):
-            if all(isinstance(x, discord.Embed) for x in page):
-                return None, page, []
-            if all(isinstance(x, discord.File) for x in page):
-                return None, [], page
-            else:
-                raise TypeError("Can't Have alternative files and embeds")
-        else:
-            pass
+            embeds = [x for x in page if isinstance(x, discord.Embed)]
+            files = [x for x in page if isinstance(x, discord.File)]
+            if embeds or files:
+                return None, embeds, files
+            raise TypeError("Page must contain embeds or files.")
+        return None, [], []
 
-    async def showPage(self, page:int, interaction:discord.Interaction):
+    async def showPage(self, page: int, interaction: discord.Interaction):
+        if not 0 <= page <= self.length:
+            raise ValueError("Invalid page number.")
         await self.update(page)
         content, embeds, files = await self.getPage(self.pages[page])
-
         await interaction.response.edit_message(
-            content = content,
-            embeds = embeds,
-            attachments = files or [],
+            content=content,
+            embeds=embeds,
+            attachments=files or [],
             view=self
         )
 
@@ -58,13 +50,14 @@ class ButtonMenu(View):
     async def previous_button(self, interaction: discord.Interaction, button: discord.Button):
         await self.showPage(self.current_page-1, interaction)
     
-    @ui.button(label= 'pages',style=discord.ButtonStyle.secondary)
-    async def middle_button(self, interaction: discord.Interaction, button: discord.Button):
+    @ui.button(label="1 / 1", style=discord.ButtonStyle.secondary, disabled=True)
+    async def page_indicator_button(self, interaction: discord.Interaction, button: ui.Button):
         pass
 
     @ui.button(emoji= '➡', style=discord.ButtonStyle.primary)
-    async def next_button(self, interaction: discord.Interaction, button: discord.Button):
-        await self.showPage(self.current_page+1, interaction)
+    async def next_button(self, interaction: discord.Interaction, button: ui.Button):
+        if self.current_page < self.length:
+            await self.showPage(self.current_page + 1, interaction)
     
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         if self.user:

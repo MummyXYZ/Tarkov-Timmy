@@ -1,28 +1,25 @@
 from datetime import datetime
 from discord import Embed
-
+from typing import Optional
 
 def embedbuilder(
-    author: str = "",
-    author_url: str = "",
-    author_icon: str = "",
-    title: str = "",
-    description: str = "",
-    thumbnail: str = "",
-    title_url: str = "",
-    footer: str = "",
-    footer_icon: str = "",
+    author: Optional[str] = None,
+    author_url: Optional[str] = None,
+    author_icon: Optional[str] = None,
+    title: Optional[str] = None,
+    description: Optional[str] = None,
+    thumbnail: Optional[str] = None,
+    title_url: Optional[str] = None,
+    footer: Optional[str] = None,
+    footer_icon: Optional[str] = None,
     color: int = 0x000000,
-    image_url: str = "",
+    image_url: Optional[str] = None,
     timestamp: bool = False,
     support: bool = False,
 ):
-    if timestamp:
-        timestamp = datetime.now()
-    else:
-        timestamp = None
+    timestamp = datetime.now() if timestamp else None
 
-    if support:
+    if support and description:
         description += "Enjoy using this Bot? Consider upvoting it [Here](https://top.gg/bot/815600918287613962/vote)."
 
     embed = Embed(
@@ -42,6 +39,5 @@ def embedbuilder(
         embed.set_footer(text=footer)
     if image_url:
         embed.set_image(url=image_url)
-    # embed.set_thumbnail()
 
     return embed

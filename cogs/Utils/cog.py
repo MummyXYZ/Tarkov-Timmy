@@ -18,7 +18,7 @@ import logging.handlers
 logger = logging.getLogger("discord")
 
 
-#### Events
+# Events
 class Events(commands.Cog):
     def __init__(self, bot: commands.AutoShardedBot) -> None:
         self.bot = bot
@@ -40,7 +40,7 @@ class Events(commands.Cog):
         await GH.delete(guild)
 
 
-#### Error handling
+# Error handling
 class CommandErrorHandler(commands.Cog):
     def __init__(self, bot: commands.AutoShardedBot):
         self.bot = bot
@@ -87,13 +87,14 @@ class CommandErrorHandler(commands.Cog):
 
         else:
             # All other Errors not returned come here. And we can just print the default TraceBack.
-            logger.error("Ignoring exception in command {}:".format(ctx.command))
+            logger.error(
+                "Ignoring exception in command {}:".format(ctx.command))
             traceback.print_exception(
                 type(error), error, error.__traceback__, file=sys.stderr
             )
 
 
-#### Recurring tasks
+# Recurring tasks
 class Tasks(commands.Cog):
     def __init__(self, bot: commands.AutoShardedBot) -> None:
         super().__init__()
@@ -118,8 +119,16 @@ class Tasks(commands.Cog):
         self.update_goons.start()
         self.update_traders.start()
         self.update_status.start()
+        # self.update_weather.start()
 
     async def cog_unload(self) -> None:
+        self.update_stats.cancel()
+        self.update_data.cancel()
+        self.update_goons.cancel()
+        self.update_traders.cancel()
+        self.update_status.cancel()
+        # self.update_weather.cancel()
+
         await self.topggpy.close()
 
     @tasks.loop(seconds=30)
@@ -303,14 +312,9 @@ class Tasks(commands.Cog):
     async def before_update_traders(self):
         await self.bot.wait_until_ready()
 
-
-async def setup(bot: commands.AutoShardedBot):
-    await bot.add_cog(Events(bot))
-    await bot.add_cog(CommandErrorHandler(bot))
-    await bot.add_cog(Tasks(bot))
-
     # @tasks.loop(minutes=5)
     # async def update_weather(self):
+    #     """Fetch and update the weather information every 5 minutes."""
     #     endpoints = [
     #         "https://api.tarkov-changes.com/v1/weather",
     #         "weather.json",
@@ -319,89 +323,49 @@ async def setup(bot: commands.AutoShardedBot):
     #         "User-Agent": "Mozilla/5.0",
     #         "AUTH-TOKEN": os.getenv("AUTH_TOKEN"),
     #     }
+
     #     try:
-    #         response = requests.get(endpoints[0], headers=headers)
-    #         response.raise_for_status()
-    #         data = json.dumps(response.json()["results"])
-    #         print(endpoints[1])
-    #         if response.json()["results"][0]["rain_intensity"] != 0.0:
-    #             channel = await self.bot.fetch_channel("1029456229510172754")
-    #             await channel.send(f"<@170925319518158848> {data}")
-    #         print(data)
+    #         async with aiohttp.ClientSession() as session:
+    #             async with session.get(endpoints[0], headers=headers) as response:
+    #                 if response.status != 200:
+    #                     logger.error(f"Failed to fetch weather data: {
+    #                                  response.status}")
+    #                     return
 
-    #         with open(f"./configs/data/{endpoints[1]}", "w") as f:
-    #             f.write(data)
+    #                 data = await response.json()
+    #                 weather_results = data.get("results")
 
-    #     except (requests.RequestException, json.JSONDecodeError):
-    #         logger.error(f"Failed to update {endpoints[0]}")
+    #                 # Process the weather results
+    #                 if not weather_results:
+    #                     logger.error(
+    #                         "No weather data found in the API response")
+    #                     return
 
-    #     logger.debug("Weather Updated.")
-    #     return
+    #                 # Alert if rain intensity is not zero
+    #                 if weather_results[0].get("rain_intensity", 0.0) != 0.0:
+    #                     channel = await self.bot.fetch_channel("1029456229510172754")
+    #                     await channel.send(f"<@170925319518158848> {json.dumps(weather_results)}")
+
+    #                 # Write weather data to the file
+    #                 with open(f"./configs/data/{endpoints[1]}", "w") as f:
+    #                     json.dump(weather_results, f)
+
+    #                 logger.debug(f"Weather data updated and written to {
+    #                              endpoints[1]}")
+
+    #     except aiohttp.ClientError as e:
+    #         logger.error(f"Failed to update {endpoints[0]}: {str(e)}")
+    #     except json.JSONDecodeError as e:
+    #         logger.error(f"Failed to decode JSON from {
+    #                      endpoints[0]}: {str(e)}")
 
     # @update_weather.before_loop
     # async def before_update_weather(self):
+    #     """Wait until the bot is ready before starting the weather updates."""
     #     await self.bot.wait_until_ready()
 
-    # if (
-    #     data["cloud"] >= -0.7
-    #     and data["wind_speed"] <= 1
-    #     and data["rain"] > 1
-    #     and data["rain"] <= 3
-    # ):
-    #     weather_info["icon"] = "fa-cloud-sun-rain"
-    #     weather_info["raining"] = "Yes"
-    # elif data["wind_speed"] <= 1 and data["rain"] > 3:
-    #     weather_info["icon"] = "fa-cloud-rain"
-    #     weather_info["raining"] = "Yes"
-    # elif (
-    #     data["cloud"] < -0.4
-    #     and data["wind_speed"] <= 1
-    #     and data["rain"] < 2
-    #     and data["fog"] <= 0.004
-    #     or data["cloud"] < -0.4
-    #     and data["wind_speed"] > 1
-    #     and data["rain"] < 2
-    #     and data["fog"] <= 0.004
-    # ):
-    #     weather_info["icon"] = "fa-sun"
-    # elif (
-    #     data["cloud"] >= -0.7
-    #     and data["cloud"] <= -0.4
-    #     and data["wind_speed"] <= 1
-    #     and data["rain"] < 2
-    #     and data["fog"] <= 0.004
-    # ):
-    #     weather_info["icon"] = "fa-clouds-sun"
-    # elif data["cloud"] < -0.4 and data["fog"] > 0.004 and data["fog"] < 0.1:
-    #     weather_info["icon"] = "fa-sun-haze"
-    #     weather_info["foggy"] = "Yes"
-    # elif data["fog"] >= 0.1:
-    #     weather_info["icon"] = "fa-cloud-fog"
-    # elif data["cloud"] >= -0.4 and data["cloud"] <= 0.7 and data["fog"] > 0.004:
-    #     weather_info["icon"] = "fa-cloud-fog"
-    #     weather_info["foggy"] = "Yes"
-    # elif data["cloud"] >= -0.4 and data["cloud"] <= 0.7 and data["rain"] <= 1:
-    #     weather_info["icon"] = "fa-clouds-sun"
-    # elif data["cloud"] >= 0.7 and data["cloud"] <= 1 and data["rain"] <= 1:
-    #     weather_info["icon"] = "fa-clouds"
-    # elif data["cloud"] >= 1 and data["rain"] <= 1:
-    #     weather_info["icon"] = "fa-cloud-bolt"
-    #     weather_info["raining"] = "Yes"
-    # elif data["cloud"] >= 0 and data["wind_speed"] >= 2 and data["rain"] <= 1:
-    #     weather_info["icon"] = "fa-clouds"
-    # elif data["wind_speed"] >= 2 and data["rain"] >= 2:
-    #     weather_info["icon"] = "fa-cloud-rain"
-    #     weather_info["raining"] = "Yes"
-    # else:
-    #     weather_info["icon"] = "fa-exclamation"
-    #     weather_info["raining"] = "NO WEATHER FOUND"
 
-    # weather_info_html = """
-    # <i class="fa-solid {icon} sisterSiteSVG sisterSiteFA"></i>
-    # <p>Temperature: {temperature} &#176;C</p>
-    # <p>Pressure: {pressure} Hg</p>
-    # <p>Wind Speed: {wind_speed} km/h</p>
-    # <p>Raining: {raining}</p>
-    # <p>Foggy: {foggy}</p>
-    # <p>{metar}</p>
-    # """.format(**weather_info)
+async def setup(bot: commands.AutoShardedBot):
+    await bot.add_cog(Events(bot))
+    await bot.add_cog(CommandErrorHandler(bot))
+    await bot.add_cog(Tasks(bot))

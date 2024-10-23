@@ -15,30 +15,24 @@ async def checkperms(interaction: discord.Interaction, command):
     if interaction.guild.owner_id == user.id or user.id == 170925319518158848:
         return True
 
-    query = f"SELECT perms FROM tk_bot.perms WHERE guild_id = {interaction.guild.id}"
-    result = (await db.fetch(query))[0]["perms"]
+    query = "SELECT perms FROM tk_bot.perms WHERE guild_id = $1"
+    result = (await db.fetch(query, interaction.guild.id))[0]["perms"]
 
-    if isinstance(result, dict):
-        result = json.dumps(result)
+    if not isinstance(result, dict):
+        result: dict = json.loads(result)
 
-    result: dict = json.loads(result)
-
-    if user.roles != [None]:
+    if user.roles:
         for role in user.roles:
-            if result.get(str(role.id)):
-                logger.debug("Found permissions role")
-                logger.debug(result[str(role.id)][command])
-                if result[str(role.id)][command]:
-                    return True
+            role_perms = result.get(str(role.id))
+            if role_perms and role_perms.get(command):
+                return True 
     else:
         if result[str(interaction.guild.id)][command]:
             return True
 
-    if result.get(user.id):
-        logger.debug("Found permissions user")
-        logger.debug(result[str(user.id)][command])
-        if result[str(user.id)][command]:
-            return True
+    user_perms = result.get(str(user.id))
+    if user_perms and user_perms.get(command):
+        return True
 
     embed: Embed = EB(
         title="Insufficient Permissions",

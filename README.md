@@ -7,7 +7,7 @@
 * [Author](#author)
 * [Error Reporting](#error-reporting)
 * [License](#license)
-* [ToS and Privacy Policy](#terms-of-service-and-pricacy-policy)
+* [ToS and Privacy Policy](#terms-of-service-and-privacy-policy)
 
 ## 🔗 Resource Links
 - 🤖 Invite Tarkov Timmy: [Invite Here](https://discord.com/oauth2/authorize?client_id=815600918287613962&permissions=2048&scope=bot%20applications.commands)
@@ -33,7 +33,7 @@
 `/about`
 
 ### Ammo
-* Display information Ammunition.
+* Provides detailed information on various ammunition types used in Tarkov.
 
 `/about`
 
@@ -103,7 +103,7 @@
 `/help`
 
 ## Contributing
-You are welcome to contribute by submitting a Pull Request to the repository.
+Contributions are welcome! If you find a bug or want to add a new feature, please submit an issue or a Pull Request. Check out the [issue tracker](link-to-issues) for any open issues.
 
 ## Author
 Joshua Scott
@@ -114,7 +114,7 @@ Feel free submit an issue here on github or send me a [MSG](https://discordapp.c
 ## License
 This project is licensed under the GPL-3.0 License - see the [LICENSE.md](LICENSE) file for details
 
-## Terms of Service and Pricacy Policy
+## Terms of Service and Privacy Policy
 Discord requires me to make one of these.
 
-There isn't really anything to note. No personal data is stored.
+There is no personal data stored by this bot. For more details on Discord's privacy policy, visit [Discord Privacy Policy](https://discord.com/privacy).
